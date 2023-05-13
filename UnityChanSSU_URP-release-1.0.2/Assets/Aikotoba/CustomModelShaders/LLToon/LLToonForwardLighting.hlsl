@@ -293,7 +293,7 @@ half4 LLFragmentChara(Varyings input) : SV_Target
     LLToonLighting(inputData, surfaceData, input.uv, true, lllData, input.screenPos);
 
     // 計算した要素を足し合わせる
-    half4 finalColor = lllData.BaseToonLightingColor + lllData.AdditionalLightsColor + (lllData.RimColor + lllData.DarkRimColor) * lllData.RimColor.a + lllData.EmissionColor.a * lllData.EmissionColor + lllData.SpecRimEmission.a * lllData.SpecRimEmission + lllData.GIColor * _GIInfluence; 
+    half4 finalColor = lllData.BaseToonLightingColor + lllData.AdditionalLightsColor * _AddLightIntensity + (lllData.RimColor + lllData.DarkRimColor) * lllData.RimColor.a + lllData.EmissionColor.a * lllData.EmissionColor + lllData.SpecRimEmission.a * lllData.SpecRimEmission + lllData.GIColor * _GIInfluence; 
     //half4 finalColor = lllData.GIColor * _GIInfluence;
     //half4 finalColor = lllData.RimColor; 
     
@@ -364,7 +364,7 @@ half4 LLFragmentBG(Varyings input) : SV_Target
     
     
     // 計算した要素を足し合わせる
-    half4 finalColor = lllData.BaseToonLightingColor + lllData.AdditionalLightsColor + (lllData.RimColor + lllData.DarkRimColor) * lllData.RimColor.a + lllData.EmissionColor.a * lllData.EmissionColor + lllData.SpecRimEmission.a * lllData.SpecRimEmission + (lllData.GIColor * _GIInfluence) + reflectColor; 
+    half4 finalColor = lllData.BaseToonLightingColor + lllData.AdditionalLightsColor * _AddLightIntensity + (lllData.RimColor + lllData.DarkRimColor) * lllData.RimColor.a + lllData.EmissionColor.a * lllData.EmissionColor + lllData.SpecRimEmission.a * lllData.SpecRimEmission + (lllData.GIColor * _GIInfluence) + reflectColor; 
     
 #ifdef ENABLE_EMISSION_ONLY
     float4 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.uv) * _BaseColor;

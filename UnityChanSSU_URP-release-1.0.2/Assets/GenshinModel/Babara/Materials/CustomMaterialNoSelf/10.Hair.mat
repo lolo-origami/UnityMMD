@@ -225,6 +225,7 @@ Material:
     - _ARSampler_AlphaOn: 0
     - _AR_OffsetU: 0
     - _AR_OffsetV: 0.3
+    - _AddLightIntensity: 1
     - _Add_Antipodean_RimLight: 0
     - _AdditionalLightHiCut: 10
     - _AlphaClip: 0
@@ -370,7 +371,7 @@ Material:
     - _ReceiveShadowEnable: 1
     - _ReceiveShadowMappingAmount: 0.75
     - _ReceiveShadowMappingPosOffset: 0
-    - _ReceiveShadows: 1
+    - _ReceiveShadows: 0
     - _ReceivehadowMul: 0.5
     - _ReflectIntensity: 0.5
     - _RimIntensity: 1
@@ -476,7 +477,7 @@ Material:
     - _SceondMaterialShadowColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadeColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowCorrectOrigin: {r: 0, g: 0, b: 0, a: 1}
-    - _ShadowMultColor: {r: 0.93333334, g: 0.8392157, b: 0.8156863, a: 1}
+    - _ShadowMultColor: {r: 0.8980392, g: 0.74509805, b: 0.7058824, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _ViewShift: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

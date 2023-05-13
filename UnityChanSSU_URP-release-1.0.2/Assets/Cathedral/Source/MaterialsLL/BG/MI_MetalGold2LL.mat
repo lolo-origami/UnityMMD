@@ -107,6 +107,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AddLightIntensity: 1
     - _AlphaClip: 0
     - _Blend: 0
     - _BlendFactor: 0.5
@@ -156,7 +157,7 @@ Material:
     - _InvertGrad: 0
     - _LightMapInfluence: 1.5
     - _MatCapIntensity: 0.5
-    - _Metallic: 1
+    - _Metallic: 0.933
     - _Mode: 0
     - _NormalIntensity: 1
     - _NormalMapEnable: 0
@@ -178,7 +179,7 @@ Material:
     - _ShadowSmooth: 0.159
     - _Sharpness: 30
     - _Shininess: 10
-    - _Smoothness: 1
+    - _Smoothness: 0.512
     - _SmoothnessTextureChannel: 0
     - _SpecMulti: 1
     - _SpecularHighlights: 1

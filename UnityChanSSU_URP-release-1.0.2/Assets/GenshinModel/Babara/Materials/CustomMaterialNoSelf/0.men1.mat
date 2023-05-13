@@ -134,7 +134,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 511ebf69df5e0544c9f7f2e4229895ff, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskMap2:
@@ -243,6 +243,7 @@ Material:
     - _ARSampler_AlphaOn: 0
     - _AR_OffsetU: 0
     - _AR_OffsetV: 0.3
+    - _AddLightIntensity: 0.6
     - _Add_Antipodean_RimLight: 0
     - _AdditionalLightHiCut: 10
     - _AlphaClip: 0

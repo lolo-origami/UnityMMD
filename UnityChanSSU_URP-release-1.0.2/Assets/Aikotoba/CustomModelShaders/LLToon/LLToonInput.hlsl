@@ -84,6 +84,7 @@ float _SpecularIntensity;
 float _SpecularIntensityHigh;
 float _SpecularIntensityShadow;
 float _MatCapIntensity;
+half _AddLightIntensity;
 
 float _EnableLambert;
 float _EnableRim;

@@ -226,6 +226,7 @@ Material:
     - _ARSampler_AlphaOn: 0
     - _AR_OffsetU: 0
     - _AR_OffsetV: 0.3
+    - _AddLightIntensity: 1
     - _Add_Antipodean_RimLight: 0
     - _AdditionalLightHiCut: 10
     - _AlphaClip: 0

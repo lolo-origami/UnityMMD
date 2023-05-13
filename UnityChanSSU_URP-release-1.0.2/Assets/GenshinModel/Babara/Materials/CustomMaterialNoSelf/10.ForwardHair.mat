@@ -235,6 +235,7 @@ Material:
     - _ARSampler_AlphaOn: 0
     - _AR_OffsetU: 0
     - _AR_OffsetV: 0.3
+    - _AddLightIntensity: 1
     - _Add_Antipodean_RimLight: 0
     - _AdditionalLightHiCut: 10
     - _AlphaClip: 0
@@ -379,7 +380,7 @@ Material:
     - _ReceiveShadowEnable: 1
     - _ReceiveShadowMappingAmount: 0.75
     - _ReceiveShadowMappingPosOffset: 0
-    - _ReceiveShadows: 1
+    - _ReceiveShadows: 0
     - _ReceivehadowMul: 0.5
     - _ReflectIntensity: 0.5
     - _RimIntensity: 1
@@ -401,7 +402,7 @@ Material:
     - _ShadeColor_Step: 0
     - _ShadeHue: 0
     - _ShadeSaturation: 2
-    - _ShadowArea: 0.593
+    - _ShadowArea: 0.45
     - _ShadowCorrect: 0.485
     - _ShadowCorrectRadius: 0.2
     - _ShadowSmooth: 0.05
@@ -459,7 +460,7 @@ Material:
     - _BaseColor: {r: 1, g: 0.9750175, b: 0.9386792, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorShift: {r: 0, g: 0, b: 0, a: 1}
-    - _DarkShadowMultColor: {r: 0.8392157, g: 0.64705884, b: 0.59607846, a: 1}
+    - _DarkShadowMultColor: {r: 0.8773585, g: 0.7040094, b: 0.6580189, a: 1}
     - _DarkSideRimColor: {r: 0.020425422, g: 0.020425422, b: 0.084905684, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionMapChannelMask: {r: 1, g: 1, b: 1, a: 0}
@@ -485,7 +486,7 @@ Material:
     - _SceondMaterialShadowColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadeColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowCorrectOrigin: {r: 0, g: 0, b: 0, a: 1}
-    - _ShadowMultColor: {r: 0.9339623, g: 0.8399103, b: 0.81501424, a: 1}
+    - _ShadowMultColor: {r: 0.8962264, g: 0.7467547, b: 0.70598966, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _ViewShift: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

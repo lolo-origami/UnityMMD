@@ -69,6 +69,7 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
 
         protected MaterialProperty WorldLightInfluenceProp { get; set; }
         protected MaterialProperty GIInfluenceProp { get; set; }
+        protected MaterialProperty AddLightInfluenceProp { get; set; }
         protected MaterialProperty LightMapInfluenceProp { get; set; }
         protected MaterialProperty BloomRimSpecularFactorProp { get; set; }
         protected MaterialProperty EnableEmissionProp { get; set; }
@@ -176,7 +177,8 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             
             //Emissive,Bloom,Lighting
             public static readonly GUIContent WorldLightInfluenceOptions = EditorGUIUtility.TrTextContent("WorldLightInfluence", "");
-            public static readonly GUIContent GIInfluenceOptions = EditorGUIUtility.TrTextContent("GIInfluence", "");   
+            public static readonly GUIContent GIInfluenceOptions = EditorGUIUtility.TrTextContent("GIInfluence", "");
+            public static readonly GUIContent AddLightInfluenceOptions = EditorGUIUtility.TrTextContent("AddLightInfluence", "");  
             public static readonly GUIContent LightMapIndluenceOptions = EditorGUIUtility.TrTextContent("LightMapInfluence", "");
             public static readonly GUIContent BloomRimSpecularFactorOptions = EditorGUIUtility.TrTextContent("BloomRimSpecFactor", "");
             public static readonly GUIContent EnableEmissionOptions = EditorGUIUtility.TrTextContent("EnableEmission", "");   
@@ -348,6 +350,7 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             DarkRimSmoothProp = FindProperty("_DarkSideRimSmooth", properties, false);
             DarkRimPowProp = FindProperty("_DarkSideRimPow", properties, false);
             enableEmissionOnlyProp = FindProperty("_EnableEmissionOnly", properties, false);
+            AddLightInfluenceProp = FindProperty("_AddLightIntensity", properties, false);
             
             OutlineMaskProp = FindProperty("_OutlineMask", properties, false);
             OutlineWidthProp = FindProperty("_OutlineWidth", properties, false);
@@ -600,6 +603,11 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             if (GIInfluenceProp != null)
             {
                 DrawFloatSliderValue(CustomStyleLL.GIInfluenceOptions, 0, 10, GIInfluenceProp);
+            }
+            
+            if (AddLightInfluenceProp != null)
+            {
+                DrawFloatSliderValue(CustomStyleLL.AddLightInfluenceOptions, 0, 1, AddLightInfluenceProp);
             }
             
             if (LightMapInfluenceProp != null)

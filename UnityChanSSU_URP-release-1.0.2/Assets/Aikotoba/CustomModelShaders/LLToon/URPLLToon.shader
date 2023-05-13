@@ -11,6 +11,7 @@ Shader "Universal Render Pipeline/URPLLToon"
         _BaseColor("Color", Color) = (1,1,1,1)
         _WorldLightInfluence ("World Light Influence", range(0.0, 1.0)) = 1.0
         _GIInfluence ("GI Influence", range(0.0, 10.0)) = 0.1
+        _AddLightIntensity ("Add Influence", range(0.0, 1.0)) = 1.0
         [HideInInspector]_LightMapInfluence ("LightMap Influence", range(0.0, 30.0)) = 1.0
         _MaskMap ("LSEMask Texture", 2D) = "white" { } //r.lightMap g.specularMap r.emission a.secondMaterialMap
         _MaskMap2 ("RMask Texture", 2D) = "white" { } //r.Rim g.GIOff b.specular_high,face_cheek

@@ -8,6 +8,7 @@ Shader "Universal Render Pipeline/URPLLToonBG"
         _BaseColor("Color", Color) = (1,1,1,1)
         _WorldLightInfluence ("World Light Influence", range(0.0, 1.0)) = 1.0
         _GIInfluence ("GI Influence", range(0.0, 3.0)) = 1.0
+        _AddLightIntensity ("Add Influence", range(0.0, 1.0)) = 1.0
         _LightMapInfluence ("LightMap Influence", range(0.0, 30.0)) = 1.0
         _MaskMap ("Mask Texture", 2D) = "white" { } //r.Rim g.specularMap r.emission a.secondMaterialMap
         _CharaShadowMaskMap ("CharaShadowMask Texture", 2D) = "white" { }
