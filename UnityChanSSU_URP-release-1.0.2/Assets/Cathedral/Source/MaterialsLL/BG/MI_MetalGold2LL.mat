@@ -155,9 +155,9 @@ Material:
     - _GradShift: 0
     - _IgnoreLightY: 0
     - _InvertGrad: 0
-    - _LightMapInfluence: 1.5
+    - _LightMapInfluence: 1
     - _MatCapIntensity: 0.5
-    - _Metallic: 0.933
+    - _Metallic: 0.414
     - _Mode: 0
     - _NormalIntensity: 1
     - _NormalMapEnable: 0
@@ -179,7 +179,7 @@ Material:
     - _ShadowSmooth: 0.159
     - _Sharpness: 30
     - _Shininess: 10
-    - _Smoothness: 0.512
+    - _Smoothness: 0.25
     - _SmoothnessTextureChannel: 0
     - _SpecMulti: 1
     - _SpecularHighlights: 1

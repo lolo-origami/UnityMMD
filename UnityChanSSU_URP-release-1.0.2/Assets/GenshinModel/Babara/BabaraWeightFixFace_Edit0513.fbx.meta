@@ -15,6 +15,9 @@ ModelImporter:
   - first:
       74: 8283844660094486928
     second: face1.1_vmd
+  - first:
+      74: -3077855544080045230
+    second: face1.2_vmd
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -186,6 +189,35 @@ ModelImporter:
     - serializedVersion: 16
       name: face1.1_vmd
       takeName: UnityChanSSU_URP-release-1.0.2/Assets/VMD/aiyanye4_ver1.2/face1.1_vmd
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 7999
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: face1.2_vmd
+      takeName: UnityChanSSU_URP-release-1.0.2/Assets/VMD/aiyanye4_ver1.2/face1.2_vmd
       internalID: 0
       firstFrame: 0
       lastFrame: 7999

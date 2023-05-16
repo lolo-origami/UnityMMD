@@ -76,7 +76,7 @@ float4 _LightSpecShadowColor;
 float _Shininess;
 //float _SpecMulti;
 float _EnableMatCapSpecular;
-float _EnableFaceCheek;;
+float _EnableFaceCheek;
 float _EnableHairSpecular;
 float _Sharpness;
 float _DiffuseIntensity;
@@ -96,6 +96,9 @@ half4 _DarkSideRimColor;
 float _DarkSideRimSmooth;
 float _DarkSideRimPow;
 float _DarkEmissionIntensity;
+float _EdgeRimWidth;
+float _EnableEdgeRim;
+half4 _EdgeRimColor;
 
 /*float _EnableRimDS;
 half4 _DarkSideRimColor;

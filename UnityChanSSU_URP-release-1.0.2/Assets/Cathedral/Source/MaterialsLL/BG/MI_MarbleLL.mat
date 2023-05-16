@@ -298,6 +298,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AddLightIntensity: 1
     - _AlphaBoostFA: 10
     - _AlphaClip: 0
     - _AlphaMaskMode: 0
@@ -367,7 +368,7 @@ Material:
     - _DarkSideRimSmooth: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DiffuseIntensity: 0.1
+    - _DiffuseIntensity: 0.25
     - _DissolveNoiseStrength: 0.1
     - _DstBlend: 0
     - _DstBlendAlpha: 10
@@ -432,7 +433,7 @@ Material:
     - _IgnoreLightY: 0
     - _InvertGrad: 0
     - _Invisible: 0
-    - _LightMapInfluence: 1.5
+    - _LightMapInfluence: 1
     - _LightMaxLimit: 1
     - _LightMinLimit: 0.05
     - _Main2ndDissolveNoiseStrength: 0.1

@@ -143,7 +143,7 @@
     <pmxAssetPath>Assets/GenshinModel/Babara/BabaraWeightFixFace_Edit0513.pmx</pmxAssetPath>
     <vmdAssetPathList>
       <string>Assets/VMD/aiyanye4_ver1.2/aiyaneFix0513.vmd</string>
-      <string>Assets/VMD/aiyanye4_ver1.2/face1.1.vmd</string>
+      <string>Assets/VMD/aiyanye4_ver1.2/face1.2.vmd</string>
     </vmdAssetPathList>
     <fbxOutputPath>Assets/GenshinModel/Babara/BabaraWeightFixFace_Edit0513.fbx</fbxOutputPath>
     <bulletPhysicsVersion>_275</bulletPhysicsVersion>
@@ -183,5 +183,35 @@
       <selfShadowEnabled>true</selfShadowEnabled>
       <sphereMapEnabled>true</sphereMapEnabled>
     </materialGlobalProperty>
+    <materialProperyList />
+    <materialBlockPropertyList>
+      <MaterialBlockProperty>
+        <materialNames />
+        <isUIFoldout>true</isUIFoldout>
+        <baseColor>
+          <r>1</r>
+          <g>1</g>
+          <b>1</b>
+          <a>1</a>
+        </baseColor>
+        <emissionColor>
+          <r>0</r>
+          <g>0</g>
+          <b>0</b>
+          <a>0</a>
+        </emissionColor>
+        <emissionPower>1</emissionPower>
+        <standardBRDF>Specular</standardBRDF>
+        <standardSpecularColor>
+          <r>0</r>
+          <g>0</g>
+          <b>0</b>
+          <a>0</a>
+        </standardSpecularColor>
+        <standardMetallicGlossiness>0</standardMetallicGlossiness>
+        <standardSpecularGlossiness>0</standardSpecularGlossiness>
+        <standardMetallic>0</standardMetallic>
+      </MaterialBlockProperty>
+    </materialBlockPropertyList>
   </mmd4MecanimProperty>
 </PMX2FBXConfig>

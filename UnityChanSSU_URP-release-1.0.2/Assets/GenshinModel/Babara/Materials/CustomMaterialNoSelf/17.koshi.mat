@@ -21,8 +21,6 @@ Material:
   - _EMISSIVE_SIMPLE
   - _ENABLEDARKSHADOW_ON
   - _ENABLEDEFAULTSPECULAR_ON
-  - _ENABLELAMBERT_ON
-  - _ENABLERIM_ON
   - _ENABLESPECULAR_ON
   - _FIXDARKSHADOW_ON
   - _IS_ANGELRING_OFF
@@ -273,6 +271,7 @@ Material:
     - _DiffuseIntensity: 4
     - _DstBlend: 0
     - _EMISSIVE: 0
+    - _EdgeRimWidth: 0.001
     - _Emission: 0
     - _EmissionBloomFactor: 0
     - _EnableAlphaClipping: 0
@@ -280,17 +279,18 @@ Material:
     - _EnableCharaOnShadow: 0
     - _EnableDarkShadow: 1
     - _EnableDefaultSpecular: 1
+    - _EnableEdgeRim: 0
     - _EnableEmission: 0
     - _EnableFaceCheek: 0
     - _EnableFaceShadowMap: 0
     - _EnableHairSpecular: 0
-    - _EnableLambert: 1
+    - _EnableLambert: 0
     - _EnableMatCapSpecular: 0
     - _EnableMetalSpecular: 1
     - _EnableMirror: 0
     - _EnableRampShadow: 0
     - _EnableRampShadowOrigin: 1
-    - _EnableRim: 1
+    - _EnableRim: 0
     - _EnableRimDS: 0
     - _EnableRimOther: 0
     - _EnableSpecular: 1
@@ -387,8 +387,8 @@ Material:
     - _RimLight_FeatherOff: 0
     - _RimLight_InsideMask: 0.0001
     - _RimLight_Power: 0.1
-    - _RimPow: 3.19
-    - _RimSmooth: 0.91
+    - _RimPow: 0
+    - _RimSmooth: 0
     - _Rotate_EmissiveUV: 0
     - _Rotate_MatCapUV: 0
     - _Rotate_NormalMapForMatCapUV: 0
@@ -461,6 +461,7 @@ Material:
     - _ColorShift: {r: 0, g: 0, b: 0, a: 1}
     - _DarkShadowMultColor: {r: 0.7019608, g: 0.73333335, b: 0.8117647, a: 1}
     - _DarkSideRimColor: {r: 0.09803922, g: 0.08235294, b: 0.08235294, a: 1}
+    - _EdgeRimColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionMapChannelMask: {r: 1, g: 1, b: 1, a: 0}
     - _Emissive_Color: {r: 0, g: 0, b: 0, a: 1}

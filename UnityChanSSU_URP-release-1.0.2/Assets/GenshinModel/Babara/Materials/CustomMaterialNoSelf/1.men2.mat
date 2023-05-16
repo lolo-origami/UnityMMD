@@ -277,6 +277,7 @@ Material:
     - _DiffuseIntensity: 4
     - _DstBlend: 0
     - _EMISSIVE: 0
+    - _EdgeRimWidth: 0.001
     - _Emission: 0
     - _EmissionBloomFactor: 0
     - _EnableAlphaClipping: 0
@@ -284,6 +285,7 @@ Material:
     - _EnableCharaOnShadow: 0
     - _EnableDarkShadow: 0
     - _EnableDefaultSpecular: 0
+    - _EnableEdgeRim: 0
     - _EnableEmission: 0
     - _EnableFaceCheek: 0
     - _EnableFaceShadowMap: 0
@@ -462,6 +464,7 @@ Material:
     - _ColorShift: {r: 0, g: 0, b: 0, a: 1}
     - _DarkShadowMultColor: {r: 0.93333334, g: 0.7176471, b: 0.7176471, a: 1}
     - _DarkSideRimColor: {r: 0.101960786, g: 0.08235294, b: 0.08235294, a: 1}
+    - _EdgeRimColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionMapChannelMask: {r: 1, g: 1, b: 1, a: 0}
     - _Emissive_Color: {r: 0, g: 0, b: 0, a: 1}

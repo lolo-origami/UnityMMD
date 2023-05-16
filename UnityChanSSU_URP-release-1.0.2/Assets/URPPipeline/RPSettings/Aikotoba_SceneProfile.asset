@@ -124,7 +124,7 @@ MonoBehaviour:
     m_Value: {r: 1, g: 0.5985164, b: 0.28773582, a: 1}
   flarePosition:
     m_OverrideState: 1
-    m_Value: {x: 25, y: 10}
+    m_Value: {x: -25, y: 10}
   flareSize:
     m_OverrideState: 1
     m_Value: 27
@@ -133,7 +133,7 @@ MonoBehaviour:
     m_Value: {r: 0.18867922, g: 0.08632965, b: 0.1660328, a: 1}
   paraPosition:
     m_OverrideState: 1
-    m_Value: {x: -1.24, y: -1.87}
+    m_Value: {x: 1.24, y: -1.87}
   paraSize:
     m_OverrideState: 1
     m_Value: 1.81
@@ -269,7 +269,7 @@ MonoBehaviour:
     m_Value: 0
   focusDistance:
     m_OverrideState: 1
-    m_Value: 1.1291411
+    m_Value: 1.1691202
   aperture:
     m_OverrideState: 1
     m_Value: 8
@@ -284,7 +284,7 @@ MonoBehaviour:
     m_Value: 1
   bladeRotation:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 180
 --- !u!114 &6069136193489527592
 MonoBehaviour:
   m_ObjectHideFlags: 3

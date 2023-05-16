@@ -82,6 +82,9 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
         protected MaterialProperty RimColorProp { get; set; }
         protected MaterialProperty RimSmoothProp { get; set; }
         protected MaterialProperty RimPowProp { get; set; }
+        protected MaterialProperty EnableEdgeRimProp { get; set; }
+        protected MaterialProperty EdgeRimColorProp { get; set; }
+        protected MaterialProperty RimEdgeWidthProp { get; set; }
         
         protected MaterialProperty EnableDarkRimProp { get; set; }
         protected MaterialProperty DarkRimColorProp { get; set; }
@@ -187,10 +190,12 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             public static readonly GUIContent DarkEmissionIntensityOptions = EditorGUIUtility.TrTextContent("DarkEmissionIntensity", "M");
             public static readonly GUIContent EnableRimOptions = EditorGUIUtility.TrTextContent("EnableRim", "");
             public static readonly GUIContent EnableDarkRimOptions = EditorGUIUtility.TrTextContent("EnableDarkRim", "");
+            public static readonly GUIContent EnableEdgeRimOptions = EditorGUIUtility.TrTextContent("EnableEdgeRim", "");
             public static readonly GUIContent EnableLambertRimOptions = EditorGUIUtility.TrTextContent("EnableLambertRim", "");
             public static readonly GUIContent RimSmoothOptions = EditorGUIUtility.TrTextContent("Rim Smooth", "");
             public static readonly GUIContent RimPowOptions = EditorGUIUtility.TrTextContent("Rim Pow", "");
             public static readonly GUIContent DarkRimSmoothOptions = EditorGUIUtility.TrTextContent("Dark Rim Intensity", "");
+            public static readonly GUIContent EdgeRimWidthOptions = EditorGUIUtility.TrTextContent("EdgeWidth", "");
             public static readonly GUIContent DarkRimPowOptions = EditorGUIUtility.TrTextContent("Rim Pow", "");
             public static readonly GUIContent EnableEmissionOnlyOptions = EditorGUIUtility.TrTextContent("EnableEmissionOnly", "");
             
@@ -349,6 +354,10 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             DarkRimColorProp = FindProperty("_DarkSideRimColor", properties, false);
             DarkRimSmoothProp = FindProperty("_DarkSideRimSmooth", properties, false);
             DarkRimPowProp = FindProperty("_DarkSideRimPow", properties, false);
+            EnableEdgeRimProp = FindProperty("_EnableEdgeRim", properties, false);
+            EdgeRimColorProp = FindProperty("_EdgeRimColor", properties, false);
+            RimEdgeWidthProp = FindProperty("_EdgeRimWidth", properties, false);
+            
             enableEmissionOnlyProp = FindProperty("_EnableEmissionOnly", properties, false);
             AddLightInfluenceProp = FindProperty("_AddLightIntensity", properties, false);
             
@@ -662,6 +671,16 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
                         DrawFloatSliderValue(CustomStyleLL.RimPowOptions, 0, 10, DarkRimPowProp);
                     }
                 }
+                if (EnableEdgeRimProp != null)
+                {
+                    DrawFloatToggleProperty(CustomStyleLL.EnableEdgeRimOptions, EnableEdgeRimProp);
+                    bool enableEdgeRim = EnableEdgeRimProp.floatValue == 1.0f;
+                    if (enableEdgeRim && EdgeRimColorProp != null && EdgeRimColorProp != null && RimEdgeWidthProp != null)
+                    {
+                        materialEditor.ColorProperty(EdgeRimColorProp, "EdgeRimColor");
+                        DrawFloatSliderValue(CustomStyleLL.EdgeRimWidthOptions, 0f, 10f, RimEdgeWidthProp);
+                    }
+                }                
             }
         }
 #endregion

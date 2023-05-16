@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-3404189333984125677
+--- !u!114 &-550970748706286368
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,28 +20,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: 15.hada
-  m_Shader: {fileID: 4800000, guid: 28a9f503f04656c428f07c33b344e080, type: 3}
+  m_Name: 0
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_ValidKeywords: []
-  m_InvalidKeywords:
-  - ENABLE_CHARA
-  - ENABLE_METAL_SPECULAR
-  - ENABLE_RAMP_SHADOW_ORIGIN
-  - _
-  - _CASTSHADOWS_ON
-  - _EMISSIVE_SIMPLE
-  - _ENABLEDARKSHADOW_ON
-  - _ENABLELAMBERT_ON
-  - _ENABLERIMDS_ON
-  - _ENABLERIM_ON
-  - _FIXDARKSHADOW_ON
-  - _IGNORELIGHTY_ON
-  - _IS_ANGELRING_OFF
-  - _IS_CLIPPING_OFF
-  - _IS_OUTLINE_CLIPPING_NO
-  - _OUTLINE_NML
-  - _RECEIVESHADOWENABLE_ON
-  - _RECEIVESHADOWS_ON
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -54,11 +36,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _1st_ShadeMap:
-        m_Texture: {fileID: 2800000, guid: 44322d6336e3a1d4f994631ee7c3c752, type: 3}
+        m_Texture: {fileID: 2800000, guid: d8328180d59271e42a42d6001b05c233, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _2nd_ShadeMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: d8328180d59271e42a42d6001b05c233, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AngelRing_Sampler:
@@ -70,7 +52,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 44322d6336e3a1d4f994631ee7c3c752, type: 3}
+        m_Texture: {fileID: 2800000, guid: d8328180d59271e42a42d6001b05c233, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BloomMap:
@@ -126,11 +108,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _LightMap:
-        m_Texture: {fileID: 2800000, guid: 44322d6336e3a1d4f994631ee7c3c752, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 44322d6336e3a1d4f994631ee7c3c752, type: 3}
+        m_Texture: {fileID: 2800000, guid: d8328180d59271e42a42d6001b05c233, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Mask2Map:
@@ -138,15 +120,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskMap:
-        m_Texture: {fileID: 2800000, guid: bfdbf1c42831b8b46b4362b9f60e2382, type: 3}
+        m_Texture: {fileID: 2800000, guid: 511ebf69df5e0544c9f7f2e4229895ff, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskMap2:
-        m_Texture: {fileID: 2800000, guid: 20ed49411b080d74da5fcf1bffab3650, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MatCap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 44bb1f846a4977941848f56c27723795, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MatCap_Sampler:
@@ -247,7 +229,7 @@ Material:
     - _ARSampler_AlphaOn: 0
     - _AR_OffsetU: 0
     - _AR_OffsetV: 0.3
-    - _AddLightIntensity: 1
+    - _AddLightIntensity: 0.6
     - _Add_Antipodean_RimLight: 0
     - _AdditionalLightHiCut: 10
     - _AlphaClip: 0
@@ -275,31 +257,30 @@ Material:
     - _CullMode: 2
     - _Cutoff: 0.5
     - _DarkEmissionIntensity: 1
-    - _DarkShadowArea: 0.25
-    - _DarkShadowSmooth: 0.173
-    - _DarkSideRimPow: 1.14
-    - _DarkSideRimSmooth: 0.17
+    - _DarkShadowArea: 0.351
+    - _DarkShadowSmooth: 0.345
+    - _DarkSideRimIntensity: 1
+    - _DarkSideRimPow: 0
+    - _DarkSideRimSmooth: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DiffuseIntensity: 4
     - _DstBlend: 0
     - _EMISSIVE: 0
-    - _EdgeRimWidth: 0.01
     - _Emission: 0
     - _EmissionBloomFactor: 0
     - _EnableAlphaClipping: 0
     - _EnableChara: 1
     - _EnableCharaOnShadow: 0
-    - _EnableDarkShadow: 1
+    - _EnableDarkShadow: 0
     - _EnableDefaultSpecular: 0
-    - _EnableEdgeRim: 0
     - _EnableEmission: 0
-    - _EnableFaceCheek: 0
+    - _EnableFaceCheek: 1
     - _EnableFaceShadowMap: 0
     - _EnableHairSpecular: 0
-    - _EnableLambert: 1
+    - _EnableLambert: 0
     - _EnableMatCapSpecular: 0
-    - _EnableMetalSpecular: 1
+    - _EnableMetalSpecular: 0
     - _EnableMirror: 0
     - _EnableRampShadow: 0
     - _EnableRampShadowOrigin: 1
@@ -312,7 +293,7 @@ Material:
     - _FaceShadowOffset: 0
     - _Farthest_Distance: 100
     - _FixDarkShadow: 1
-    - _FixDivideShadow: 0.5
+    - _FixDivideShadow: 0.721
     - _FixLightY: 0
     - _GIInfluence: 0.011
     - _GILightInfluence: 0.1
@@ -360,7 +341,7 @@ Material:
     - _LightMapInfluence: 0
     - _MainLightHiCut: 10
     - _MatCap: 0
-    - _MatCapIntensity: 0.5
+    - _MatCapIntensity: 0
     - _Metallic: 0
     - _Mode: 0
     - _Nearest_Distance: 0.5
@@ -388,21 +369,21 @@ Material:
     - _PostMinBrightness: 0.1
     - _PostSpecularIntensity: 1
     - _QueueOffset: 0
-    - _RampShadowRange: 0.8
+    - _RampShadowRange: 0.707
     - _ReceiveShadow: 1
     - _ReceiveShadowEnable: 1
     - _ReceiveShadowMappingAmount: 0.75
     - _ReceiveShadowMappingPosOffset: 0
     - _ReceiveShadows: 1
-    - _ReceivehadowMul: 0.5
+    - _ReceivehadowMul: 8.51
     - _ReflectIntensity: 0.5
     - _RimIntensity: 1
     - _RimLight: 0
     - _RimLight_FeatherOff: 0
     - _RimLight_InsideMask: 0.0001
     - _RimLight_Power: 0.1
-    - _RimPow: 0.23
-    - _RimSmooth: 0.75
+    - _RimPow: 0
+    - _RimSmooth: 0
     - _Rotate_EmissiveUV: 0
     - _Rotate_MatCapUV: 0
     - _Rotate_NormalMapForMatCapUV: 0
@@ -415,7 +396,7 @@ Material:
     - _ShadeColor_Step: 0
     - _ShadeHue: 0
     - _ShadeSaturation: 2
-    - _ShadowArea: 0.593
+    - _ShadowArea: 0.45
     - _ShadowCorrect: 0.485
     - _ShadowCorrectRadius: 0.2
     - _ShadowSmooth: 0.05
@@ -470,13 +451,14 @@ Material:
     - _2nd_ShadeColor: {r: 1, g: 1, b: 1, a: 1}
     - _AngelRing_Color: {r: 1, g: 1, b: 1, a: 1}
     - _Ap_RimLightColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BaseColor: {r: 1, g: 0.9490196, b: 0.9490196, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _BOXCenter: {r: 0, g: 0, b: 0, a: 1}
+    - _BOXSize: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 1, g: 0.9481132, b: 0.9481132, a: 1}
+    - _Color: {r: 1, g: 0.94811314, b: 0.94811314, a: 1}
     - _ColorShift: {r: 0, g: 0, b: 0, a: 1}
     - _DarkShadowMultColor: {r: 0.93333334, g: 0.7176471, b: 0.7176471, a: 1}
-    - _DarkSideRimColor: {r: 0.101960786, g: 0.08235294, b: 0.08235294, a: 1}
-    - _EdgeRimColor: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _DarkSideRimColor: {r: 0.1882353, g: 0.11372549, b: 0.3019608, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionMapChannelMask: {r: 1, g: 1, b: 1, a: 0}
     - _Emissive_Color: {r: 0, g: 0, b: 0, a: 1}
     - _HighColor: {r: 0, g: 0, b: 0, a: 1}
@@ -487,18 +469,17 @@ Material:
     - _MedColor: {r: 1, g: 1, b: 1, a: 1}
     - _NormalCorrectOrigin: {r: 0, g: 0, b: 0, a: 1}
     - _OtherRimColor: {r: 1, g: 1, b: 1, a: 1}
-    - _OutlineColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _Outline_Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _RampArea12: {r: -50, g: 1, b: -50, a: 4}
     - _RampArea34: {r: -50, g: 0, b: -50, a: 2}
     - _RampArea5: {r: -50, g: 3, b: -50, a: 0}
-    - _ReceivehadowMultColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    - _RimColor: {r: 3.031433, g: 3.031433, b: 3.031433, a: 1}
+    - _ReceivehadowMultColor: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 1}
+    - _RimColor: {r: 0.3584906, g: 0.3584906, b: 0.3584906, a: 1}
     - _RimLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _SceondMaterialColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SceondMaterialDarkShadowColor: {r: 0.93333334, g: 0.7176471, b: 0.7176471,
-        a: 1}
-    - _SceondMaterialShadowColor: {r: 0.972549, g: 0.85882354, b: 0.85882354, a: 1}
+    - _SceondMaterialDarkShadowColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SceondMaterialShadowColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadeColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowCorrectOrigin: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowMultColor: {r: 0.972549, g: 0.85882354, b: 0.85882354, a: 1}

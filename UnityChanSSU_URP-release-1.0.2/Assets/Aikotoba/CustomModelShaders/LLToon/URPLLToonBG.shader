@@ -127,12 +127,15 @@ Shader "Universal Render Pipeline/URPLLToonBG"
         [Toggle]_EnableLambert ("Enable Lambert", float) = 1
         [Toggle]_EnableRim ("Enable Rim", float) = 1
         [HDR]_RimColor ("Rim Color", Color) = (1, 1, 1, 1)
+        [HideInInspector][HDR]_EdgeRimColor ("Rim Color", Color) = (1, 1, 1, 1)
+        [HideInInspector]_EdgeRimWidth ("Edge Rim Width", Range(0.001, 1.0)) = 0.001
         _RimSmooth ("Rim Smooth", Range(0.001, 10.0)) = 10
         _RimPow ("Rim Pow", Range(0.0, 10.0)) = 1.2
         [Toggle]_EnableRimDS ("Enable Dark Side Rim", int) = 1
         [HDR]_DarkSideRimColor ("DarkSide Rim Color", Color) = (1, 1, 1, 1)
         _DarkSideRimSmooth ("DarkSide Rim Smooth", Range(0.001, 10.0)) = 10
         _DarkSideRimPow ("DarkSide Rim Pow", Range(0.0, 10.0)) = 1.0
+        [HideInInspector][Toggle(ENABLE_EDGE_RIM)] _EnableEdgeRim ("Enable EdgeRim", float) = 0
         /*[Space(5)]
         [Toggle]_EnableRimDS ("Enable Dark Side Rim", int) = 1
         [HDR]_DarkSideRimColor ("DarkSide Rim Color", Color) = (1, 1, 1, 1)
@@ -330,6 +333,7 @@ Shader "Universal Render Pipeline/URPLLToonBG"
             //#pragma shader_feature_local_fragment ENABLE_RAMP_SHADOW
             #pragma shader_feature_local_fragment ENABLE_EMISSION_ONLY
             //#pragma shader_feature_local_fragment ENABLE_RAMP_SHADOW_ORIGIN
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
 
             // -------------------------------------
             // Unity defined keywords

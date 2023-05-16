@@ -255,7 +255,7 @@ RimFactor LLToonRimLighting(InputData inputData, float2 uv, float lambert, half4
     darkRimDot = _EnableLambert * (1 - lambert) * darkRimDot + (1 - _EnableLambert) * darkRimDot;
     float darkRimIntensity = smoothstep(0, _DarkSideRimSmooth, darkRimDot);
     Rim.DarkRimColor = _EnableRimDS * pow(darkRimIntensity, 5) * _DarkSideRimColor * baseColor;;
-    //Rim.DarkRimColor.a = _EnableRim * darkRimIntensity * _BloomFactor;
+    Rim.DarkRimColor.a = _EnableRimDS * darkRimIntensity * _BloomFactor;
     return Rim;
 }
 
@@ -279,7 +279,7 @@ float EdgeHighlight(float4 screenPos)
         -1, -2, -1
     };
 
-    float rimLightLength = 0.001;
+    float rimLightLength = _EdgeRimWidth;
     float2 sobel = 0;
     float2 screenPosD = ComputeScreenPos(screenPos / screenPos.w).xy;
     for(int i = 0; i < 9; i++)
@@ -371,7 +371,10 @@ void LLToonLighting (
     float secondColorMask = 1.0 - SAMPLE_TEXTURE2D(_MaskMap, sampler_MaskMap, uv).a;
     half3 ShadowColor = secondColorMask == 0 ? baseColor.rgb * _ShadowMultColor.rgb : baseColor.rgb * _SceondMaterialShadowColor.rgb;
     half3 DarkShadowColorInput = secondColorMask == 0 ? baseColor.rgb * _DarkShadowMultColor.rgb : baseColor.rgb * _SceondMaterialDarkShadowColor.rgb;
-    
+
+    //落ち影のリム調整
+    float RimInShadow = mainLightShadowArea;
+    float DarkRimInShadow = mainLightShadowArea > 0.5 ? 1.0 : 0.25;
 #if ENABLE_CHARA_ON_SHADOW    
     //落ち影内の場合
     {
@@ -381,6 +384,8 @@ void LLToonLighting (
 #endif
         ShadowColor =  lerp(ShadowColor, DarkShadowColorInput, 0.5);
         DarkShadowColorInput = lerp(DarkShadowColorInput, DarkShadowColorInput * 0.75, 0.5);
+        RimInShadow = 0;
+        DarkRimInShadow = 0.25;
     }
 #endif
 
@@ -410,24 +415,23 @@ void LLToonLighting (
         //スぺキュラ足す
         baseLightingColor += _EnableSpecular ? LLToonSpecularLighting(brdfData, inputData, specularMask, specularMaskHigh, mainLight, chara, mainLightTSF.rampS * mainLightShadowArea, radianceBase) : 0;
 
-        //Matcap設定があればタス
+        //Matcap設定があれ
 #if ENABLE_MATCAP_SPECULAR
-    baseLightingColor += SAMPLE_TEXTURE2D(_MatCap, sampler_MatCap, inputData.matcapUV) * _MatCapIntensity;
+        baseLightingColor += SAMPLE_TEXTURE2D(_MatCap, sampler_MatCap, inputData.matcapUV) * _MatCapIntensity;
 #endif
         
         //全体的にライトの色を載せる
         baseLightingColor.rgb = _WorldLightInfluence * radiance * baseLightingColor.rgb + (1 - _WorldLightInfluence) * baseLightingColor.rgb;
-        
-        //落ち影テスト
-        //baseLightingColor.rgb = (mainLightShadowArea > 0.5 ? baseLightingColor : baseLightingColor * 0.5) * chara;
 
         //リム情報
         RimFactor rim = LLToonRimLighting(inputData.baseInputData, uv, mainLightTSF.HalfLambert, baseColor);
         //全体的にライトの色を載せる
-        rimLightColor.rgb = _WorldLightInfluence * radiance * rim.RimColor.rgb + (1 - _WorldLightInfluence) * rim.RimColor.rgb;
-        //rimLightColor.rgb +=  _EnableRim * EdgeHighlight(screenPos) * 0.5;
+        rimLightColor.rgb = (_WorldLightInfluence * radiance * rim.RimColor.rgb + (1 - _WorldLightInfluence) * rim.RimColor.rgb) * RimInShadow; //落ち影のなかでリムは生成されない
+#if ENABLE_EDGE_RIM        
+        rimLightColor.rgb +=  _EnableEdgeRim * EdgeHighlight(screenPos) * _EdgeRimColor;
+#endif
         //rimLightColor.rgb = EdgeHighlight(screenPos)* _RimColor;
-        darkRimLightColor.rgb = _WorldLightInfluence * radiance * rim.DarkRimColor.rgb + (1 - _WorldLightInfluence) * rim.DarkRimColor.rgb;
+        darkRimLightColor.rgb = (_WorldLightInfluence * radiance * rim.DarkRimColor.rgb + (1 - _WorldLightInfluence) * rim.DarkRimColor.rgb) * DarkRimInShadow; //逆リムはごく薄くなる
     }
     LLToonLightingData.BaseToonLightingColor = baseLightingColor;
     LLToonLightingData.RimColor = rimLightColor;

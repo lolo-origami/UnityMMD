@@ -106,6 +106,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AddLightIntensity: 1
     - _AlphaClip: 0
     - _Blend: 0
     - _BlendFactor: 0.5
@@ -153,7 +154,7 @@ Material:
     - _GradShift: 0
     - _IgnoreLightY: 0
     - _InvertGrad: 0
-    - _LightMapInfluence: 1.5
+    - _LightMapInfluence: 3
     - _MatCapIntensity: 0.5
     - _Metallic: 0.414
     - _Mode: 0
