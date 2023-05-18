@@ -130,7 +130,7 @@ MonoBehaviour:
     m_Value: 27
   paraColor:
     m_OverrideState: 1
-    m_Value: {r: 0.18867922, g: 0.08632965, b: 0.1660328, a: 1}
+    m_Value: {r: 0.8018868, g: 0.24586153, b: 0.6735733, a: 1}
   paraPosition:
     m_OverrideState: 1
     m_Value: {x: 1.24, y: -1.87}
@@ -269,7 +269,7 @@ MonoBehaviour:
     m_Value: 0
   focusDistance:
     m_OverrideState: 1
-    m_Value: 1.1691202
+    m_Value: 1.1020658
   aperture:
     m_OverrideState: 1
     m_Value: 8

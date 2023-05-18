@@ -248,7 +248,7 @@ Material:
     - _ARSampler_AlphaOn: 0
     - _AR_OffsetU: 0
     - _AR_OffsetV: 0.3
-    - _AddLightIntensity: 1
+    - _AddLightIntensity: 0.6
     - _Add_Antipodean_RimLight: 0
     - _AdditionalLightHiCut: 10
     - _AlphaClip: 0
@@ -285,7 +285,7 @@ Material:
     - _DiffuseIntensity: 4
     - _DstBlend: 0
     - _EMISSIVE: 0
-    - _EdgeRimWidth: 0.01
+    - _EdgeRimWidth: 0.005
     - _Emission: 0
     - _EmissionBloomFactor: 0
     - _EnableAlphaClipping: 0
@@ -315,7 +315,7 @@ Material:
     - _FixDarkShadow: 0
     - _FixDivideShadow: 0.5
     - _FixLightY: 0
-    - _GIInfluence: 0.011
+    - _GIInfluence: 1
     - _GILightInfluence: 0.1
     - _GI_Intensity: 0
     - _GlossMapScale: 1
@@ -362,7 +362,7 @@ Material:
     - _MainLightHiCut: 10
     - _MatCap: 0
     - _MatCapIntensity: 0.5
-    - _Metallic: 0.8
+    - _Metallic: 0
     - _Mode: 0
     - _Nearest_Distance: 0.5
     - _NormalCorrect: 1
@@ -380,7 +380,7 @@ Material:
     - _OutlineSaturation: 1
     - _OutlineSmoothness: 0.516
     - _OutlineStrength: 0.1
-    - _OutlineWidth: 4
+    - _OutlineWidth: 28
     - _OutlineZOffset: 0.0001
     - _Outline_Width: 0
     - _Parallax: 0.02
@@ -415,14 +415,14 @@ Material:
     - _ShadeColor_Step: 0
     - _ShadeHue: 0
     - _ShadeSaturation: 2
-    - _ShadowArea: 0.67
+    - _ShadowArea: 0.45
     - _ShadowCorrect: 0.485
     - _ShadowCorrectRadius: 0.2
     - _ShadowSmooth: 0.05
     - _Sharpness: 30
     - _SharpnessHigh: 30
     - _Shininess: 11.4
-    - _Smoothness: 1
+    - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecMulti: 1
     - _SpecularHighlights: 1

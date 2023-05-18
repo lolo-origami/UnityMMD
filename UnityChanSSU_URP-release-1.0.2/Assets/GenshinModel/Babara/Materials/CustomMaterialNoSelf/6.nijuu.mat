@@ -225,7 +225,7 @@ Material:
     - _ARSampler_AlphaOn: 0
     - _AR_OffsetU: 0
     - _AR_OffsetV: 0.3
-    - _AddLightIntensity: 1
+    - _AddLightIntensity: 0.6
     - _Add_Antipodean_RimLight: 0
     - _AdditionalLightHiCut: 10
     - _AlphaClip: 0
@@ -292,7 +292,7 @@ Material:
     - _FixDarkShadow: 1
     - _FixDivideShadow: 0.5
     - _FixLightY: 0
-    - _GIInfluence: 0.011
+    - _GIInfluence: 1
     - _GILightInfluence: 0.1
     - _GI_Intensity: 0
     - _GlossMapScale: 1
@@ -351,12 +351,12 @@ Material:
     - _Offset_Z: 0
     - _OtherRimPow: 10
     - _OtherRimSmooth: 0.01
-    - _OutlineBrightness: 0
-    - _OutlineLightAffects: 0
-    - _OutlineSaturation: 0
-    - _OutlineSmoothness: 0
-    - _OutlineStrength: 0
-    - _OutlineWidth: 0
+    - _OutlineBrightness: 0.4
+    - _OutlineLightAffects: 0.7
+    - _OutlineSaturation: 1
+    - _OutlineSmoothness: 0.516
+    - _OutlineStrength: 0.1
+    - _OutlineWidth: 28
     - _OutlineZOffset: 0.0001
     - _Outline_Width: 0
     - _Parallax: 0.02
@@ -391,7 +391,7 @@ Material:
     - _ShadeColor_Step: 0
     - _ShadeHue: 0
     - _ShadeSaturation: 2
-    - _ShadowArea: 0.593
+    - _ShadowArea: 0.45
     - _ShadowCorrect: 0.485
     - _ShadowCorrectRadius: 0.2
     - _ShadowSmooth: 0.05
