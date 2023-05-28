@@ -19,6 +19,8 @@ public class RimLightControlBehaviourDrawer : PropertyDrawer
         
         var DarkRimSmoothValue = property.FindPropertyRelative("DarkRimSmoothValue");
         var DarkRimPowValue = property.FindPropertyRelative("DarkRimPowValue");
+        
+        var LightAffectValue = property.FindPropertyRelative("LightAffectValue");
 
         EditorGUILayout.PropertyField(toggleRim);
         EditorGUILayout.PropertyField(RimSmoothValue);
@@ -27,5 +29,7 @@ public class RimLightControlBehaviourDrawer : PropertyDrawer
         EditorGUILayout.PropertyField(toggleDarkRim);        
         EditorGUILayout.PropertyField(DarkRimSmoothValue);
         EditorGUILayout.PropertyField(DarkRimPowValue);
+        
+        EditorGUILayout.PropertyField(LightAffectValue);
     }
 }

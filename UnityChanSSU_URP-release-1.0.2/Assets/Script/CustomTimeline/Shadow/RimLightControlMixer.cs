@@ -42,6 +42,8 @@ public class RimLightControlMixer : PlayableBehaviour
                     var darkRimPowValue = behaviour.DarkRimPowValue * weight;
                     TargetMat.SetFloat("_DarkSideRimPow", darkRimPowValue);
                 }
+                var lightAffectValue = behaviour.LightAffectValue * weight;
+                TargetMat.SetFloat("_OutlineLightAffects", lightAffectValue);
             }
         }
     }

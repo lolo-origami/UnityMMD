@@ -4994,12 +4994,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 0
     RimSmoothValue: 0.75
     RimPowValue: 0.23
     DarkRimSmoothValue: 0.17
     DarkRimPowValue: 1.14
-    EnableWidthValue: 1
+    LightAffectValue: 7
 --- !u!114 &-7837861363048731674
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5071,12 +5070,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 0
     RimSmoothValue: 0.75
     RimPowValue: 0.23
     DarkRimSmoothValue: 0.17
     DarkRimPowValue: 1.14
-    EnableWidthValue: 1
+    LightAffectValue: 5
 --- !u!114 &-7751046403707087923
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5328,12 +5326,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 0
     EnableDarkRim: 0
-    EnableEdgeRim: 1
     RimSmoothValue: 1
     RimPowValue: 1
     DarkRimSmoothValue: 1
     DarkRimPowValue: 1
-    EnableWidthValue: 0.01
+    LightAffectValue: 12
 --- !u!114 &-7531700490733371123
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5414,12 +5411,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 0
     EnableDarkRim: 0
-    EnableEdgeRim: 0
     RimSmoothValue: 1
     RimPowValue: 1
     DarkRimSmoothValue: 1
     DarkRimPowValue: 1
-    EnableWidthValue: 0.001
+    LightAffectValue: 3
 --- !u!114 &-7416885188697301311
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6197,12 +6193,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 0
     EnableDarkRim: 0
-    EnableEdgeRim: 0
     RimSmoothValue: 1
     RimPowValue: 1
     DarkRimSmoothValue: 1
     DarkRimPowValue: 1
-    EnableWidthValue: 0.001
+    LightAffectValue: 2
 --- !u!114 &-6694670942485460534
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -10545,12 +10540,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 1
     RimSmoothValue: 0.2
     RimPowValue: 0.5
     DarkRimSmoothValue: 0.5
     DarkRimPowValue: 0.26
-    EnableWidthValue: 0.005
+    LightAffectValue: 17.5
 --- !u!114 &-5704356112035479467
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -10645,12 +10639,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 1
     RimSmoothValue: 0.2
     RimPowValue: 0.5
     DarkRimSmoothValue: 0.5
     DarkRimPowValue: 0.26
-    EnableWidthValue: 0.005
+    LightAffectValue: 12.5
 --- !u!114 &-5445182738069737010
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -14629,12 +14622,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 0
     RimSmoothValue: 0.75
     RimPowValue: 0.23
     DarkRimSmoothValue: 0.17
     DarkRimPowValue: 1.14
-    EnableWidthValue: 0.001
+    LightAffectValue: 5
 --- !u!114 &-4526019580736923925
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -14731,12 +14723,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 1
     RimSmoothValue: 0.75
     RimPowValue: 0.23
     DarkRimSmoothValue: 0.17
     DarkRimPowValue: 1.14
-    EnableWidthValue: 0.001
+    LightAffectValue: 5
 --- !u!114 &-4347645199436332096
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -19213,12 +19204,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 1
     RimSmoothValue: 0.2
     RimPowValue: 0.5
     DarkRimSmoothValue: 0.5
     DarkRimPowValue: 0.26
-    EnableWidthValue: 0.005
+    LightAffectValue: 20
 --- !u!114 &-4261825820632710317
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -20342,12 +20332,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 1
     RimSmoothValue: 0.91
     RimPowValue: 0.23
     DarkRimSmoothValue: 0.17
     DarkRimPowValue: 1.14
-    EnableWidthValue: 0.001
+    LightAffectValue: 5
 --- !u!114 &-3964084571396713104
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -25188,12 +25177,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 0
     EnableDarkRim: 0
-    EnableEdgeRim: 0
     RimSmoothValue: 1
     RimPowValue: 1
     DarkRimSmoothValue: 1
     DarkRimPowValue: 1
-    EnableWidthValue: 0.001
+    LightAffectValue: 3
 --- !u!114 &-2571303182307042610
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -25436,12 +25424,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 0
     EnableDarkRim: 0
-    EnableEdgeRim: 1
     RimSmoothValue: 1
     RimPowValue: 1
     DarkRimSmoothValue: 1
     DarkRimPowValue: 1
-    EnableWidthValue: 0.001
+    LightAffectValue: 30
 --- !u!114 &-1800105720530951209
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -25847,12 +25834,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 1
     RimSmoothValue: 0.2
     RimPowValue: 0.5
     DarkRimSmoothValue: 0.5
     DarkRimPowValue: 0.26
-    EnableWidthValue: 0.001
+    LightAffectValue: 45
 --- !u!114 &-1568032565921648394
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -26513,12 +26499,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 0
     EnableDarkRim: 0
-    EnableEdgeRim: 0
     RimSmoothValue: 1
     RimPowValue: 1
     DarkRimSmoothValue: 1
     DarkRimPowValue: 1
-    EnableWidthValue: 0.001
+    LightAffectValue: 3
 --- !u!114 &-712263389022404046
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -27083,12 +27068,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 1
     RimSmoothValue: 0.2
     RimPowValue: 0.3
     DarkRimSmoothValue: 0.5
     DarkRimPowValue: 0.1
-    EnableWidthValue: 0.001
+    LightAffectValue: 25
 --- !u!114 &-321427545117181329
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -27149,12 +27133,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 1
     RimSmoothValue: 0.2
     RimPowValue: 0.5
     DarkRimSmoothValue: 0.5
     DarkRimPowValue: 0.26
-    EnableWidthValue: 0.001
+    LightAffectValue: 50
 --- !u!114 &-257937326171661911
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -30882,12 +30865,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 1
     RimSmoothValue: 0.75
     RimPowValue: 0.23
     DarkRimSmoothValue: 0.17
     DarkRimPowValue: 1.14
-    EnableWidthValue: 0.001
+    LightAffectValue: 7
 --- !u!114 &617550343668349646
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -30999,12 +30981,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 0
     RimSmoothValue: 0.75
     RimPowValue: 0.23
     DarkRimSmoothValue: 0.17
     DarkRimPowValue: 1.14
-    EnableWidthValue: 1
+    LightAffectValue: 5
 --- !u!114 &885354698926526134
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -31037,12 +31018,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 0
     RimSmoothValue: 0.75
     RimPowValue: 0.23
     DarkRimSmoothValue: 0.17
     DarkRimPowValue: 1.14
-    EnableWidthValue: 0.001
+    LightAffectValue: 5
 --- !u!114 &1066285619401888049
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -31217,12 +31197,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 0
     EnableDarkRim: 0
-    EnableEdgeRim: 1
     RimSmoothValue: 1
     RimPowValue: 1
     DarkRimSmoothValue: 1
     DarkRimPowValue: 1
-    EnableWidthValue: 0.005
+    LightAffectValue: 20
 --- !u!114 &1501339836938483947
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -31551,12 +31530,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 1
     RimSmoothValue: 0.2
     RimPowValue: 0.5
     DarkRimSmoothValue: 0.5
     DarkRimPowValue: 0.26
-    EnableWidthValue: 0.005
+    LightAffectValue: 40
 --- !u!114 &1836110536143953049
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -31934,12 +31912,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 0
     RimSmoothValue: 0.91
     RimPowValue: 0.23
     DarkRimSmoothValue: 0.17
     DarkRimPowValue: 1.14
-    EnableWidthValue: 1
+    LightAffectValue: 5
 --- !u!114 &2115489113155571362
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -32593,12 +32570,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 0
     RimSmoothValue: 0.91
     RimPowValue: 0.23
     DarkRimSmoothValue: 0.17
     DarkRimPowValue: 1.14
-    EnableWidthValue: 0.001
+    LightAffectValue: 5
 --- !u!114 &2549908913195252971
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -32659,12 +32635,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 0
     RimSmoothValue: 0.75
     RimPowValue: 0.23
     DarkRimSmoothValue: 0.17
     DarkRimPowValue: 1.14
-    EnableWidthValue: 0.001
+    LightAffectValue: 5
 --- !u!114 &2645217381686694466
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -36421,12 +36396,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 1
     RimSmoothValue: 0.2
     RimPowValue: 0.3
     DarkRimSmoothValue: 0.5
     DarkRimPowValue: 0.1
-    EnableWidthValue: 0.005
+    LightAffectValue: 50
 --- !u!114 &3053555832762078737
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -36859,12 +36833,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 0
     RimSmoothValue: 0.91
     RimPowValue: 0.23
     DarkRimSmoothValue: 0.17
     DarkRimPowValue: 1.14
-    EnableWidthValue: 1
+    LightAffectValue: 2.5
 --- !u!114 &3253514898526228255
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -36880,12 +36853,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 0
     RimSmoothValue: 0.75
     RimPowValue: 0.23
     DarkRimSmoothValue: 0.17
     DarkRimPowValue: 1.14
-    EnableWidthValue: 1
+    LightAffectValue: 5
 --- !u!114 &3313566914222933773
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -38256,12 +38228,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 1
     RimSmoothValue: 0.2
     RimPowValue: 0.5
     DarkRimSmoothValue: 0.5
     DarkRimPowValue: 0.26
-    EnableWidthValue: 0.001
+    LightAffectValue: 45
 --- !u!114 &4100226571907328759
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -38942,12 +38913,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 1
     RimSmoothValue: 0.2
     RimPowValue: 0.5
     DarkRimSmoothValue: 0.5
     DarkRimPowValue: 0.26
-    EnableWidthValue: 0.005
+    LightAffectValue: 5
 --- !u!114 &5119556245825901011
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -39177,12 +39147,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 0
     RimSmoothValue: 0.75
     RimPowValue: 0.23
     DarkRimSmoothValue: 0.17
     DarkRimPowValue: 1.14
-    EnableWidthValue: 0.001
+    LightAffectValue: 7
 --- !u!114 &5511701576501531178
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -39314,12 +39283,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 1
     RimSmoothValue: 0.2
     RimPowValue: 0.5
     DarkRimSmoothValue: 0.5
     DarkRimPowValue: 0.26
-    EnableWidthValue: 0.005
+    LightAffectValue: 20
 --- !u!114 &5984571847385672790
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -39386,12 +39354,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 1
     RimSmoothValue: 0.2
     RimPowValue: 0.5
     DarkRimSmoothValue: 0.5
     DarkRimPowValue: 0.26
-    EnableWidthValue: 0.005
+    LightAffectValue: 20
 --- !u!114 &6099332379345675200
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -39407,12 +39374,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 0
     RimSmoothValue: 0.91
     RimPowValue: 0.23
     DarkRimSmoothValue: 0.17
     DarkRimPowValue: 1.14
-    EnableWidthValue: 0.001
+    LightAffectValue: 2.5
 --- !u!114 &6115262678172922587
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -40349,12 +40315,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 1
     RimSmoothValue: 0.75
     RimPowValue: 0.23
     DarkRimSmoothValue: 0.17
     DarkRimPowValue: 1.14
-    EnableWidthValue: 0.001
+    LightAffectValue: 5
 --- !u!114 &6863339662694906626
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -40927,12 +40892,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 0
     EnableDarkRim: 0
-    EnableEdgeRim: 0
     RimSmoothValue: 1
     RimPowValue: 1
     DarkRimSmoothValue: 1
     DarkRimPowValue: 1
-    EnableWidthValue: 0.001
+    LightAffectValue: 2
 --- !u!114 &6944650343393125138
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -41219,12 +41183,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 1
     RimSmoothValue: 0.91
     RimPowValue: 0.23
     DarkRimSmoothValue: 0.17
     DarkRimPowValue: 1.14
-    EnableWidthValue: 0.001
+    LightAffectValue: 2.5
 --- !u!114 &7683957218197760477
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -41364,12 +41327,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 0
     EnableDarkRim: 0
-    EnableEdgeRim: 0
     RimSmoothValue: 1
     RimPowValue: 1
     DarkRimSmoothValue: 1
     DarkRimPowValue: 1
-    EnableWidthValue: 0.001
+    LightAffectValue: 2
 --- !u!114 &8020592163232312135
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -41402,12 +41364,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 1
     EnableDarkRim: 1
-    EnableEdgeRim: 1
     RimSmoothValue: 0.75
     RimPowValue: 0.23
     DarkRimSmoothValue: 0.17
     DarkRimPowValue: 1.14
-    EnableWidthValue: 0.001
+    LightAffectValue: 5
 --- !u!114 &8198389085067015879
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -41678,12 +41639,11 @@ MonoBehaviour:
   behaviour:
     EnableRim: 0
     EnableDarkRim: 0
-    EnableEdgeRim: 1
     RimSmoothValue: 1
     RimPowValue: 1
     DarkRimSmoothValue: 1
     DarkRimPowValue: 1
-    EnableWidthValue: 0.005
+    LightAffectValue: 7
 --- !u!114 &8724276302996096148
 MonoBehaviour:
   m_ObjectHideFlags: 1

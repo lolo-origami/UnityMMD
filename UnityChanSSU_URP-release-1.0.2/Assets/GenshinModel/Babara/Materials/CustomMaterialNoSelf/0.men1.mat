@@ -37,6 +37,7 @@ Material:
   - _IS_OUTLINE_CLIPPING_NO
   - _OUTLINE_NML
   - _RECEIVESHADOWENABLE_ON
+  - _RECEIVE_SHADOWS_OFF
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -371,7 +372,7 @@ Material:
     - _OtherRimPow: 10
     - _OtherRimSmooth: 0.01
     - _OutlineBrightness: 0.4
-    - _OutlineLightAffects: 1
+    - _OutlineLightAffects: 3
     - _OutlineSaturation: 1
     - _OutlineSmoothness: 0.516
     - _OutlineStrength: 0.1
@@ -411,7 +412,7 @@ Material:
     - _ShadeColor_Step: 0
     - _ShadeHue: 0
     - _ShadeSaturation: 2
-    - _ShadowArea: 0.45
+    - _ShadowArea: 0.44971377
     - _ShadowCorrect: 0.485
     - _ShadowCorrectRadius: 0.2
     - _ShadowSmooth: 0.05
