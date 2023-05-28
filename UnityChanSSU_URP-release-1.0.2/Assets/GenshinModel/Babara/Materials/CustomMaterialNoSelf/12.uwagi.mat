@@ -12,6 +12,7 @@ Material:
   m_ValidKeywords: []
   m_InvalidKeywords:
   - ENABLE_DEFAULT_SPECULAR
+  - ENABLE_EDGE_RIM
   - ENABLE_METAL_SPECULAR
   - ENABLE_RAMP_SHADOW_ORIGIN
   - ENABLE_SPECULAR
@@ -273,7 +274,7 @@ Material:
     - _DiffuseIntensity: 4
     - _DstBlend: 0
     - _EMISSIVE: 0
-    - _EdgeRimWidth: 0.005
+    - _EdgeRimWidth: 0.001
     - _Emission: 0
     - _EmissionBloomFactor: 0
     - _EnableAlphaClipping: 1
@@ -281,7 +282,7 @@ Material:
     - _EnableCharaOnShadow: 0
     - _EnableDarkShadow: 1
     - _EnableDefaultSpecular: 1
-    - _EnableEdgeRim: 0
+    - _EnableEdgeRim: 1
     - _EnableEmission: 0
     - _EnableFaceCheek: 0
     - _EnableFaceShadowMap: 0
@@ -364,11 +365,11 @@ Material:
     - _OtherRimPow: 10
     - _OtherRimSmooth: 0.01
     - _OutlineBrightness: 0.4
-    - _OutlineLightAffects: 0.7
+    - _OutlineLightAffects: 7
     - _OutlineSaturation: 1
     - _OutlineSmoothness: 0.516
     - _OutlineStrength: 0.1
-    - _OutlineWidth: 28
+    - _OutlineWidth: 5
     - _OutlineZOffset: 0.0001
     - _Outline_Width: 0
     - _Parallax: 0.02

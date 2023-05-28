@@ -302,8 +302,9 @@ half4 LLFragmentChara(Varyings input) : SV_Target
     half width = lerp(_OutlineWidth, _OutlineWidth * 0.5, lllData.RampDS * _OutlineLightAffects);
     width *= SAMPLE_TEXTURE2D(_OutlineMask, sampler_OutlineMask, input.uv).r;
     half outlineFactor = SoftOutline(screenPos, width, _OutlineStrength, _OutlineSmoothness);
-    finalColor.rgb = lerp(finalColor.rgb, shift(finalColor.rgb, half3(0.0, _OutlineSaturation, lerp(_OutlineBrightness, saturate(_OutlineBrightness * 2.0), lllData.RampDS * _OutlineLightAffects))), outlineFactor);
-    
+    half lerpValue = lllData.HalfLambert > 1.0 ? lllData.HalfLambert * _OutlineLightAffects : lllData.RampDS * _OutlineLightAffects;
+    finalColor.rgb = lerp(finalColor.rgb, shift(finalColor.rgb, half3(0.0, _OutlineSaturation, lerp(_OutlineBrightness, saturate(_OutlineBrightness * 2.0), lerpValue))), outlineFactor);
+
     // apply fog
     finalColor.rgb = MixFog(finalColor.rgb, inputData.baseInputData.fogCoord);
     

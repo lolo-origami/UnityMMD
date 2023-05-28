@@ -96,24 +96,6 @@ half4 _DarkSideRimColor;
 float _DarkSideRimSmooth;
 float _DarkSideRimPow;
 float _DarkEmissionIntensity;
-float _EdgeRimWidth;
-float _EnableEdgeRim;
-half4 _EdgeRimColor;
-
-/*float _EnableRimDS;
-half4 _DarkSideRimColor;
-float _DarkSideRimSmooth;
-float _DarkSideRimPow;
-float _EnableRimOther;
-half4 _OtherRimColor;
-float _OtherRimSmooth;
-float _OtherRimPow;
-half _ReceiveShadowMappingAmount; 
-float _ReceiveShadowMappingPosOffset;
-float _JitterIntensity;
-float _SharpnessHigh;
-float _SpecularIntensityHigh;
-*/
 
 float _OutlineWidth;
 float _OutlineLightAffects;

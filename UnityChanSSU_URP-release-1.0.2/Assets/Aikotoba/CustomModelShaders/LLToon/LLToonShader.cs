@@ -680,6 +680,7 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
                         materialEditor.ColorProperty(EdgeRimColorProp, "EdgeRimColor");
                         DrawFloatSliderValue(CustomStyleLL.EdgeRimWidthOptions, 0f, 10f, RimEdgeWidthProp);
                     }
+                    CoreUtils.SetKeyword(material, "ENABLE_EDGE_RIM", enableEdgeRim);
                 }                
             }
         }
@@ -701,7 +702,7 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             
             if (OutlineLightAffectsProp != null)
             {
-                DrawFloatSliderValue(CustomStyleLL.OutlineLightAffectsOptions, 0, 1, OutlineLightAffectsProp);
+                DrawFloatSliderValue(CustomStyleLL.OutlineLightAffectsOptions, 0, 50, OutlineLightAffectsProp);
             }
             
             if (OutlineSaturationProp != null)

@@ -13,6 +13,7 @@ Material:
   - ENABLE_CAST_SHADOW
   - ENABLE_HAIR_SPECULAR
   m_InvalidKeywords:
+  - ENABLE_EDGE_RIM
   - ENABLE_METAL_SPECULAR
   - ENABLE_RAMP_SHADOW_ORIGIN
   - ENABLE_SPECULAR
@@ -281,7 +282,7 @@ Material:
     - _EnableCharaOnShadow: 0
     - _EnableDarkShadow: 1
     - _EnableDefaultSpecular: 0
-    - _EnableEdgeRim: 0
+    - _EnableEdgeRim: 1
     - _EnableEmission: 0
     - _EnableFaceCheek: 0
     - _EnableFaceShadowMap: 0
@@ -364,11 +365,11 @@ Material:
     - _OtherRimPow: 10
     - _OtherRimSmooth: 0.01
     - _OutlineBrightness: 0.4
-    - _OutlineLightAffects: 0.7
+    - _OutlineLightAffects: 5
     - _OutlineSaturation: 1
     - _OutlineSmoothness: 0.516
     - _OutlineStrength: 0.1
-    - _OutlineWidth: 28
+    - _OutlineWidth: 8
     - _OutlineZOffset: 0.0001
     - _Outline_Width: 0
     - _Parallax: 0.02
@@ -464,7 +465,7 @@ Material:
     - _ColorShift: {r: 0, g: 0, b: 0, a: 1}
     - _DarkShadowMultColor: {r: 0.8784314, g: 0.7058824, b: 0.65882355, a: 1}
     - _DarkSideRimColor: {r: 0.18524702, g: 0.11372548, b: 0.3019608, a: 1}
-    - _EdgeRimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _EdgeRimColor: {r: 10.680627, g: 10.680627, b: 10.680627, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionMapChannelMask: {r: 1, g: 1, b: 1, a: 0}
     - _Emissive_Color: {r: 0, g: 0, b: 0, a: 1}

@@ -42,13 +42,6 @@ public class RimLightControlMixer : PlayableBehaviour
                     var darkRimPowValue = behaviour.DarkRimPowValue * weight;
                     TargetMat.SetFloat("_DarkSideRimPow", darkRimPowValue);
                 }
-                
-                TargetMat.SetFloat("_EnableEdgeRim", behaviour.EnableEdgeRim == false ? 0 : 1);
-                if (behaviour.EnableEdgeRim)
-                {
-                    var edgeRimWidthValue = behaviour.EnableWidthValue * weight;
-                    TargetMat.SetFloat("_EdgeRimWidth", edgeRimWidthValue);
-                }
             }
         }
     }

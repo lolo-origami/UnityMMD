@@ -129,15 +129,12 @@ Shader "Universal Render Pipeline/URPLLToon"
         [Toggle]_EnableLambert ("Enable Lambert", float) = 1
         [Toggle]_EnableRim ("Enable Rim", float) = 1
         [HDR]_RimColor ("Rim Color", Color) = (1, 1, 1, 1)
-        [HDR]_EdgeRimColor ("Edge Rim Color", Color) = (1, 1, 1, 1)
-        _EdgeRimWidth ("Edge Rim Width", Range(0.001, 1.0)) = 0.001
         _RimSmooth ("Rim Smooth", Range(0.001, 10.0)) = 10
         _RimPow ("Rim Pow", Range(0.0, 10.0)) = 1.2
         [Toggle]_EnableRimDS ("Enable Dark Side Rim", int) = 0
         [HDR]_DarkSideRimColor ("DarkSide Rim Color", Color) = (1, 1, 1, 1)
         _DarkSideRimSmooth ("DarkSide Rim Smooth", Range(0.001, 10.0)) = 10
         _DarkSideRimPow ("DarkSide Rim Pow", Range(0.0, 10.0)) = 1.0
-        [Toggle(ENABLE_EDGE_RIM)] _EnableEdgeRim ("Enable EdgeRim", float) = 0
         
         /*[Space(5)]
         [Toggle]_EnableRimDS ("Enable Dark Side Rim", int) = 1
@@ -155,7 +152,7 @@ Shader "Universal Render Pipeline/URPLLToon"
         [Space(5)]
         _OutlineMask("Outline Mask", 2D) = "white" {}
         _OutlineWidth ("_OutlineWidth (World Space)", Range(0, 50)) = 1
-        _OutlineLightAffects("Outline Light Affects", Range(0.0, 1.0)) = 1.0
+        _OutlineLightAffects("Outline Light Affects", Range(0.0, 50.0)) = 1.0
         _OutlineSaturation("Outline Saturation", Range(0.0, 4.0)) = 3.0
         _OutlineBrightness("Outline Brightness", Range(0.0, 1.0)) = 0.25
         _OutlineStrength("Outline Strength", Range(0.0, 1.0)) = 0.5
@@ -343,7 +340,6 @@ Shader "Universal Render Pipeline/URPLLToon"
             #pragma shader_feature_local_fragment ENABLE_MATCAP_SPECULAR
             #pragma shader_feature_local_fragment ENABLE_HAIR_SPECULAR
             #pragma shader_feature_local_fragment ENABLE_FACE_CHEEK
-            #pragma shader_feature_local_fragment ENABLE_EDGE_RIM
             #pragma shader_feature_local_fragment ENABLE_CHARA_ON_SHADOW
             //#pragma shader_feature_local_fragment ENABLE_RAMP_SHADOW_ORIGIN
 

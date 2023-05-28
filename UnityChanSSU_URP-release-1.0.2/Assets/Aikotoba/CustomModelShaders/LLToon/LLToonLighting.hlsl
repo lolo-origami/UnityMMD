@@ -259,38 +259,6 @@ RimFactor LLToonRimLighting(InputData inputData, float2 uv, float lambert, half4
     return Rim;
 }
 
-float EdgeHighlight(float4 screenPos)
-{
-    float2 sobelSamplePoints[9] = {
-        float2(-1,1),  float2(0,1),  float2(1,1),
-        float2(-1,0),  float2(0,0),  float2(1,0),
-        float2(-1,-1), float2(0,-1), float2(1,-1) 
-    };
-
-    static float sobelXMatrix[9] = {
-        1, 0, -1,
-        2, 0, -2,
-        1, 0, -1
-    };
-
-    static float sobelYMatrix[9] = {
-        1, 2, 1,
-        0, 0, 0,
-        -1, -2, -1
-    };
-
-    float rimLightLength = _EdgeRimWidth;
-    float2 sobel = 0;
-    float2 screenPosD = ComputeScreenPos(screenPos / screenPos.w).xy;
-    for(int i = 0; i < 9; i++)
-    {
-        screenPosD.xy += sobelSamplePoints[i] * rimLightLength;
-        float depth = Linear01Depth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, my_linear_clamp_sampler, screenPosD), _ZBufferParams);
-        sobel += depth * float2(sobelXMatrix[i], sobelYMatrix[i]);
-    }
-    return length(sobel);
-}
-
 //Emission
 half4 LLToonEmission(float2 uv, half4 baseLightingColor, half3 darkShadowColor, float baseAlpha, half emissionMask)
 {
@@ -427,9 +395,7 @@ void LLToonLighting (
         RimFactor rim = LLToonRimLighting(inputData.baseInputData, uv, mainLightTSF.HalfLambert, baseColor);
         //全体的にライトの色を載せる
         rimLightColor.rgb = (_WorldLightInfluence * radiance * rim.RimColor.rgb + (1 - _WorldLightInfluence) * rim.RimColor.rgb) * RimInShadow; //落ち影のなかでリムは生成されない
-#if ENABLE_EDGE_RIM        
-        rimLightColor.rgb +=  _EnableEdgeRim * EdgeHighlight(screenPos) * _EdgeRimColor;
-#endif
+        
         //rimLightColor.rgb = EdgeHighlight(screenPos)* _RimColor;
         darkRimLightColor.rgb = (_WorldLightInfluence * radiance * rim.DarkRimColor.rgb + (1 - _WorldLightInfluence) * rim.DarkRimColor.rgb) * DarkRimInShadow; //逆リムはごく薄くなる
     }
