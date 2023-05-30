@@ -61,6 +61,7 @@ Shader "Universal Render Pipeline/URPLLToonBG"
         _DarkShadowArea ("Dark Shadow Area", range(0.0, 1.0)) = 0.5
         _DarkShadowSmooth ("Shadow Smooth", range(0.0, 1.0)) = 0.05
         [Toggle]_EnableDarkShadow ("Enable Dark Shadow", float) = 1
+        [HideInInspector] [Toggle(ENABLE_INVERSE_SHADOW)]_EnableDarkInverseShadow ("Enable Inverse Dark Shadow", float) = 1
         
         //SRPの為に宣言
         [HideInInspector] [Toggle]_IgnoreLightY ("Ignore Light y", float) = 0

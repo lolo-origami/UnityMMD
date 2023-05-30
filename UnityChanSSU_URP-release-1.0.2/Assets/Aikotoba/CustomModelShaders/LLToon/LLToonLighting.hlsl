@@ -26,7 +26,7 @@ struct LLLightingData
     half4 EmissionColor; //Emission
     half4 GIColor; //GI
     half4 SpecRimEmission; //全体的な輝きコントロール
-    half RampDS; //2影の境界線調整値(メインで計算後アウトラインにに使いまわす)
+    half RampOutline; //2影の境界線調整値(メインで計算後アウトラインにに使いまわす)
     half HalfLambert;
 };
             
@@ -94,6 +94,9 @@ ToonShadowFactor CalculateToonShadowFactor(
     //影範囲の決定
     tsf.SWeight = tsf.HalfLambert * 0.5  + 1.125;
 
+#if ENABLE_INVERSE_SHADOW //Inverseの時は逆転させとく(分かりやすく)
+    _DarkShadowArea = 1.0 - _DarkShadowArea;
+#endif    
     //影を塗り分ける範囲
     tsf.SFactor = floor(tsf.SWeight - _ShadowArea);
     tsf.SFactorD = floor(tsf.SWeight - _DarkShadowArea);
@@ -104,8 +107,14 @@ ToonShadowFactor CalculateToonShadowFactor(
     tsf.rampDS = smoothstep(0, _DarkShadowSmooth, (tsf.HalfLambert - _DarkShadowArea));
 #else    
     tsf.rampS = smoothstep(0, _ShadowSmooth, (tsf.HalfLambert - _ShadowArea) * mainLightShadowArea * mask);
-    tsf.rampDS = smoothstep(0, _DarkShadowSmooth, (tsf.HalfLambert - _DarkShadowArea) * mainLightShadowArea * mask);
+    tsf.rampDS = smoothstep(0, _DarkShadowSmooth, (tsf.HalfLambert - clamp(_DarkShadowArea, 0, _ShadowArea)) * mainLightShadowArea * mask);
 #endif
+
+#if ENABLE_INVERSE_SHADOW
+    //逆から反射光を入れたいとき
+    tsf.rampDS = (clamp((tsf.rampDS - tsf.rampS), 0.0, 1.0)) * _EnableDarkShadow;
+    tsf.rampDS = (1.0 - tsf.rampDS) * _EnableDarkShadow;
+#endif    
     
     return tsf;
 }
@@ -367,7 +376,7 @@ void LLToonLighting (
 
     //メインライトのトゥーン要素をキャッシュしておく
     ToonShadowFactor mainLightTSF = CalculateToonShadowFactor(mainLight, inputData.baseInputData.normalWS, lightMapMask, mainLightShadowArea * maskGI, inputData.baseInputData.positionWS.xyz);
-    LLToonLightingData.RampDS = mainLightTSF.rampDS;
+    LLToonLightingData.RampOutline = mainLightTSF.rampS;
     LLToonLightingData.HalfLambert = mainLightTSF.HalfLambert;
 
     half3 DarkShadowColor = baseColor.rgb;

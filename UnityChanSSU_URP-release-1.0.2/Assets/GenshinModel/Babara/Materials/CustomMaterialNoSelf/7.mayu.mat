@@ -268,6 +268,7 @@ Material:
     - _EnableAlphaClipping: 0
     - _EnableChara: 1
     - _EnableCharaOnShadow: 0
+    - _EnableDarkInverseShadow: 1
     - _EnableDarkShadow: 0
     - _EnableDefaultSpecular: 0
     - _EnableEdgeRim: 0
@@ -352,11 +353,11 @@ Material:
     - _OtherRimPow: 10
     - _OtherRimSmooth: 0.01
     - _OutlineBrightness: 0.4
-    - _OutlineLightAffects: 0
+    - _OutlineLightAffects: 3
     - _OutlineSaturation: 1
     - _OutlineSmoothness: 0.516
     - _OutlineStrength: 0.1
-    - _OutlineWidth: 4
+    - _OutlineWidth: 6
     - _OutlineZOffset: 0.0001
     - _Outline_Width: 0
     - _Parallax: 0.02
@@ -391,7 +392,7 @@ Material:
     - _ShadeColor_Step: 0
     - _ShadeHue: 0
     - _ShadeSaturation: 2
-    - _ShadowArea: 0.45
+    - _ShadowArea: 0.44971377
     - _ShadowCorrect: 0.485
     - _ShadowCorrectRadius: 0.2
     - _ShadowSmooth: 0.05

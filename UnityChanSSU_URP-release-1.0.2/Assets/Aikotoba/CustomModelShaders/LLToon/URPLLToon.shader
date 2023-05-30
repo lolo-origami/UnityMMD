@@ -65,6 +65,7 @@ Shader "Universal Render Pipeline/URPLLToon"
         _DarkShadowArea ("Dark Shadow Area", range(0.0, 1.0)) = 0.5
         _DarkShadowSmooth ("Shadow Smooth", range(0.0, 1.0)) = 0.05
         [Toggle]_EnableDarkShadow ("Enable Dark Shadow", float) = 1
+        [Toggle(ENABLE_INVERSE_SHADOW)]_EnableDarkInverseShadow ("Enable Inverse Dark Shadow", float) = 0
         [Toggle]_IgnoreLightY ("Ignore Light y", float) = 0
         _FixLightY ("Fix Light y", range(-10.0, 10.0)) = 0.0
         
@@ -341,6 +342,7 @@ Shader "Universal Render Pipeline/URPLLToon"
             #pragma shader_feature_local_fragment ENABLE_HAIR_SPECULAR
             #pragma shader_feature_local_fragment ENABLE_FACE_CHEEK
             #pragma shader_feature_local_fragment ENABLE_CHARA_ON_SHADOW
+            #pragma shader_feature_local_fragment ENABLE_INVERSE_SHADOW
             //#pragma shader_feature_local_fragment ENABLE_RAMP_SHADOW_ORIGIN
 
             // -------------------------------------

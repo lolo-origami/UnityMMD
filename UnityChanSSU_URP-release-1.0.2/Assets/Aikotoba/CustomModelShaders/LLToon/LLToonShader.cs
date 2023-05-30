@@ -58,6 +58,9 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
         protected MaterialProperty SpecularIntensityProperty { get; set; }
         protected MaterialProperty SpecularHighIntensityProperty { get; set; }
         protected MaterialProperty SpecularIntensityShadowProperty { get; set; }
+        
+        protected MaterialProperty EnableInverseDarkShadowProperty { get; set; }
+        
         #endregion
         
         #region Mirror
@@ -143,7 +146,11 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
                 EditorGUIUtility.TrTextContent("ShadowSmooth", "");   
             
             public static readonly GUIContent EnableDarkShadowOptions =
-                EditorGUIUtility.TrTextContent("Use DarkShadow", ".");  
+                EditorGUIUtility.TrTextContent("Use DarkShadow", ".");
+            
+            public static readonly GUIContent EnableInverseDarkShadowOptions =
+                EditorGUIUtility.TrTextContent("InverseDarkShadow", ".");
+            
             public static readonly GUIContent DarkShadowAreaOptions =
                 EditorGUIUtility.TrTextContent("DarkShadowArea",".");   
             
@@ -327,6 +334,7 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             EnableMatCapProperty = FindProperty("_EnableMatCapSpecular", properties, false);
             EnableCharaOnShadowProperty = FindProperty("_EnableCharaOnShadow", properties, false);
             EnableHairProperty = FindProperty("_EnableHairSpecular", properties, false);
+            EnableInverseDarkShadowProperty = FindProperty("_EnableDarkInverseShadow", properties, false);
             MatCapIntensityProperty = FindProperty("_MatCapIntensity", properties, false);
             SharpnessProperty = FindProperty("_Sharpness", properties, false);
             DiffuseIntensityProperty = FindProperty("_DiffuseIntensity", properties, false);
@@ -480,17 +488,26 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             {
                 DrawFloatSliderValue(CustomStyleLL.ShadowSmoothOptions, 0, 1, ShadowSmoothProp);
             }
+
             if (EnableDarkShadowProp != null)
             {
                 DrawFloatToggleProperty(CustomStyleLL.EnableDarkShadowOptions, EnableDarkShadowProp);
                 bool enableUseDarkShadow = EnableDarkShadowProp.floatValue == 1.0f;
-                if (enableUseDarkShadow &&  DarkShadowMultiColorProp != null && DarkShadowAreaProp != null && DarkShadowSmoothProp != null)
+                if (enableUseDarkShadow && DarkShadowMultiColorProp != null && DarkShadowAreaProp != null && DarkShadowSmoothProp != null)
                 {
                     materialEditor.ColorProperty(DarkShadowMultiColorProp, "DarkShadowMultColor");
                     DrawFloatSliderValue(CustomStyleLL.DarkShadowAreaOptions, 0, 1, DarkShadowAreaProp);
                     DrawFloatSliderValue(CustomStyleLL.DarkShadowSmoothOptions, 0, 1, DarkShadowSmoothProp);
-                } 
+                }
+
+                if (EnableInverseDarkShadowProperty != null && enableUseDarkShadow)
+                {
+                    DrawFloatToggleProperty(CustomStyleLL.EnableInverseDarkShadowOptions, EnableInverseDarkShadowProperty);
+                    bool enableUseInverseDarkShadow = EnableInverseDarkShadowProperty.floatValue == 1.0f;
+                    CoreUtils.SetKeyword(material, "ENABLE_INVERSE_SHADOW", enableUseInverseDarkShadow);
+                }
             }
+
             if (IgnoreLightYProp != null)
             {
                 DrawFloatToggleProperty(CustomStyleLL.IgnoreLightYOptions, IgnoreLightYProp);

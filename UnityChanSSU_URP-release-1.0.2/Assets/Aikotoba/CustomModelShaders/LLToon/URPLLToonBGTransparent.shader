@@ -49,6 +49,7 @@ Shader "Universal Render Pipeline/URPLLToonBGTransparent"
         _EmissionBloomFactor ("Emission Bloom Factor", range(0.0, 10.0)) = 1.0
         _DarkEmissionIntensity ("Dark Emission Intensity", range(0.0, 10.0)) = 1.0
         [HideInInspector]_EmissionMapChannelMask ("_EmissionMapChannelMask", Vector) = (1, 1, 1, 0)
+        [HideInInspector] [Toggle(ENABLE_INVERSE_SHADOW)]_EnableDarkInverseShadow ("Enable Inverse Dark Shadow", float) = 1
         [Space(30)]
 
         [Header(Shadow Setting)]

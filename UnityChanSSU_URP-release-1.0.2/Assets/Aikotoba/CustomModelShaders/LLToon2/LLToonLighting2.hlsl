@@ -26,7 +26,7 @@ struct LLLightingData
     half4 EmissionColor; //Emission
     half4 GIColor; //GI
     half4 SpecRimEmission; //全体的な輝きコントロール
-    half RampDS; //2影の境界線調整値(メインで計算後アウトラインにに使いまわす)
+    half RampOutline; //2影の境界線調整値(メインで計算後アウトラインにに使いまわす)
     half HalfLambert;
 };
             
@@ -403,7 +403,7 @@ void LLToonLighting (
 
     //メインライトのトゥーン要素をキャッシュしておく
     ToonShadowFactor mainLightTSF = CalculateToonShadowFactor(mainLight, inputData.baseInputData.normalWS, lightMapMask, mainLightShadowArea * maskGI, inputData.baseInputData.positionWS.xyz);
-    LLToonLightingData.RampDS = mainLightTSF.rampDS;
+    LLToonLightingData.RampOutline = mainLightTSF.rampDS;
     LLToonLightingData.HalfLambert = mainLightTSF.HalfLambert;
 
     half3 DarkShadowColor = baseColor.rgb;

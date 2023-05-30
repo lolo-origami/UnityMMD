@@ -58,6 +58,7 @@ float3 _DarkShadowMultColor;
 float _DarkShadowArea;
 half _DarkShadowSmooth;
 float _EnableDarkShadow;
+float _EnableInverseDarkShadow;
 float3 _BOXCenter;
 float3 _BOXSize;
 
