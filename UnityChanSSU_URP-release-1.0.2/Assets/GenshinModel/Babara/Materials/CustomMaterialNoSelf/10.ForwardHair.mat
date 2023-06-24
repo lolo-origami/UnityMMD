@@ -18,6 +18,7 @@ Material:
   - ENABLE_RAMP_SHADOW_ORIGIN
   - ENABLE_SPECULAR
   - _
+  - _CASTSHADOWS_ON
   - _EMISSIVE_SIMPLE
   - _ENABLEDARKSHADOW_ON
   - _ENABLELAMBERT_ON
@@ -37,8 +38,7 @@ Material:
   stringTagMap:
     IgnoreProjection: False
     RenderType: Opaque
-  disabledShaderPasses:
-  - SHADOWCASTER
+  disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -254,7 +254,7 @@ Material:
     - _BumpScale: 1
     - _BumpScaleMatcap: 1
     - _CameraRolling_Stabilizer: 0
-    - _CastShadows: 0
+    - _CastShadows: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _ClippingMode: 0
@@ -366,7 +366,7 @@ Material:
     - _OtherRimPow: 10
     - _OtherRimSmooth: 0.01
     - _OutlineBrightness: 0.4
-    - _OutlineLightAffects: 3
+    - _OutlineLightAffects: 2.5
     - _OutlineSaturation: 1
     - _OutlineSmoothness: 0.516
     - _OutlineStrength: 0.1

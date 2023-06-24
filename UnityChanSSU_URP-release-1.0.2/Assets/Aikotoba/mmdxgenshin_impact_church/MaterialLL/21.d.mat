@@ -25,6 +25,7 @@ Material:
   m_ValidKeywords:
   - ENABLE_MIRROR
   m_InvalidKeywords:
+  - ENABLE_INVERSE_SHADOW
   - ENABLE_SPECULAR
   - _ENABLEDARKSHADOW_ON
   - _ENABLERIMDS_ON
@@ -164,6 +165,7 @@ Material:
     - _Emission: 0
     - _EmissionBloomFactor: 0
     - _EnableAlphaClipping: 0
+    - _EnableDarkInverseShadow: 1
     - _EnableDarkShadow: 1
     - _EnableDefaultSpecular: 0
     - _EnableEdgeRim: 0

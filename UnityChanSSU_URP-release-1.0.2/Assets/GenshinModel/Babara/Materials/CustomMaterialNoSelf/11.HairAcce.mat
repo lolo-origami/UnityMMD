@@ -377,7 +377,7 @@ Material:
     - _OtherRimPow: 10
     - _OtherRimSmooth: 0.01
     - _OutlineBrightness: 0.4
-    - _OutlineLightAffects: 3
+    - _OutlineLightAffects: 5
     - _OutlineSaturation: 1
     - _OutlineSmoothness: 0.516
     - _OutlineStrength: 0.1

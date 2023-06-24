@@ -13,6 +13,7 @@ Material:
   - ENABLE_MIRROR
   - _NORMALMAP
   m_InvalidKeywords:
+  - ENABLE_INVERSE_SHADOW
   - ENABLE_SPECULAR
   - _ENABLEDARKSHADOW_ON
   - _ENABLELAMBERT_ON
@@ -130,6 +131,7 @@ Material:
     - _Emission: 1
     - _EmissionBloomFactor: 1
     - _EnableAlphaClipping: 0
+    - _EnableDarkInverseShadow: 1
     - _EnableDarkShadow: 1
     - _EnableEdgeRim: 0
     - _EnableEmission: 0

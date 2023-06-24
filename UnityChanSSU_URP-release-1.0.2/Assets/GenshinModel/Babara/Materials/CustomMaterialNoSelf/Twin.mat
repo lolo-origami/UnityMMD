@@ -280,6 +280,7 @@ Material:
     - _EnableAlphaClipping: 0
     - _EnableChara: 1
     - _EnableCharaOnShadow: 0
+    - _EnableDarkInverseShadow: 0
     - _EnableDarkShadow: 1
     - _EnableDefaultSpecular: 0
     - _EnableEdgeRim: 1

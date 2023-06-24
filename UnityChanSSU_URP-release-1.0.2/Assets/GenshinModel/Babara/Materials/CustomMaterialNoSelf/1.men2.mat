@@ -24,6 +24,7 @@ Material:
   m_Shader: {fileID: 4800000, guid: 28a9f503f04656c428f07c33b344e080, type: 3}
   m_ValidKeywords:
   - ENABLE_CAST_SHADOW
+  - ENABLE_INVERSE_SHADOW
   m_InvalidKeywords:
   - ENABLE_CHARA
   - ENABLE_METAL_SPECULAR

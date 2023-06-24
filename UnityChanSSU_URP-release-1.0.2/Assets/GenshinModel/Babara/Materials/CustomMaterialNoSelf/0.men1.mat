@@ -25,7 +25,6 @@ Material:
   m_ValidKeywords:
   - ENABLE_CAST_SHADOW
   - ENABLE_FACE_CHEEK
-  - ENABLE_INVERSE_SHADOW
   m_InvalidKeywords:
   - ENABLE_RAMP_SHADOW_ORIGIN
   - _
@@ -392,7 +391,7 @@ Material:
     - _ReceiveShadowEnable: 1
     - _ReceiveShadowMappingAmount: 0.75
     - _ReceiveShadowMappingPosOffset: 0
-    - _ReceiveShadows: 0
+    - _ReceiveShadows: 1
     - _ReceivehadowMul: 8.51
     - _ReflectIntensity: 0.5
     - _RimIntensity: 1
@@ -414,7 +413,7 @@ Material:
     - _ShadeColor_Step: 0
     - _ShadeHue: 0
     - _ShadeSaturation: 2
-    - _ShadowArea: 0.44971377
+    - _ShadowArea: 0.45
     - _ShadowCorrect: 0.485
     - _ShadowCorrectRadius: 0.2
     - _ShadowSmooth: 0.05
