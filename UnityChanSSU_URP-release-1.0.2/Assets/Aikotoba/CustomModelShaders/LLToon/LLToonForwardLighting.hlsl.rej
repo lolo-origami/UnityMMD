@@ -1,9 +1,0 @@
-diff a/UnityChanSSU_URP-release-1.0.2/Assets/Aikotoba/CustomModelShaders/LLToon/LLToonForwardLighting.hlsl b/UnityChanSSU_URP-release-1.0.2/Assets/Aikotoba/CustomModelShaders/LLToon/LLToonForwardLighting.hlsl	(rejected hunks)
-@@ -266,7 +266,6 @@
-     */
-     
-     // 計算した要素を足し合わせる
--    half4 finalColor = lllData.BaseToonLightingColor + lllData.AdditionalLightsColor + lllData.RimColor + /*RimDS*/ + lllData.EmissionColor.a * lllData.EmissionColor + lllData.SpecRimEmission.a * lllData.SpecRimEmission + (lllData.GIColor * _GIInfluence); 
-     half4 finalColor =  (lllData.GIColor * _GIInfluence); 
-     
-     // apply fog
