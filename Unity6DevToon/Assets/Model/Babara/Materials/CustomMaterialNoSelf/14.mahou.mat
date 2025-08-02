@@ -9,6 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: 14.mahou
   m_Shader: {fileID: 4800000, guid: 28a9f503f04656c428f07c33b344e080, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords:
   - ENABLE_CHARA
@@ -39,6 +41,7 @@ Material:
     IgnoreProjection: False
     RenderType: Opaque
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -348,7 +351,7 @@ Material:
     - _Is_ViewShift: 0
     - _JitterIntensity: 0.5
     - _LightDirection_MaskOn: 0
-    - _LightMapInfluence: 0
+    - _LightMapInfluence: 1
     - _MainLightHiCut: 10
     - _MatCap: 0
     - _MatCapIntensity: 0.5
@@ -493,6 +496,7 @@ Material:
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _ViewShift: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!114 &3673408588196584469
 MonoBehaviour:
   m_ObjectHideFlags: 11

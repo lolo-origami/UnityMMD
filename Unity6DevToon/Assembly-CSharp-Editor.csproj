@@ -46,7 +46,20 @@
     <Analyzer Include="C:\Program Files\Unity\6000.0.53f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\MMD4Mecanim\Editor\MMD4MecanimImporterInspector.cs" />
+    <Compile Include="Assets\MMD4Mecanim\Editor\MMD4MecanimPreProcessBuild.cs" />
+    <Compile Include="Assets\MMD4Mecanim\Editor\MMD4MecanimBulletPhysicsInspector.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Editor\ReadmeEditor.cs" />
+    <Compile Include="Assets\MMD4Mecanim\Editor\MMD4MecanimAssignMaterialModel.cs" />
+    <Compile Include="Assets\MMD4Mecanim\Editor\MMD4MecanimAnimMorphHelperInspector.cs" />
+    <Compile Include="Assets\MMD4Mecanim\Editor\MMD4MecanimBoneInspector.cs" />
+    <Compile Include="Assets\MMD4Mecanim\Editor\MMD4MecanimImporter.cs" />
+    <Compile Include="Assets\MMD4Mecanim\Editor\MMD4MecanimRigidBodyInspector.cs" />
+    <Compile Include="Assets\MMD4Mecanim\Editor\MMD4MecanimModelInspector.cs" />
+    <Compile Include="Assets\MMD4Mecanim\Editor\MMD4MecanimAnimationClipNameFixer.cs" />
+    <None Include="Assets\MMD4Mecanim\Editor\PMX2FBX\pmx2fbx.xml" />
+    <None Include="Assets\MMD4Mecanim\Editor\PMX2FBX\readme.txt" />
+    <None Include="Assets\MMD4Mecanim\Editor\Revision.txt" />
     <Reference Include="UnityEngine">
       <HintPath>C:\Program Files\Unity\6000.0.53f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
@@ -413,6 +426,9 @@
     <Reference Include="UnityEditor.iOS.Extensions">
       <HintPath>C:\Program Files\Unity\6000.0.53f1\Editor\Data\PlaybackEngines\iOSSupport\UnityEditor.iOS.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="MMD4Mecanim">
+      <HintPath>D:\LLToonDev6\Unity6DevToon\Assets\MMD4Mecanim\Scripts\MMD4Mecanim.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.VisualScripting.YamlDotNet">
       <HintPath>D:\LLToonDev6\Unity6DevToon\Library\PackageCache\com.unity.visualscripting@6279e2b7c485\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll</HintPath>
     </Reference>
@@ -445,6 +461,9 @@
     </Reference>
     <Reference Include="Mono.Cecil">
       <HintPath>D:\LLToonDev6\Unity6DevToon\Library\PackageCache\com.unity.nuget.mono-cecil@d6f9955a5d5f\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="MMD4MecanimEditor">
+      <HintPath>D:\LLToonDev6\Unity6DevToon\Assets\MMD4Mecanim\Editor\MMD4MecanimEditor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>C:\Program Files\Unity\6000.0.53f1\Editor\Data\PlaybackEngines\iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>

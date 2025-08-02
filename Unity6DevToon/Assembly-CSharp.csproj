@@ -46,14 +46,22 @@
     <Analyzer Include="C:\Program Files\Unity\6000.0.53f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Aikotoba\CustomModelShaders\LLToon\LLToonShader.cs" />
-    <Compile Include="Assets\Aikotoba\CustomModelShaders\LLToon\LLToonDetailGUI.cs" />
+    <Compile Include="Assets\CustomModelShaders\LLToon\LLToonShader.cs" />
+    <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimIKTarget.cs" />
+    <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimBone.cs" />
+    <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimMorphHelper.cs" />
+    <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimModel.cs" />
+    <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimSpeechHelper.cs" />
+    <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimAnimMorphHelper.cs" />
+    <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimRigidBody.cs" />
+    <Compile Include="Assets\CustomModelShaders\LLToon\LLToonDetailGUI.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
-    <None Include="Assets\Aikotoba\CustomModelShaders\LLToon\LLToonInput.hlsl" />
-    <None Include="Assets\Aikotoba\CustomModelShaders\LLToon\URPLLToon.shader" />
-    <None Include="Assets\Aikotoba\CustomModelShaders\LLToon\LLToonOutline.hlsl" />
-    <None Include="Assets\Aikotoba\CustomModelShaders\LLToon\LLToonForwardLighting.hlsl" />
-    <None Include="Assets\Aikotoba\CustomModelShaders\LLToon\LLToonLighting.hlsl" />
+    <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimBulletPhysics.cs" />
+    <None Include="Assets\CustomModelShaders\LLToon\LLToonInput.hlsl" />
+    <None Include="Assets\CustomModelShaders\LLToon\URPLLToon.shader" />
+    <None Include="Assets\CustomModelShaders\LLToon\LLToonOutline.hlsl" />
+    <None Include="Assets\CustomModelShaders\LLToon\LLToonForwardLighting.hlsl" />
+    <None Include="Assets\CustomModelShaders\LLToon\LLToonLighting.hlsl" />
     <Reference Include="UnityEngine">
       <HintPath>C:\Program Files\Unity\6000.0.53f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
@@ -401,6 +409,9 @@
     </Reference>
     <Reference Include="UnityEditor.XRModule">
       <HintPath>C:\Program Files\Unity\6000.0.53f1\Editor\Data\Managed\UnityEngine\UnityEditor.XRModule.dll</HintPath>
+    </Reference>
+    <Reference Include="MMD4Mecanim">
+      <HintPath>D:\LLToonDev6\Unity6DevToon\Assets\MMD4Mecanim\Scripts\MMD4Mecanim.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Collections.LowLevel.ILSupport">
       <HintPath>D:\LLToonDev6\Unity6DevToon\Library\PackageCache\com.unity.collections@56bff8827a7e\Unity.Collections.LowLevel.ILSupport\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
