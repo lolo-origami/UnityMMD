@@ -1,84 +1,106 @@
-### LLToon概要
+# LLToon概要
 
 トゥーンシェーダーは、より柔軟でイラスト表現を目指した様々な機能を持つオリジナルのシェーダーです。
+基本のトゥーンライティングにどんどん光を加算する、という思想で作成されています。暗部での情報量を増やしやすいのが特徴です。
+ForwardLightingをベースに、追加光やUnityのLightProbeにも対応しています。
 
-#### Toon機能
+## Toon機能
 
-* **2段階の影設定**: 「1影」と「2影」の2段階で影を表現できます。
-* **影の範囲と境界線の調整**: それぞれの影の適用範囲と境界線の滑らかさを個別に制御できます。
-* **反転した2影**: 通常の影とは逆の方向に2影を生成し、特殊なライティング効果を作り出すことができます。
-* **固定されたライトのY軸**: ライトのY軸の値を固定し、常に一定の高さから光が当たっているような表現が可能です。
-* **マテリアルごとの影の色**: マスクテクスチャのAチャンネルを利用して、一つのマテリアル内で影の色を2種類使い分けることが可能です。
-* * **影内でのライティング**: 影に入った際に、自動で影部専用のライティングに切り替えます
-のまとめ
+### 基本(Diffuse)
 
-##### ToonShader Inputs
+- **2段階の影設定**: 「1影」と「2影」の2段階で影を調整します。
+  - **ShadowMultColor**: 1影の色を調整します。
+  - **ShadowArea**: 1影の範囲を調整します。
+  - **ShadowSmooth**: 1影の境界線の滑らかさを調整します。
+  - **Use DarkShadow**: 2影を有効にするか設定します。
+  - **DarkShadowMultColor**: 2影の色を調整します。
+  - **DarkShadowArea**: 2影の範囲を調整します。
+  - **DarkShadowSmooth**: 2影の境界線の滑らかさを調整します。
 
-* **ShadowMultColor**: 1影の色を調整します。
-* **SceondMaterialShadowColor**: 2つ目のマテリアル用の1影の色を調整します。
-* **SceondMaterialDarkShadowColor**: 2つ目のマテリアル用の2影の色を調整します。
-* **ShadowArea**: 1影の範囲を調整します。
-* **ShadowSmooth**: 1影の境界線の滑らかさを調整します。
-* **Use DarkShadow**: 2影を有効にするか設定します。
-* **DarkShadowMultColor**: 2影の色を調整します。
-* **DarkShadowArea**: 2影の範囲を調整します。
-* **DarkShadowSmooth**: 2影の境界線の滑らかさを調整します。
-* **InverseDarkShadow**: 逆の2影を有効にするか設定します。
-* **Use FixLightY**: ライトのY軸を無視するか設定します。
-* **OnShadowForChara**: 影の中でのキャラクターシェーディングを有効にするか設定します。
-* **EnableFaceCheek (`_EnableFaceCheek`)**: 顔のシェーディングを有効にするか設定します。
+### 追加機能 
+- **2影反転による照り返し表現**: 通常の影とは逆の方向に2影を生成し、特殊なライティング効果を作り出すことができます。
+  - **InverseDarkShadow**: 逆の2影を有効にするか設定します。
+- **固定されたライトのY軸**: ライトのY軸の値を固定し、常に一定の高さから光が当たっているような表現が可能です。主に顔に対して使われます。
+  - **Use FixLightY**: ライトのY軸を無視するか設定します。
+- **マテリアルごとの影の色**: マスクテクスチャのAチャンネルを利用して、一つのマテリアル内で影の色を2種類使い分けることが可能です。服と肌が同一マテリアルの時等に利用ください。
+  - **SceondMaterialShadowColor**: 2つ目のマテリアル用の1影の色を調整します。
+  - **SceondMaterialDarkShadowColor**: 2つ目のマテリアル用の2影の色を調整します。
+- **影内でのライティング切り替え**: 影に入った際に、自動で影部専用のライティングに切り替えます
+  - **OnShadowForChara**: 影の中でのキャラクターシェーディングを有効にするか設定します。 
 
-### ハイライト(Specular)関連
+* **EnableFaceCheek**: 顔のシェーディングを有効にするか設定します。
 
-トゥーンシェーディングをベースにしつつ、物理ベースレンダリングの概念を取り入れたBRDF表現を追加することができます。
+## ハイライト(Specular)関連
 
-#### 追加機能説明
+トゥーンシェーディングをベースにしつつ、BRDFモデルを使ったハイライト表現を追加することができます。
 
-* **髪のスペキュラ**: `EnableHair`を有効にすることで、髪の毛に特有のスペキュラを表現できます。
-* **影部分のハイライト**: メインライトの影になっている部分のハイライトの色や強度を個別に設定できます。
-* **Matcapスペキュラ**: `EnableMatCapSpecular`を有効にすることで、Matcapテクスチャを使ったスペキュラ表現が可能になります。
-* **顔のシェーディング**: `EnableFaceCheek`を有効にすることで、顔に特化したシェーディングを適用できます。
-* **高輝度スぺキュラ**: より鋭く出したいハイライトを描画できます。
+### 基本
+- **EnableSpecular**: スペキュラを有効にするか設定します。
+- **LightSpecColor**: スペキュラの色を設定します。
+- **BRDF表現**
+  - **Metallic**: 金属感を調整します。
+  - **Smoothness**: 滑らかさを調整します。
+- **スペキュラタイプ切り替え**: `EnableHair`を有効にすることで、髪の毛に異方性反射を元にしたスペキュラを表現できます。
+  - **EnableHair**: 髪の毛に特化したスペキュラを有効にするか設定します。
+   - **Sharpness**: 髪の毛用スペキュラの鋭さを調整します。
+  - **EnableMatCapSpecular (`_EnableMatCapSpecular`)**: Matcapによるスペキュラを有効にするか設定します
+    - **MatCapIntensity**: Matcapの強度を調整します。
 
-#### 詳細パラメータのまとめ
+### 追加機能
+- **高輝度スぺキュラ**: より鋭く出したいハイライトを描画できます。
+ - **SpecularHighIntensity**: 高強度のスペキュラの強度を調整します。
+- **影内ハイライト機能**： 影の中に入っても、ハイライトを描画できます。
+  - **ShadowHighlightColor**: 影部分のハイライト色を設定します。
+  - **SpecularIntensityShadow**: 影部分のスペキュラの強度を調整します。
 
-##### BRDF Inputs
+## 輝き制御機能(BloomInputs)
+Emissionや、リムライト等を制御するための機能です。Specularやベースの色の強さもまとめて制御できます。
+### Emission
+- **EnableEmission**: エミッションを有効にするか設定します。
+- **EmissionColor**: エミッションの色を調整します。
+- **EmissionIntensity**: エミッションの強度を調整します。
+- **EmissionBloomFactor**: エミッションのブルーム係数を調整します。
+- **DarkEmissionIntensity**: 暗部のエミッション強度を調整します。
+### リムライト
+- **EnableRim**: リムライトを有効にするか設定します。
+- **RimColor**: リムライトの色を調整します。
+- **EnableLambertRim**: ライトが当たっている明るい部分ではリムライトが強く出て、影になっている暗い部分ではリムライトが弱くなるように計算されるようになります。
+- **Rim Smooth**: リムライトの境界線の滑らかさを調整します。
+- **Rim Pow**: リムライトの広がりを調整します。
+- **EnableDarkRim**: 暗い部分のリムライトを有効にするか設定します。
+  - **DarkRimColor**: 暗い部分のリムライトの色を調整します。
+  - **Dark Rim Intensity**: 暗い部分のリムライトの強度を調整します。
+  - **Rim Pow**: 暗い部分のリムライトの広がりを調整します。
 
-* **Metallic (`_Metallic`)**: 金属感を調整します。
-* **Smoothness (`_Smoothness`)**: 滑らかさを調整します。
-* **EnableSpecular (`_EnableSpecular`)**: スペキュラを有効にするか設定します。
-* **LightSpecColor (`_LightSpecColor`)**: スペキュラの色を設定します。
-* **ShadowHighlightColor (`_LightSpecShadowColor`)**: 影部分のハイライト色を設定します。
-* **EnableHair (`_EnableHairSpecular`)**: 髪の毛に特化したスペキュラを有効にするか設定します。
-* **Sharpness (`_Sharpness`)**: 髪の毛用スペキュラの鋭さを調整します。
-* **SpecularIntensity (`_SpecularIntensity`)**: スペキュラの強度を調整します。
-* **SpecularHighIntensity (`_SpecularIntensityHigh`)**: 高強度のスペキュラの強度を調整します。
-* **SpecularIntensityShadow (`_SpecularIntensityShadow`)**: 影部分のスペキュラの強度を調整します。
-* **MatCapIntensity (`_MatCapIntensity`)**: Matcapの強度を調整します。
-* **EnableMatCapSpecular (`_EnableMatCapSpecular`)**: Matcapによるスペキュラを有効にするか設定します。
+### 全体調整
+- **DiffuseIntensity**: ディフューズの強度を調整します。
+- **SpecularIntensity**: スペキュラの強度を調整します。
+- **WorldLightInfluence**: メインのディレクショナルライトの影響度を調整します。
+- **GIInfluence**: グローバルイルミネーション（GI）の総合的な影響度を調整します。
+- **AddLightInfluence**: 追加ライトの影響度を調整します。
+- **LightMapInfluence**: ライトマップの影響度を調整します。ベイクされたGIに影響します。
+- **BloomRimSpecFactor**: ハイライト、リムライト、エミッションを総合的に調整します。最終的なグローの調整に使ってください
 
----
 
-### Bloom機能
-
-オブジェクトの発光と、それに伴うブルーム効果を制御するための機能です。
+### Outline
+オブジェクトの輪郭線を描画する機能です。デプステクスチャを使用して輪郭を検出し、線の太さや見た目を細かくカスタマイズできます。
 
 #### 機能羅列と簡易な説明
 
-* **エミッション**: オブジェクト自体が発光しているように見せる機能です。
-* **ブルームとリムライトの連携**: エミッションやリムライトの輝きをブルーム効果に反映させることができます。
-* **暗部のエミッション強度**: 暗部でのエミッション強度を個別に調整できます。
+* **アウトラインの描画**: デプス（深度）の違いを検出して、オブジェクトの輪郭に線を描画します。
+* **線のカスタマイズ**: 線幅、明るさ、彩度、滑らかさを調整して、様々なアウトライン表現が可能です。
+* **ライトの影響**: 線の明るさや色に、ライトの当たり具合を反映させることができます。
+* **マスクによる制御**: アウトラインを描画する部分としない部分を、マスクテクスチャで指定できます。
 
 #### 詳細パラメータのまとめ
 
-##### Bloom Inputs
+##### Outline Inputs
+UniToonをベースにしたアウトライン制御です。
 
-* **DiffuseIntensity (`_DiffuseIntensity`)**: ディフューズの強度を調整します。
-* **WorldLightInfluence (`_WorldLightInfluence`)**: ワールドライトの影響度を調整します。
-* **GIInfluence (`_GIInfluence`)**: グローバルイルミネーション（GI）の影響度を調整します。
-* **AddLightInfluence (`_AddLightIntensity`)**: 追加ライトの影響度を調整します。
-* **LightMapInfluence (`_LightMapInfluence`)**: ライトマップの影響度を調整します。
-* **BloomRimSpecFactor (`_BloomFactor`)**: ブルームの共通係数を調整します。
-* **EnableEmission (`_EnableEmission`)**: エミッションを有効にするか設定します。
-* **EnableRim (`_EnableRim`)**: リムライトを有効にするか設定します。
-* **EnableDarkRim (`_EnableDarkRim`)**: 暗い部分のリムライトを有効にするか設定します。
+- **OutlineMask**: アウトラインの表示/非表示を制御するマスクテクスチャです。
+- **OutlineWidth**: アウトラインの太さを調整します。
+- **OutlineLightAffects**: アウトラインのライティング影響度を調整します。
+- **OutlineSaturation**: アウトラインの彩度を調整します。
+- **OutlineBrightness**: アウトラインの明るさを調整します。
+- **OutlineStrength**: アウトラインの強さを調整します。
+- **OutlineSmoothness**: アウトラインの滑らかさを調整します。
