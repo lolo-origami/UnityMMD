@@ -94,6 +94,7 @@ Shader "Universal Render Pipeline/URPLLToon"
         [Space(5)]
         [Toggle]_EnableLambert ("Enable Lambert", float) = 1
         [Toggle]_EnableRim ("Enable Rim", float) = 1
+        [Toggle]_BlendRimWithBaseColor ("BlendBaseColor", float) = 0
         [HDR]_RimColor ("Rim Color", Color) = (1, 1, 1, 1)
         _RimSmooth ("Rim Smooth", Range(0.001, 10.0)) = 10
         _RimPow ("Rim Pow", Range(0.0, 10.0)) = 1.2

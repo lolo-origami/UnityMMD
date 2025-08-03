@@ -126,6 +126,7 @@ Shader "Universal Render Pipeline/URPLLToonTransparent"
         [Space(5)]
         [Toggle]_EnableLambert ("Enable Lambert", float) = 1
         [Toggle]_EnableRim ("Enable Rim", float) = 1
+        [Toggle]_BlendRimWithBaseColor ("BlendBaseColor", float) = 0
         [HDR]_RimColor ("Rim Color", Color) = (1, 1, 1, 1)
         [HideInInspector][HDR]_EdgeRimColor ("Rim Color", Color) = (1, 1, 1, 1)
         [HideInInspector]_EdgeRimWidth ("Edge Rim Width", Range(0.001, 1.0)) = 0.001

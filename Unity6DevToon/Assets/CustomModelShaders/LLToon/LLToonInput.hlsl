@@ -90,6 +90,7 @@ half _AddLightIntensity;
 float _EnableLambert;
 float _EnableRim;
 half4 _RimColor;
+float _BlendRimWithBaseColor;
 float _RimSmooth;
 float _RimPow;
 float _EnableRimDS;

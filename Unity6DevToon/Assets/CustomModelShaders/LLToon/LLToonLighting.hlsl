@@ -95,21 +95,25 @@ ToonShadowFactor CalculateToonShadowFactor(
     
     //影範囲の決定
     tsf.SWeight = tsf.HalfLambert * 0.5  + 1.125;
+    
+    half enableDarkShadowFloat = _EnableDarkShadow;
+    half darkShadowArea = _DarkShadowArea * enableDarkShadowFloat;
+    half darkShadowSmooth = _DarkShadowSmooth * enableDarkShadowFloat;
 
 #if ENABLE_INVERSE_SHADOW //Inverseの時は逆転させとく(分かりやすく)
-    _DarkShadowArea = 1.0 - _DarkShadowArea;
+    darkShadowArea = 1.0 - darkShadowArea;
 #endif    
     //影を塗り分ける範囲
     tsf.SFactor = floor(tsf.SWeight - _ShadowArea);
-    tsf.SFactorD = floor(tsf.SWeight - _DarkShadowArea);
+    tsf.SFactorD = floor(tsf.SWeight - darkShadowArea);
 
     // 境界線の調整
 #if ENABLE_CHARA_ON_SHADOW
     tsf.rampS = smoothstep(0, _ShadowSmooth, (tsf.HalfLambert - _ShadowArea));
-    tsf.rampDS = smoothstep(0, _DarkShadowSmooth, (tsf.HalfLambert - _DarkShadowArea));
+    tsf.rampDS = smoothstep(0, darkShadowSmooth, (tsf.HalfLambert - darkShadowArea));
 #else    
     tsf.rampS = smoothstep(0, _ShadowSmooth, (tsf.HalfLambert - _ShadowArea) * mainLightShadowArea * mask);
-    tsf.rampDS = smoothstep(0, _DarkShadowSmooth, (tsf.HalfLambert - clamp(_DarkShadowArea, 0, _ShadowArea)) * mainLightShadowArea * mask);
+    tsf.rampDS = smoothstep(0, darkShadowSmooth, (tsf.HalfLambert - clamp(darkShadowArea, 0, _ShadowArea)) * mainLightShadowArea * mask);
 #endif
 
 #if ENABLE_INVERSE_SHADOW
@@ -262,13 +266,15 @@ RimFactor LLToonRimLighting(InputData inputData, float2 uv, float lambert, half4
     float rimDot = pow(rim, _RimPow) * rimMask;
     rimDot = _EnableLambert * lambert * rimDot + (1 - _EnableLambert) * rimDot;
     float rimIntensity = smoothstep(0, _RimSmooth, rimDot);
-    Rim.RimColor = _EnableRim * pow(rimIntensity, 5) * _RimColor * baseColor;
+    half4 rimColor = lerp(_RimColor, _RimColor * baseColor, _BlendRimWithBaseColor);
+    Rim.RimColor = _EnableRim * pow(rimIntensity, 5) * rimColor;
     Rim.RimColor.a = _EnableRim * rimIntensity * _BloomFactor;
 
     float darkRimDot = pow(rim, _DarkSideRimPow) * rimMask;
     darkRimDot = _EnableLambert * (1 - lambert) * darkRimDot + (1 - _EnableLambert) * darkRimDot;
     float darkRimIntensity = smoothstep(0, _DarkSideRimSmooth, darkRimDot);
-    Rim.DarkRimColor = _EnableRimDS * pow(darkRimIntensity, 5) * _DarkSideRimColor * baseColor;;
+    half4 darkRimColor = lerp(_RimColor, _RimColor * baseColor, _BlendRimWithBaseColor);
+    Rim.DarkRimColor = _EnableRimDS * pow(darkRimIntensity, 5) * darkRimColor;
     Rim.DarkRimColor.a = _EnableRimDS * darkRimIntensity * _BloomFactor;
     return Rim;
 }
