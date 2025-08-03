@@ -20,13 +20,19 @@ ForwardLightingをベースに、追加光やUnityのLightProbeにも対応し�
 ### 追加機能 
 - **2影反転による照り返し表現**: 通常の影とは逆の方向に2影を生成し、特殊なライティング効果を作り出すことができます。
   - **InverseDarkShadow**: 逆の2影を有効にするか設定します。
+  - <img width="317" height="201" alt="image" src="https://github.com/user-attachments/assets/f7391556-1d41-4ae9-952e-78ce1cbf7f61" />
+
+
 - **固定されたライトのY軸**: ライトのY軸の値を固定し、常に一定の高さから光が当たっているような表現が可能です。主に顔に対して使われます。
   - **Use FixLightY**: ライトのY軸を無視するか設定します。
+  - <img width="209" height="219" alt="image" src="https://github.com/user-attachments/assets/0909a9e7-21ef-43d0-8366-54ed1c63e491" /> <img width="265" height="219" alt="image" src="https://github.com/user-attachments/assets/b630ba78-2ec9-426e-af6e-8645c7f92dbc" />
+
 - **マテリアルごとの影の色**: マスクテクスチャのAチャンネルを利用して、一つのマテリアル内で影の色を2種類使い分けることが可能です。服と肌が同一マテリアルの時等に利用ください。
   - **SceondMaterialShadowColor**: 2つ目のマテリアル用の1影の色を調整します。
   - **SceondMaterialDarkShadowColor**: 2つ目のマテリアル用の2影の色を調整します。
-- **影内でのライティング切り替え**: 影に入った際に、自動で影部専用のライティングに切り替えます
-  - **OnShadowForChara**: 影の中でのキャラクターシェーディングを有効にするか設定します。 
+    
+- **影色ブレンド**: 影部専用の色情報に切り替えます。シーンでのボリューム設定やTimeline等と組み合わせて活用ください。ベースカラーが1影、1影が1影と2影のブレンド、2影の色が弱まるように設定されています。これは、影の中に入った時にコントラストが弱くなる効果を想定しています。
+  - **OnShadowForChara**: 影色ブレンドをオンにします。 
 
 * **EnableFaceCheek**: 顔のシェーディングを有効にするか設定します。
 
@@ -65,12 +71,12 @@ Emissionや、リムライト等を制御するための機能です。Specular�
 ### リムライト
 - **EnableRim**: リムライトを有効にするか設定します。
 - **RimColor**: リムライトの色を調整します。
+- **Rim Smooth**: リムライトの境界線の滑らかさを調整します。
+- **Rim Pow**: リムライトの広がりを調整します。 
 
 #### 追加機能 
 - **BlendRimWithBaseColor**: リムライトの色をベースカラーと馴染ませるかどうかの切り替えを設定します。
 - **EnableLambertRim**: ライトが当たっている明るい部分ではリムライトが強く出て、影になっている暗い部分ではリムライトが弱くなるように計算されるようになります。
-- **Rim Smooth**: リムライトの境界線の滑らかさを調整します。
-- **Rim Pow**: リムライトの広がりを調整します。
 - **EnableDarkRim**: 暗い部分のリムライトを有効にするか設定します。
   - **DarkRimColor**: 暗い部分のリムライトの色を調整します。
   - **Dark Rim Smooth**: 暗い部分のリムライトの強度を調整します。
