@@ -137,12 +137,15 @@ half4 ToonBaseLighting(
     ShallowShadowColor.rgb = lerp(shadowColor, baseColor.rgb, toonShadowFactor.rampS);
 
     // 境界線の調整
-    DarkShadowColor = toonShadowFactor.SFactorD * ShallowShadowColor + (1 - toonShadowFactor.SFactorD) * darkShadowColor;
-    DarkShadowColor.rgb = lerp(darkShadowColor, ShallowShadowColor, toonShadowFactor.rampDS);
+    half3 tempDarkShadowColor = toonShadowFactor.SFactorD * ShallowShadowColor + (1 - toonShadowFactor.SFactorD) * darkShadowColor;
+    tempDarkShadowColor.rgb = lerp(darkShadowColor, ShallowShadowColor, toonShadowFactor.rampDS);
 
-    baseToonLightingColor.rgb = _EnableDarkShadow ? DarkShadowColor.rgb : ShallowShadowColor.rgb;
+    // _EnableDarkShadowの値を使って、DarkShadowColorをShallowShadowColorか、2影の色に切り替える
+    DarkShadowColor = lerp(ShallowShadowColor, tempDarkShadowColor, _EnableDarkShadow);
+
+    baseToonLightingColor.rgb = DarkShadowColor.rgb;
     
-    return baseToonLightingColor;
+    return baseToonLightingColor * _DiffuseIntensity;
 }
 
 half4 ToonBaseLightingAdd(
@@ -274,8 +277,8 @@ RimFactor LLToonRimLighting(InputData inputData, float2 uv, float lambert, half4
 half4 LLToonEmission(float2 uv, half4 baseLightingColor, half3 darkShadowColor, float baseAlpha, half emissionMask)
 {
     half4 EmissionColor = half4(0,0,0,0);
-    EmissionColor.rgb = _Emission * darkShadowColor * _EmissionColor.rgb * emissionMask - baseLightingColor.rgb * emissionMask * _EnableEmission;
-    EmissionColor.a = _EmissionBloomFactor * baseAlpha * emissionMask;
+    EmissionColor.rgb = (_Emission * darkShadowColor * _EmissionColor.rgb * emissionMask - baseLightingColor.rgb * emissionMask) * _EnableEmission;
+    EmissionColor.a = _EmissionBloomFactor * baseAlpha * emissionMask * _EnableEmission;
     return EmissionColor;
 }
 
@@ -285,7 +288,7 @@ half4 LLToonBloom(half baseLightingColorAlpha,half rimAlpha, half3 darkShadowCol
     half4 bloom = half4(0,0,0,0);
     bloom.rgb = pow(darkShadowColor, _DarkEmissionIntensity) * _Emission * emissionMask;
     bloom.a = (baseLightingColorAlpha + rimAlpha/* + RimDS.a*/);
-    return bloom;
+    return bloom * _EnableEmission;
 }
 
 void LLToonLighting (
@@ -390,7 +393,7 @@ void LLToonLighting (
     if (IsMatchingLightLayer(mainLight.layerMask, meshRenderingLayers))
     {
         //ライティング計算(Toon)
-        baseLightingColor = ToonBaseLighting(baseColor, ShadowColor, DarkShadowColorInput, mainLightTSF, DarkShadowColor) * INV_PI * _DiffuseIntensity;
+        baseLightingColor = ToonBaseLighting(baseColor, ShadowColor, DarkShadowColorInput, mainLightTSF, DarkShadowColor);
         //スぺキュラ足す
         baseLightingColor += _EnableSpecular ? LLToonSpecularLighting(brdfData, inputData, specularMask, specularMaskHigh, mainLight, chara, mainLightTSF.rampS * mainLightShadowArea, radianceBase) : 0;
 
