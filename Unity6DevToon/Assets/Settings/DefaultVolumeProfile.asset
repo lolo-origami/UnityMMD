@@ -22,6 +22,29 @@ MonoBehaviour:
   gain:
     m_OverrideState: 1
     m_Value: {x: 1, y: 1, z: 1, w: 0}
+--- !u!114 &-9130585544530390004
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd5f099a8b8031841946537dad50669f, type: 3}
+  m_Name: DepthFog
+  m_EditorClassIdentifier: 
+  active: 1
+  rampTexture:
+    m_OverrideState: 1
+    m_Value: {fileID: 0}
+    dimension: 1
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0
+  fogColor:
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &-8270506406425502121
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -433,6 +456,25 @@ MonoBehaviour:
   p31:
     m_OverrideState: 1
     m_Value: {r: 0, g: 0, b: 0, a: 1}
+--- !u!114 &-296647407291945538
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee747d883bc857445962aceb09885737, type: 3}
+  m_Name: Diffusion
+  m_EditorClassIdentifier: 
+  active: 1
+  Contrast:
+    m_OverrideState: 1
+    m_Value: 1
+  Intensity:
+    m_OverrideState: 1
+    m_Value: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -465,6 +507,10 @@ MonoBehaviour:
   - {fileID: -6288072647309666549}
   - {fileID: 7518938298396184218}
   - {fileID: -1410297666881709256}
+  - {fileID: 4070341558576999589}
+  - {fileID: -296647407291945538}
+  - {fileID: 6878834203024386235}
+  - {fileID: -9130585544530390004}
 --- !u!114 &853819529557874667
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -821,6 +867,37 @@ MonoBehaviour:
   bladeRotation:
     m_OverrideState: 1
     m_Value: 0
+--- !u!114 &4070341558576999589
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58bb772d13f454f46a77ee2a85eacbd6, type: 3}
+  m_Name: Flare
+  m_EditorClassIdentifier: 
+  active: 1
+  flareColor:
+    m_OverrideState: 1
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
+  flarePosition:
+    m_OverrideState: 1
+    m_Value: {x: 0, y: 0}
+  flareSize:
+    m_OverrideState: 1
+    m_Value: 0
+  paraColor:
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+  paraPosition:
+    m_OverrideState: 1
+    m_Value: {x: 0, y: 0}
+  paraSize:
+    m_OverrideState: 1
+    m_Value: 0
 --- !u!114 &4251301726029935498
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -851,6 +928,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   intensity:
+    m_OverrideState: 1
+    m_Value: 0
+--- !u!114 &6878834203024386235
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fce55342696b8444899e8512041eaa2, type: 3}
+  m_Name: LightShaft
+  m_EditorClassIdentifier: 
+  active: 1
+  MaxIterations:
+    m_OverrideState: 1
+    m_Value: 64
+  MaxDistance:
+    m_OverrideState: 1
+    m_Value: 12
+  MinDistance:
+    m_OverrideState: 1
+    m_Value: 0.4
+  Intensity:
     m_OverrideState: 1
     m_Value: 0
 --- !u!114 &6940869943325143175
