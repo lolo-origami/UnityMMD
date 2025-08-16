@@ -32,7 +32,8 @@ CBUFFER_END
 
         //RampTextureからdepth値を使ってサンプリング
         half4 ramp = SAMPLE_TEXTURE2D_X(_RampTex, sampler_LinearClamp, float2(depth, 0));
-        color.rgb = lerp(color.rgb, depth.rgb, _Intensity * ramp.a);
+        color.rgb = lerp(color.rgb, _FogColor.rgb, _Intensity * ramp.a);
+        //color.rgb = float3(1,0,0);
         
         return color;
     }

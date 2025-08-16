@@ -10,14 +10,18 @@ public static class RenderGraphPostProcessUtils
     /// <param name="cmd">Blitを実行するRasterCommandBuffer</param>
     /// <param name="srcTextureHandle">コピー元のテクスチャハンドル</param>
     /// <param name="profilerTag">プロファイラに表示するタグ名</param>
-    public static void BlitToCurrentRenderTarget(RasterCommandBuffer cmd, TextureHandle srcTextureHandle, string profilerTag = "Generic Blit To Screen")
+    public static void ExecutePass(TextureHandle srcHandle, Material material, RasterGraphContext graphContext)
     {
-        // プロファイリングスコープで処理時間を計測
-        using (new ProfilingScope(cmd, new ProfilingSampler(profilerTag)))
+        RasterCommandBuffer cmd = graphContext.cmd;
+        if (material == null)
         {
-            // Blitter.BlitTextureを使って、指定されたテクスチャの内容を現在のレンダーターゲットにコピーする
-            // このオーバーロードは、シェーダーを使わない単純なコピーに適しているよ
-            Blitter.BlitTexture(cmd, srcTextureHandle, new Vector4(1, 1, 0, 0), 0, false);
+            //コピー
+            Blitter.BlitTexture(cmd, srcHandle, new Vector4(1, 1, 0, 0), 0, false);
+        }
+        else
+        {
+            //フルスクリーンエフェクトをかけて書き込む
+            Blitter.BlitTexture(cmd, srcHandle, new Vector4(1, 1, 0, 0), material, 0);
         }
     }
 
