@@ -24,16 +24,16 @@ CBUFFER_END
     {
         //カラーを取得
         half4 color = SAMPLE_TEXTURE2D_X(_MainTex, sampler_LinearClamp , input.texcoord) * _FogColor;
+        
         //デプスを取得
         float depth = SAMPLE_TEXTURE2D_X(_CameraDepthTexture, sampler_LinearClamp, input.texcoord).r;
-
+        
         //リニア以外あってもいいかも
         depth = Linear01Depth(depth, _ZBufferParams);
-
+        
         //RampTextureからdepth値を使ってサンプリング
-        half4 ramp = SAMPLE_TEXTURE2D_X(_RampTex, sampler_LinearClamp, float2(depth, 0));
-        color.rgb = lerp(color.rgb, _FogColor.rgb, _Intensity * ramp.a);
-        //color.rgb = float3(1,0,0);
+        half4 ramp = SAMPLE_TEXTURE2D_X(_RampTex, sampler_LinearClamp, float2(1, 0));
+        color.rgb = lerp(color.rgb, _FogColor.rgb, _Intensity * ramp);
         
         return color;
     }

@@ -80,6 +80,7 @@ public class DepthFogPass : ScriptableRenderPass
         using (IRasterRenderGraphBuilder builder = renderGraph.AddRasterRenderPass(APPLY_FOG_PASSNAME, out PassData passData, profilingSampler))
         {
             builder.UseTexture(cameraColorTextureHandle, AccessFlags.Read);//src
+            builder.UseTexture(cameraDepthTextureHandle, AccessFlags.Read);
             builder.SetRenderAttachment(tempTextureHandle, 0, AccessFlags.Write);//dest
             passData.srcTextureHandle = cameraColorTextureHandle;
             passData.depthFogMaterial = _depthFogMaterial;
