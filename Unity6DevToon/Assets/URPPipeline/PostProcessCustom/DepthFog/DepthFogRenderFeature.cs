@@ -3,7 +3,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering.Universal;
 
-public class DepthFogRenderFeature : ScriptableRendererFeature
+public class DepthFogRenderFeature : CustomPostProcessRFBase
 {
     [System.Serializable]
     public class Settings
@@ -18,8 +18,9 @@ public class DepthFogRenderFeature : ScriptableRendererFeature
 
     public override void Create()
     {
+        AddIndex();
         this.name = "DepthFog";
-        _pass = new DepthFogPass(settings.renderPassEvent, settings.shader);
+        _pass = new DepthFogPass(settings.renderPassEvent, settings.shader, _index);
     }
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
@@ -29,6 +30,7 @@ public class DepthFogRenderFeature : ScriptableRendererFeature
 
     protected override void Dispose(bool disposing)
     {
+        DecIndex();
         CoreUtils.Destroy(_pass?.DepthFogMaterial);
     }
 }

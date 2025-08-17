@@ -32,8 +32,9 @@ public class DepthFogPass : ScriptableRenderPass
     private Shader _depthFogShader;
 
     public Material DepthFogMaterial => _depthFogMaterial;
+    private readonly int _index;
 
-    public DepthFogPass(RenderPassEvent renderPassEvent, Shader shader)
+    public DepthFogPass(RenderPassEvent renderPassEvent, Shader shader, int index)
     {
         this.renderPassEvent = renderPassEvent;
         _depthFogShader = shader;
@@ -42,6 +43,8 @@ public class DepthFogPass : ScriptableRenderPass
         {
             _depthFogMaterial = CoreUtils.CreateEngineMaterial(_depthFogShader);
         }
+
+        _index = index;
     }
     
     public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData)
@@ -72,7 +75,7 @@ public class DepthFogPass : ScriptableRenderPass
         var cameraDepthTextureHandle = resourceData.activeDepthTexture;
         
         //1:⼀時的なレンダーテクスチャ
-        TextureHandle tempTextureHandle = UniversalRenderer.CreateRenderGraphTexture(renderGraph, descriptor, "_TmepRT", true);
+        TextureHandle tempTextureHandle = CreateTemporaryTexture(renderGraph, frameData, GetTemporaryTexture(frameData, _index, resourceData), _index);
         //カメラのカラーバッファをマテリアルを適⽤しながら⼀時的なレンダーテクスチャーに書き込む
         using (IRasterRenderGraphBuilder builder = renderGraph.AddRasterRenderPass(APPLY_FOG_PASSNAME, out PassData passData, profilingSampler))
         {
