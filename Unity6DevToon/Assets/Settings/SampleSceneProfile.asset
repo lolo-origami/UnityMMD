@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
   m_Name: DepthOfField
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   mode:
     m_OverrideState: 0
     m_Value: 0
@@ -161,17 +161,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd5f099a8b8031841946537dad50669f, type: 3}
   m_Name: DepthFog
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   rampTexture:
     m_OverrideState: 1
     m_Value: {fileID: 0}
     dimension: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 0.312
+    m_Value: 0
   fogColor:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 0.8915094, b: 0.8915094, a: 1}
+    m_Value: {r: 0.8867924, g: 0.8826094, b: 0.8826094, a: 1}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0

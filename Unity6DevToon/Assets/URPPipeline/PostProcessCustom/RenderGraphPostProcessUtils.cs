@@ -1,33 +1,92 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.RenderGraphModule;
+using UnityEngine.Rendering.Universal;
 
 public static class RenderGraphPostProcessUtils
 {
     /// <summary>
-    /// シェーダーを使わずに、指定されたテクスチャの内容を現在のレンダーターゲットにコピーする汎用Blit
+    /// 一時テクスチャの参照を保持するためのクラス
     /// </summary>
-    /// <param name="cmd">Blitを実行するRasterCommandBuffer</param>
-    /// <param name="srcTextureHandle">コピー元のテクスチャハンドル</param>
-    /// <param name="profilerTag">プロファイラに表示するタグ名</param>
-    public static void BlitToCurrentRenderTarget(RasterCommandBuffer cmd, TextureHandle srcTextureHandle, string profilerTag = "Generic Blit To Screen")
+    public class CustomPostProcessTextureHandleDictionary : ContextItem
     {
-        // プロファイリングスコープで処理時間を計測
-        using (new ProfilingScope(cmd, new ProfilingSampler(profilerTag)))
+        public Dictionary<int, TextureHandle> textures = new Dictionary<int, TextureHandle>();
+
+        public override void Reset()
         {
-            // Blitter.BlitTextureを使って、指定されたテクスチャの内容を現在のレンダーターゲットにコピーする
-            // このオーバーロードは、シェーダーを使わない単純なコピーに適しているよ
-            Blitter.BlitTexture(cmd, srcTextureHandle, new Vector4(1, 1, 0, 0), 0, false);
+            textures.Clear();
         }
     }
+    
+    /// <summary>
+    /// 一時テクスチャを作成してTextureを返す関数
+    /// </summary>
+    /// <param name="renderGraph">RenderGraphのインスタンス</param>
+    /// <param name="frameData">ContextContainerのインスタンス</param>
+    /// <param name="sourceTexture">ソーステクスチャ</param>
+    /// <param name="textureName">作成するテクスチャの名前</param>
+    /// <returns>一時テクスチャのTextureHandle</returns>
+    public static TextureHandle CreateTemporaryTexture(RenderGraph renderGraph, ContextContainer frameData, TextureHandle sourceTexture, int index)
+    {
+        // sourceTextureを元に一時テクスチャを作成
+        var textureDesc = renderGraph.GetTextureDesc(sourceTexture);
+        textureDesc.name = string.Format("_TmepRT{0}", index) ;
+        TextureHandle tempTextureHandle = renderGraph.CreateTexture(textureDesc);
 
-    // 必要に応じて、他の汎用的なBlit処理を追加できます。
-    // 例えば、シェーダーを使った汎用Blitなど
-    // public static void BlitWithMaterial(RasterCommandBuffer cmd, TextureHandle srcTextureHandle, Material material, int passIndex, string profilerTag = "Generic Blit With Material")
-    // {
-    //     using (new ProfilingScope(cmd, new ProfilingSampler(profilerTag)))
-    //     {
-    //         Blitter.BlitTexture(cmd, srcTextureHandle, new Vector4(1, 1, 0, 0), material, passIndex);
-    //     }
-    // }
+        // 作成したテクスチャの参照をFrameDataに登録
+        var textureDictionary = frameData.GetOrCreate<CustomPostProcessTextureHandleDictionary>();
+        textureDictionary.textures[index] = tempTextureHandle;    
+        
+        return tempTextureHandle;
+    }
+    
+    /// <summary>
+    /// ひとつ前のTempTextureを返す関数、無ければカメラのColorターゲットを返す
+    /// </summary>
+    /// <param name="renderGraph">RenderGraphのインスタンス</param>
+    /// <param name="frameData">ContextContainerのインスタンス</param>
+    /// <param name="sourceTexture">ソーステクスチャ</param>
+    /// <param name="textureName">作成するテクスチャの名前</param>
+    /// <returns>一時テクスチャのTextureHandle</returns>
+    public static TextureHandle GetTemporaryTexture(ContextContainer frameData, int index, UniversalResourceData resourceData)
+    {
+        var textureDictionary = frameData.GetOrCreate<CustomPostProcessTextureHandleDictionary>();
+
+        // 最初のパスの場合、カメラのカラーターゲットを返す
+        if (index == 0)
+        {
+            return resourceData.activeColorTexture;
+        }
+
+        // ひとつ前のインデックスのテクスチャを返す
+        if (textureDictionary.textures.ContainsKey(index - 1))
+        {
+            return textureDictionary.textures[index - 1];
+        }
+        
+        // テクスチャが見つからない場合、安全策としてカメラのカラーターゲットを返す
+        return resourceData.activeColorTexture;
+    }    
+    
+    /// <summary>
+    /// パスの実行
+    /// </summary>
+    /// <param name="srcHandle"></param>
+    /// <param name="material"></param>
+    /// <param name="graphContext"></param>
+    public static void ExecutePass(TextureHandle srcHandle, Material material, RasterGraphContext graphContext)
+    {
+        RasterCommandBuffer cmd = graphContext.cmd;
+        if (material == null)
+        {
+            //コピー
+            Blitter.BlitTexture(cmd, srcHandle, new Vector4(1, 1, 0, 0), 0, false);
+        }
+        else
+        {
+            //フルスクリーンエフェクトをかけて書き込む
+            Blitter.BlitTexture(cmd, srcHandle, new Vector4(1, 1, 0, 0), material, 0);
+        }
+    }
 }
