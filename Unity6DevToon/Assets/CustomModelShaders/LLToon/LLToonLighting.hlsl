@@ -234,7 +234,9 @@ half4 LLToonAddLighting(
     for (uint lightIndex = 0; lightIndex < min(_AdditionalLightsDirectionalCount, MAX_VISIBLE_LIGHTS); lightIndex++)
     {
         Light light = GetAdditionalLight(lightIndex, llTInput.baseInputData.positionWS);
+#ifdef _LIGHT_LAYERS 
         if (IsMatchingLightLayer(light.layerMask, meshRenderingLayers))
+#endif    
         {
             addLightColor.rgb += LightingPhysicallyBased(brdfData, brdfData, light,
                                                                   llTInput.baseInputData.normalWS, llTInput.baseInputData.viewDirectionWS,
@@ -245,8 +247,9 @@ half4 LLToonAddLighting(
 
     LIGHT_LOOP_BEGIN(pixelLightCount)
         Light light = GetAdditionalLight(lightIndex, llTInput.baseInputData.positionWS);
-
+#ifdef _LIGHT_LAYERS    
     if (IsMatchingLightLayer(light.layerMask, meshRenderingLayers))
+#endif        
     {
         addLightColor.rgb += LightingPhysicallyBased(brdfData, brdfData, light,
                                                               llTInput.baseInputData.normalWS, llTInput.baseInputData.viewDirectionWS,
@@ -396,7 +399,9 @@ void LLToonLighting (
     half4 baseLightingColor = float4(0,0,0,1);
     half4 rimLightColor = float4(0,0,0,1);
     half4 darkRimLightColor = float4(0,0,0,1);
+#ifdef _LIGHT_LAYERS
     if (IsMatchingLightLayer(mainLight.layerMask, meshRenderingLayers))
+#endif        
     {
         //ライティング計算(Toon)
         baseLightingColor = ToonBaseLighting(baseColor, ShadowColor, DarkShadowColorInput, mainLightTSF, DarkShadowColor);
@@ -420,6 +425,7 @@ void LLToonLighting (
         darkRimLightColor.rgb = (_WorldLightInfluence * radiance * rim.DarkRimColor.rgb + (1 - _WorldLightInfluence) * rim.DarkRimColor.rgb) * DarkRimInShadow; //逆リムはごく薄くなる
     }
     LLToonLightingData.BaseToonLightingColor = baseLightingColor;
+    //LLToonLightingData.BaseToonLightingColor.rgb = meshRenderingLayers;//darkRimLightColor;
     LLToonLightingData.RimColor = rimLightColor;
     LLToonLightingData.DarkRimColor = darkRimLightColor;
     

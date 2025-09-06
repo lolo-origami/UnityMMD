@@ -311,7 +311,8 @@ half4 LLFragmentChara(Varyings input) : SV_Target
     
     //color.rgb = MixFog(color.rgb, inputData.fogCoord);
     finalColor.a = OutputAlpha(finalColor.a, _Surface);
-
+    
+    //finalColor.rgb = lllData.BaseToonLightingColor;
     return finalColor;
 }
 
