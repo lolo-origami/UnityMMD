@@ -3,17 +3,17 @@ Shader "Hidden/DepthFogShader"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _Intensity ("Common Bloom Factor", range(0.0, 1.0)) = 1.0
+        _Intensity ("Common Bloom Factor", range(0.0, 100.0)) = 1.0
         _FogColor ("_FogColor", Color) = (1, 1, 1, 1)
     }
     
 HLSLINCLUDE
     #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
     #include "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/Common.hlsl"
+    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"     
 
 CBUFFER_START(UnityPerMaterial)
     TEXTURE2D_X(_MainTex);
-    TEXTURE2D_X(_CameraDepthTexture);
 
     TEXTURE2D_X(_RampTex);
     float _Intensity;
@@ -22,21 +22,19 @@ CBUFFER_END
 
     half4 FragDepth(Varyings input) : SV_Target
     {
-        //カラーを取得
+        // カラー取得
         half4 color = SAMPLE_TEXTURE2D_X(_MainTex, sampler_LinearClamp , input.texcoord) * _FogColor;
         
-        //デプスを取得
+        // デプス取得（0:カメラ近, 1:遠）
         float depth = SAMPLE_TEXTURE2D_X(_CameraDepthTexture, sampler_LinearClamp, input.texcoord).r;
-        
-        //リニア以外あってもいいかも
         depth = Linear01Depth(depth, _ZBufferParams);
-        
-        //RampTextureからdepth値を使ってサンプリング
-        half4 ramp = SAMPLE_TEXTURE2D_X(_RampTex, sampler_LinearClamp, float2(1, 0));
-        color.rgb = lerp(color.rgb, _FogColor.rgb, _Intensity * ramp);
-        
+
+        // Fog適用
+        color.rgb = lerp(color.rgb, _FogColor.rgb, depth * _Intensity);
+
         return color;
     }
+
 
 ENDHLSL
     

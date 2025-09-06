@@ -25,7 +25,7 @@ public class DepthFogPass : ScriptableRenderPass
         public Material depthFogMaterial;
         public ClampedFloatParameter intensity;
         public ColorParameter fogColor;
-        public TextureParameter rampTexture;
+        //public TextureParameter rampTexture;
     }
 
     private Material _depthFogMaterial;
@@ -89,16 +89,16 @@ public class DepthFogPass : ScriptableRenderPass
             passData.depthFogMaterial = _depthFogMaterial;
             passData.intensity = depthFogComponent.intensity;
             passData.fogColor = depthFogComponent.fogColor;
-            passData.rampTexture = depthFogComponent.rampTexture;
+            //passData.rampTexture = depthFogComponent.rampTexture;
 
             builder.SetRenderFunc((PassData passData, RasterGraphContext graphContext) =>
             {
-                passData.depthFogMaterial.SetTexture(_rampTexId, passData.rampTexture.value);
+                //passData.depthFogMaterial.SetTexture(_rampTexId, passData.rampTexture.value);
                 passData.depthFogMaterial.SetFloat(_intensityId, passData.intensity.value);
                 passData.depthFogMaterial.SetColor(_fogColorId, passData.fogColor.value);
                 passData.depthFogMaterial.SetTexture(_cameraMainTextureId, passData.srcTextureHandle
                 );
-                passData.depthFogMaterial.SetTexture(_cameraDepthTextureId, passData.depthTextureHandle);
+                //passData.depthFogMaterial.SetTexture(_cameraDepthTextureId, passData.depthTextureHandle);
                 ExecutePass(passData.srcTextureHandle, passData.depthFogMaterial, graphContext);
             });
         }
