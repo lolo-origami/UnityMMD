@@ -1,24 +1,42 @@
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public abstract class CustomPostProcessRFBase : ScriptableRendererFeature
+public interface ICustomPostProcessFeature
 {
-    // ①インデックスを保持するためのフィールド
-    protected static int _index = -1;
+    bool IsActiveThisFrame(ref RenderingData renderingData); // ★ そのカメラ/フレームで有効か
+}
 
-    // ①Create時にインデックスを増やす
-    protected void AddIndex()
+public abstract class CustomPostProcessRFBase : ScriptableRendererFeature, ICustomPostProcessFeature
+{
+// ★ 登録/解除を自動化
+    public override void Create()
     {
-        _index++;
+        CustomPostProcessManager.Instance.RegisterFeature(this);
+        OnCreate();
+    }
+
+
+    protected virtual void OnCreate() { }
+
+
+    protected override void Dispose(bool disposing)
+    {
+        base.Dispose(disposing);
+        CustomPostProcessManager.Instance.UnregisterFeature(this);
+        OnDispose(disposing);
     }
     
-    // Dispose時にインデックスを減らす
-    protected void DecIndex()
+    protected virtual void OnDispose(bool disposing) { }
+    
+    public abstract bool IsActiveThisFrame(ref RenderingData renderingData);
+    
+    protected int FeatureIndex() => CustomPostProcessManager.Instance.GetFeatureIndex(this);
+    
+    public bool IsActiveCheck()
     {
-        _index--;
-        if (_index < 0)
-        {
-            _index = -1;
-        }
-    }
+        var pi = typeof(ScriptableRendererFeature).GetProperty(
+            "isActive",
+            System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic);
+        return (bool)(pi?.GetValue(this) ?? true);
+    }    
 }

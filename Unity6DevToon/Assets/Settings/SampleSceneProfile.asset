@@ -121,6 +121,37 @@ MonoBehaviour:
   rounded:
     m_OverrideState: 0
     m_Value: 0
+--- !u!114 &-3195685950322449963
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58bb772d13f454f46a77ee2a85eacbd6, type: 3}
+  m_Name: Flare
+  m_EditorClassIdentifier: 
+  active: 1
+  flareColor:
+    m_OverrideState: 0
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
+  flarePosition:
+    m_OverrideState: 0
+    m_Value: {x: 0, y: 0}
+  flareSize:
+    m_OverrideState: 0
+    m_Value: 0
+  paraColor:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+  paraPosition:
+    m_OverrideState: 0
+    m_Value: {x: 0, y: 0}
+  paraSize:
+    m_OverrideState: 0
+    m_Value: 0
 --- !u!114 &-1769508700694413535
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -188,6 +219,7 @@ MonoBehaviour:
   - {fileID: -1769508700694413535}
   - {fileID: -592344252784950588}
   - {fileID: -4742363082878621170}
+  - {fileID: -3195685950322449963}
 --- !u!114 &849379129802519247
 MonoBehaviour:
   m_ObjectHideFlags: 3

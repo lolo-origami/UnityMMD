@@ -11,26 +11,37 @@ public class DepthFogRenderFeature : CustomPostProcessRFBase
         public RenderPassEvent renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
         public Shader shader;
     }
-
+    
     public Settings settings = new Settings();
-
     private DepthFogPass _pass;
 
-    public override void Create()
+
+    protected override void OnCreate()
     {
-        AddIndex();
-        this.name = "DepthFog";
-        _pass = new DepthFogPass(settings.renderPassEvent, settings.shader, _index);
+        _pass = new DepthFogPass(settings.renderPassEvent, settings.shader);
     }
+
+
+    public override bool IsActiveThisFrame(ref RenderingData renderingData)
+    {
+        if (!renderingData.cameraData.postProcessEnabled) return false;
+        var comp = VolumeManager.instance.stack.GetComponent<DepthFog>();
+        return comp != null && comp.IsActive;
+    }
+
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
+        if (!IsActiveThisFrame(ref renderingData)) return;
+        int idx = FeatureIndex();
+        var (first, last) = CustomPostProcessManager.Instance.GetLastActiveIndexThisFrame(ref renderingData);
+        if (_pass != null) _pass.SetFrameOrder(idx, last);
         renderer.EnqueuePass(_pass);
     }
 
     protected override void Dispose(bool disposing)
     {
-        DecIndex();
+        base.Dispose(disposing);
         CoreUtils.Destroy(_pass?.DepthFogMaterial);
     }
 }

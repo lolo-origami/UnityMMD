@@ -36,8 +36,8 @@ HLSLINCLUDE
 
     half4 FragFlare(Varyings input) : SV_Target
     {
-        half4 color = SAMPLE_TEXTURE2D_X(_MainTex, sampler_LinearClamp , input.uv);
-        color.rgb = ApplyFlare(color.rgb, (input.uv - 0.5) * 2.0);
+        half4 color = SAMPLE_TEXTURE2D_X(_MainTex, sampler_LinearClamp , input.texcoord);
+        color.rgb = ApplyFlare(color.rgb, (input.texcoord - 0.5) * 2.0);
 
         return color;
     }

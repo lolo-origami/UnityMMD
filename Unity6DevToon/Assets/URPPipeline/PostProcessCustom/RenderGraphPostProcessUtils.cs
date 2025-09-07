@@ -7,16 +7,12 @@ using UnityEngine.Rendering.Universal;
 public static class RenderGraphPostProcessUtils
 {
     /// <summary>
-    /// 一時テクスチャの参照を保持するためのクラス
+    /// フレーム内チェーンの Temp を保持（ContextContainer にぶら下げるので自動的にフレームスコープ）
     /// </summary>
     public class CustomPostProcessTextureHandleDictionary : ContextItem
     {
         public Dictionary<int, TextureHandle> textures = new Dictionary<int, TextureHandle>();
-
-        public override void Reset()
-        {
-            textures.Clear();
-        }
+        public override void Reset() => textures.Clear();
     }
     
     /// <summary>
@@ -29,16 +25,19 @@ public static class RenderGraphPostProcessUtils
     /// <returns>一時テクスチャのTextureHandle</returns>
     public static TextureHandle CreateTemporaryTexture(RenderGraph renderGraph, ContextContainer frameData, TextureHandle sourceTexture, int index)
     {
-        // sourceTextureを元に一時テクスチャを作成
-        var textureDesc = renderGraph.GetTextureDesc(sourceTexture);
-        textureDesc.name = string.Format("_TmepRT{0}", index) ;
-        TextureHandle tempTextureHandle = renderGraph.CreateTexture(textureDesc);
+        var desc = renderGraph.GetTextureDesc(sourceTexture);
 
-        // 作成したテクスチャの参照をFrameDataに登録
-        var textureDictionary = frameData.GetOrCreate<CustomPostProcessTextureHandleDictionary>();
-        textureDictionary.textures[index] = tempTextureHandle;    
-        
-        return tempTextureHandle;
+        // 1時バッファは非MSAA・カラーのみ
+        desc.msaaSamples    = MSAASamples.None;             // ★ MSAA禁止（Resolve/Discard問題の根本回避）
+        desc.depthBufferBits= 0;
+        desc.name           = $"_TempRT{index}";
+
+        var temp = renderGraph.CreateTexture(desc);
+
+        var dict = frameData.GetOrCreate<CustomPostProcessTextureHandleDictionary>();
+        dict.textures[index] = temp;         // 同indexを上書き登録OK
+
+        return temp;
     }
     
     /// <summary>
@@ -51,21 +50,10 @@ public static class RenderGraphPostProcessUtils
     /// <returns>一時テクスチャのTextureHandle</returns>
     public static TextureHandle GetTemporaryTexture(ContextContainer frameData, int index, UniversalResourceData resourceData)
     {
-        var textureDictionary = frameData.GetOrCreate<CustomPostProcessTextureHandleDictionary>();
-
-        // 最初のパスの場合、カメラのカラーターゲットを返す
-        if (index == 0)
-        {
-            return resourceData.activeColorTexture;
-        }
-
-        // ひとつ前のインデックスのテクスチャを返す
-        if (textureDictionary.textures.ContainsKey(index - 1))
-        {
-            return textureDictionary.textures[index - 1];
-        }
-        
-        // テクスチャが見つからない場合、安全策としてカメラのカラーターゲットを返す
+        var dict = frameData.GetOrCreate<CustomPostProcessTextureHandleDictionary>();
+        if (index == 0) return resourceData.activeColorTexture;
+        if (dict.textures.TryGetValue(index - 1, out var prev) && prev.IsValid())
+            return prev;
         return resourceData.activeColorTexture;
     }    
     
