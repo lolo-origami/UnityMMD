@@ -116,6 +116,9 @@ RenderFeatureの登録順で実行順が自動入れ替わります。
 
 <img width="312" height="559" alt="image" src="https://github.com/user-attachments/assets/33f6f876-36e7-47d5-9fe8-fb4f20d45397" /> <img width="312" height="559" alt="image" src="https://github.com/user-attachments/assets/99ed65f0-464d-468c-a292-5ff353b90af5" />
 
+<img width="458" height="97" alt="image" src="https://github.com/user-attachments/assets/a26a83e3-25a8-4ac0-a87a-207f06586f2e" />
+
+
 - **FogColor**: フォグの色。
 - **Intensity**: Fogの強さ。
 
