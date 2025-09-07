@@ -100,5 +100,37 @@ UniToonをベースにしたアウトライン制御です。
 - **OutlineLightAffects**: アウトラインのライティング影響度を調整します。
 - **OutlineSaturation**: アウトラインの彩度を調整します。
 - **OutlineBrightness**: アウトラインの明るさを調整します。
-- **OutlineStrength**: アウトラインの強さを調整します。
-- **OutlineSmoothness**: アウトラインの滑らかさを調整します。
+
+# CustomPostProcess概要
+
+独自のVolumePostProcessです。
+URPのRendererに使いたいPostProcessを登録してください。
+RenderFeatureの登録順で実行順が自動入れ替わります。
+
+<img width="460" height="110" alt="image" src="https://github.com/user-attachments/assets/8a432cd5-2d1f-4111-a3f5-4b8b5be3ea85" />
+
+
+## DepthFog
+
+カメラの Depth Textureを元にした距離依存のフォグ使います。
+
+<img width="312" height="559" alt="image" src="https://github.com/user-attachments/assets/33f6f876-36e7-47d5-9fe8-fb4f20d45397" /> <img width="312" height="559" alt="image" src="https://github.com/user-attachments/assets/99ed65f0-464d-468c-a292-5ff353b90af5" />
+
+<img width="458" height="97" alt="image" src="https://github.com/user-attachments/assets/a26a83e3-25a8-4ac0-a87a-207f06586f2e" />
+
+
+- **FogColor**: フォグの色。
+- **Intensity**: Fogの強さ。
+
+## Flare
+
+アニメやイラストで加工に使われる、特定箇所へのグラデーション設定です。
+
+## Diffusion
+
+光が拡散するような画像加工を行います。
+コントラストを調整し、縦横のブラーをかけた後に合成を行います。
+合成は、加算、スクリーン、比較(明)が選べます。
+
+<img width="314" height="555" alt="image" src="https://github.com/user-attachments/assets/2b297674-ed36-4981-b6f6-d4a161b7a08d" /> <img width="313" height="552" alt="image" src="https://github.com/user-attachments/assets/0151c260-71e4-4293-aeb5-08a43870b763" />
+
