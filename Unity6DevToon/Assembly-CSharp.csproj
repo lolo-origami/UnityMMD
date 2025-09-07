@@ -861,6 +861,9 @@
     <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
       <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.MemoryProfiler.Editor">
+      <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.MemoryProfiler.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.RenderPipelines.Universal.Shaders">
       <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Shaders.dll</HintPath>
     </Reference>
@@ -891,6 +894,9 @@
     <Reference Include="Unity.Multiplayer.Center.Editor">
       <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.Multiplayer.Center.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.MemoryProfiler">
+      <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.MemoryProfiler.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Mathematics.Editor">
       <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
     </Reference>
@@ -918,6 +924,9 @@
     <Reference Include="Unity.Collections.Editor">
       <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.Collections.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Profiling.Core">
+      <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.Profiling.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
       <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
     </Reference>
@@ -939,6 +948,9 @@
     <Reference Include="Unity.TextMeshPro">
       <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.EditorCoroutines.Editor">
+      <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.EditorCoroutines.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.VisualScripting.SettingsProvider.Editor">
       <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.VisualScripting.SettingsProvider.Editor.dll</HintPath>
     </Reference>
@@ -956,6 +968,9 @@
     </Reference>
     <Reference Include="Unity.RenderPipelines.Universal.Runtime">
       <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.MemoryProfiler.Editor.MemoryProfilerModule">
+      <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.MemoryProfiler.Editor.MemoryProfilerModule.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualScripting.State">
       <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
