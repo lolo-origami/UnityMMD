@@ -4,15 +4,6 @@ using UnityEngine.Rendering.Universal;
 
 public class DiffusionRenderFeature : CustomPostProcessRFBase
 {
-    [System.Serializable]
-    public class Settings
-    {
-        public RenderPassEvent renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
-        public Shader shader;
-    }
-
-    public Settings settings = new Settings();
-
     private DiffusionPass _pass;
     
     protected override void OnCreate()
@@ -32,8 +23,9 @@ public class DiffusionRenderFeature : CustomPostProcessRFBase
     {
         if (!IsActiveThisFrame(ref renderingData)) return;
         int idx = FeatureIndex();
-        var (first, last) = CustomPostProcessManager.Instance.GetLastActiveIndexThisFrame(ref renderingData);
-        if (_pass != null) _pass.SetFrameOrder(idx, last);
+        var last = CustomPostProcessManager.Instance.GetLastActiveIndexThisFrame(ref renderingData);
+        bool isLast = (idx == last);
+        _pass.ConfigureBufferPolicy(settings.IsRestore, settings.RestoreName, settings.IsSave, settings.SaveName, isLast);
         renderer.EnqueuePass(_pass);
     }
     

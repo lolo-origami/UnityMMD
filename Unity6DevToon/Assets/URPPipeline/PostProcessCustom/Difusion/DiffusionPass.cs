@@ -3,9 +3,9 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering.Universal;
-using static RenderGraphPostProcessUtils;
+using static RenderGraphPostProcessBuffer;
 
-public class DiffusionPass : ScriptableRenderPass
+public class DiffusionPass : CustomPostProcessPassBase
 {
     private static readonly int blurTexId = UnityEngine.Shader.PropertyToID("_BlurTex");
     private static readonly int contrastId = UnityEngine.Shader.PropertyToID("_Contrast");
@@ -33,12 +33,6 @@ public class DiffusionPass : ScriptableRenderPass
         if (shader != null) _diffusionMaterial = CoreUtils.CreateEngineMaterial(shader);
     }
     
-    public void SetFrameOrder(int index, int maxIndex)
-    {
-        _index = index;
-        _maxIndex = maxIndex;
-    }
-    
     public  override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData)
     {
         if (_diffusionMaterial == null || _index < 0)
@@ -58,8 +52,8 @@ public class DiffusionPass : ScriptableRenderPass
         }
 
         // 入力テクスチャと出力テクスチャを決定
-        TextureHandle srcTextureHandle = GetTemporaryTexture(frameData, _index, resourceData);
-        TextureHandle dstTextureHandle = CreateTemporaryTexture(renderGraph, frameData, srcTextureHandle, _index, "Diffusion");
+        TextureHandle srcTextureHandle = GetSrcHandle(frameData, resourceData);
+        TextureHandle dstTextureHandle = GetDstHandle(renderGraph, frameData, srcTextureHandle);
 
         var descHalf = renderGraph.GetTextureDesc(srcTextureHandle);
         descHalf.name = "Temp_DiffusionBlurBuffer";

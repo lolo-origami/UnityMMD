@@ -12,8 +12,6 @@ HLSLINCLUDE
     #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
     #include "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/Common.hlsl"
     CBUFFER_START(UnityPerMaterial)
-        TEXTURE2D_X(_MainTex);
-
         float4 _FlareVector;
         float4 _FlareColor;
         float4 _ParaVector;
@@ -36,7 +34,7 @@ HLSLINCLUDE
 
     half4 FragFlare(Varyings input) : SV_Target
     {
-        half4 color = SAMPLE_TEXTURE2D_X(_MainTex, sampler_LinearClamp , input.texcoord);
+        half4 color = SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp , input.texcoord);
         color.rgb = ApplyFlare(color.rgb, (input.texcoord - 0.5) * 2.0);
 
         return color;

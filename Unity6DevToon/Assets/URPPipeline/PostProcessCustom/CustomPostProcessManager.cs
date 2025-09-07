@@ -46,11 +46,11 @@ public class CustomPostProcessManager
         return _registeredFeatureList.IndexOf(feature);
     }
     
-    public (int first, int last) GetLastActiveIndexThisFrame(ref UnityEngine.Rendering.Universal.RenderingData renderingData)
+    public  int  GetLastActiveIndexThisFrame(ref UnityEngine.Rendering.Universal.RenderingData renderingData)
     {
         int f = Time.renderedFrameCount;
         if (_cachedFrame == f)
-            return (_cachedFirst, _cachedLast); // ★ 同フレームはキャッシュ
+            return _cachedLast; // ★ 同フレームはキャッシュ
 
 
         int first = int.MaxValue;
@@ -70,7 +70,7 @@ public class CustomPostProcessManager
         _cachedFrame = f;
         _cachedFirst = (first == int.MaxValue) ? -1 : first;
         _cachedLast = last;
-        return (_cachedFirst, _cachedLast);
+        return _cachedLast;
     }
     
     public IReadOnlyList<CustomPostProcessRFBase> FeatureList => _registeredFeatureList;

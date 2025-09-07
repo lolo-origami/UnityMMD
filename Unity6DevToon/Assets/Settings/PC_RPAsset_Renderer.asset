@@ -16,6 +16,10 @@ MonoBehaviour:
   settings:
     renderPassEvent: 550
     shader: {fileID: 4800000, guid: 52535ccf8fb45684496d77cd824fe28c, type: 3}
+    IsSave: 0
+    SaveName: 
+    IsRestore: 0
+    RestoreName: 
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,6 +90,10 @@ MonoBehaviour:
   settings:
     renderPassEvent: 550
     shader: {fileID: 4800000, guid: 349e9939e09a5a74fae9d2f207bc0fe3, type: 3}
+    IsSave: 0
+    SaveName: 
+    IsRestore: 0
+    RestoreName: 
 --- !u!114 &2807732030523044294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,3 +110,7 @@ MonoBehaviour:
   settings:
     renderPassEvent: 550
     shader: {fileID: 4800000, guid: 8be194588bc6c8447ac0a59b33165a93, type: 3}
+    IsSave: 0
+    SaveName: 
+    IsRestore: 0
+    RestoreName: 

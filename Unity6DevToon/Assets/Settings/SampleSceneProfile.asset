@@ -217,8 +217,8 @@ MonoBehaviour:
   - {fileID: 7391319092446245454}
   - {fileID: -3357603926938260329}
   - {fileID: -1769508700694413535}
-  - {fileID: -592344252784950588}
   - {fileID: -4742363082878621170}
+  - {fileID: -592344252784950588}
   - {fileID: -3195685950322449963}
   - {fileID: 5881263965897108262}
 --- !u!114 &849379129802519247
@@ -276,10 +276,10 @@ MonoBehaviour:
   active: 1
   Contrast:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.025
   Intensity:
     m_OverrideState: 1
-    m_Value: 0.1
+    m_Value: 0.258
 --- !u!114 &7391319092446245454
 MonoBehaviour:
   m_ObjectHideFlags: 3

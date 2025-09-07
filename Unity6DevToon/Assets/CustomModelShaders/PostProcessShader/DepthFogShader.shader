@@ -13,9 +13,7 @@ HLSLINCLUDE
     #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"     
 
 CBUFFER_START(UnityPerMaterial)
-    TEXTURE2D_X(_MainTex);
-
-    TEXTURE2D_X(_RampTex);
+    //EXTURE2D_X(_RampTex);
     float _Intensity;
     float4 _FogColor;
 CBUFFER_END
@@ -23,7 +21,7 @@ CBUFFER_END
     half4 FragDepth(Varyings input) : SV_Target
     {
         // カラー取得
-        half4 color = SAMPLE_TEXTURE2D_X(_MainTex, sampler_LinearClamp , input.texcoord) * _FogColor;
+        half4 color = SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp , input.texcoord) * _FogColor;
         
         // デプス取得（0:カメラ近, 1:遠）
         float depth = SAMPLE_TEXTURE2D_X(_CameraDepthTexture, sampler_LinearClamp, input.texcoord).r;

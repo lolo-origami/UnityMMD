@@ -2,9 +2,9 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering.Universal;
-using static RenderGraphPostProcessUtils; // RenderGraphPostProcessUtils.cs は別途作成してください
+using static RenderGraphPostProcessBuffer; // RenderGraphPostProcessUtils.cs は別途作成してください
 
-public class DepthFogPass : ScriptableRenderPass
+public class DepthFogPass : CustomPostProcessPassBase
 {
     // プロファイラで表示するタグ名
     private const string APPLY_FOG_PASSNAME = "Apply Depth Fog Pass";
@@ -14,7 +14,6 @@ public class DepthFogPass : ScriptableRenderPass
     //private static readonly int _rampTexId = Shader.PropertyToID("_RampTex");
     private static readonly int _intensityId = Shader.PropertyToID("_Intensity");
     private static readonly int _fogColorId = Shader.PropertyToID("_FogColor");
-    private static readonly int _cameraMainTextureId = Shader.PropertyToID("_MainTex");    
     //private static readonly int _cameraDepthTextureId = Shader.PropertyToID("_CameraDepthTexture");
 
     private class PassData
@@ -32,8 +31,6 @@ public class DepthFogPass : ScriptableRenderPass
     private Shader _depthFogShader;
 
     public Material DepthFogMaterial => _depthFogMaterial;
-    private int _index;
-    private int _maxIndex;
 
     public DepthFogPass(RenderPassEvent renderPassEvent, Shader shader)
     {
@@ -44,14 +41,9 @@ public class DepthFogPass : ScriptableRenderPass
         }
     }
 
-    public void SetFrameOrder(int index, int maxIndex)
-    {
-        _index = index; _maxIndex = maxIndex;
-    }
-
     public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData)
     {
-        if (_depthFogMaterial == null || _index < 0)
+        if (_depthFogMaterial == null)
         {
             return;
         }
@@ -68,19 +60,14 @@ public class DepthFogPass : ScriptableRenderPass
             return;
         }
         
-        //カメラカラーバッファのテクスチャハンドル
-        //TextureHandle cameraColorTextureHandle = resourceData.activeColorTexture;
-        RenderTextureDescriptor descriptor = cameraData.cameraTargetDescriptor;
-        descriptor.msaaSamples = 1;
-        descriptor.depthBufferBits = 0;
+        // 一時的なレンダーテクスチャを確保
+        TextureHandle srcTextureHandle = GetSrcHandle(frameData, resourceData);
+        TextureHandle dstTextureHandle = GetDstHandle(renderGraph, frameData, srcTextureHandle);
+        
+        // Depthテクスチャ確保
         var cameraDepthTextureHandle = resourceData.activeDepthTexture;
         
-        //1:⼀時的なレンダーテクスチャ
-        TextureHandle srcTextureHandle = GetTemporaryTexture(frameData, _index, resourceData);
-        TextureHandle dstTextureHandle = CreateTemporaryTexture(renderGraph, frameData, srcTextureHandle, _index, "DepthFog");
-
-        
-        //カメラのカラーバッファをマテリアルを適⽤しながら⼀時的なレンダーテクスチャーに書き込む
+        // 描画
         using (IRasterRenderGraphBuilder builder = renderGraph.AddRasterRenderPass(APPLY_FOG_PASSNAME, out PassData passData, profilingSampler))
         {
             builder.UseTexture(srcTextureHandle, AccessFlags.Read);//src
@@ -95,18 +82,14 @@ public class DepthFogPass : ScriptableRenderPass
 
             builder.SetRenderFunc((PassData passData, RasterGraphContext graphContext) =>
             {
-                //passData.depthFogMaterial.SetTexture(_rampTexId, passData.rampTexture.value);
                 passData.depthFogMaterial.SetFloat(_intensityId, passData.intensity.value);
                 passData.depthFogMaterial.SetColor(_fogColorId, passData.fogColor.value);
-                passData.depthFogMaterial.SetTexture(_cameraMainTextureId, passData.srcTextureHandle
-                );
-                //passData.depthFogMaterial.SetTexture(_cameraDepthTextureId, passData.depthTextureHandle);
                 ExecutePass(passData.srcTextureHandle, passData.depthFogMaterial, graphContext);
             });
         }
         
-        //最後ならカメラにコピー
-        if (_index == _maxIndex)
+        // 最後に追加されてるパスならカメラに戻す
+        if (_isLast)
         {
             using (IRasterRenderGraphBuilder builder = renderGraph.AddRasterRenderPass(COPY_FOG_TO_SCREEN_PASSNAME, out PassData passData, profilingSampler))
             {

@@ -8,7 +8,19 @@ public interface ICustomPostProcessFeature
 
 public abstract class CustomPostProcessRFBase : ScriptableRendererFeature, ICustomPostProcessFeature
 {
-// ★ 登録/解除を自動化
+    [System.Serializable]
+    public class Settings
+    {
+        public RenderPassEvent renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
+        public Shader shader;
+        public bool IsSave = false;
+        public string SaveName = "";
+        public bool IsRestore = false;
+        public string RestoreName = "";
+    }
+    
+    public Settings settings = new Settings();
+    
     public override void Create()
     {
         CustomPostProcessManager.Instance.RegisterFeature(this);
