@@ -1,58 +1,156 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Rendering.RenderGraphModule;
+using UnityEngine.Rendering.Universal;
+using static RenderGraphPostProcessUtils;
 
-public class DiffusionPass : CustomPostProcessingPass<Diffusion>
+public class DiffusionPass : ScriptableRenderPass
 {
-    private static readonly int tempBlurBuffer1 = UnityEngine.Shader.PropertyToID("_TempBlurBuffer1");
-    private static readonly int tempBlurBuffer2 = UnityEngine.Shader.PropertyToID("_TempBlurBuffer2");
-        
     private static readonly int blurTexId = UnityEngine.Shader.PropertyToID("_BlurTex");
     private static readonly int contrastId = UnityEngine.Shader.PropertyToID("_Contrast");
     private static readonly int intensityId = UnityEngine.Shader.PropertyToID("_Intensity");
         
-    protected override string RenderTag => "Diffusion";
+    private readonly Material _diffusionMaterial;
+    public Material DiffusionMaterial => _diffusionMaterial;
+    private int _index;
+    private int _maxIndex;
 
-    public DiffusionPass(RenderPassEvent renderPassEvent, Shader shader) : base(renderPassEvent, shader)
+    // Passのデータを持つクラス
+    private class PassData
     {
+        public Material material;
+        public TextureHandle srcTextureHandle;
+        public TextureHandle blurBuffer1;
+        public TextureHandle blurBuffer2;
+        public float contrast;
+        public float intensity;
     }
     
-    /// <summary>
-    /// Textureとfloatの設定をマテリアルに送る
-    /// </summary>
-    /// <param name="commandBuffer"></param>
-    /// <param name="renderingData"></param>
-    protected override void BeforeRender(CommandBuffer commandBuffer, ref RenderingData renderingData)
+    public DiffusionPass(RenderPassEvent renderPassEvent, Shader shader)
     {
-        Material.SetFloat(contrastId, Component.Contrast.value);
-        Material.SetFloat(intensityId, Component.Intensity.value);
+        this.renderPassEvent = renderPassEvent;
+        if (shader != null) _diffusionMaterial = CoreUtils.CreateEngineMaterial(shader);
     }
-
-    protected override void Render(CommandBuffer commandBuffer, ref RenderingData renderingData, RenderTargetIdentifier source, RenderTargetIdentifier dest)
+    
+    public void SetFrameOrder(int index, int maxIndex)
     {
-        ref var cameraData = ref renderingData.cameraData;
-        
-        //シェーダーでぼかして縮小したバッファをコピーしていく
-        commandBuffer.GetTemporaryRT(tempBlurBuffer1, cameraData.camera.scaledPixelWidth / 2, cameraData.camera.scaledPixelHeight / 2);
-        commandBuffer.GetTemporaryRT(tempBlurBuffer2, cameraData.camera.scaledPixelWidth / 2, cameraData.camera.scaledPixelHeight / 2);
-        
-        //コントラスト調整
-        commandBuffer.Blit(source, tempBlurBuffer1, Material, 0);
-        //ブラー1
-        commandBuffer.Blit(tempBlurBuffer1, tempBlurBuffer2, Material, 1);
-        //ブラー2
-        commandBuffer.Blit(tempBlurBuffer2, tempBlurBuffer1, Material, 2);
-        
-        //合成
-        commandBuffer.SetGlobalTexture(blurTexId, tempBlurBuffer1);
-        commandBuffer.Blit(source, dest, Material, 3);
+        _index = index;
+        _maxIndex = maxIndex;
+    }
+    
+    public  override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData)
+    {
+        if (_diffusionMaterial == null || _index < 0)
+        {
+            return;
+        }
+
+        var resourceData = frameData.Get<UniversalResourceData>();
+        var cameraData = frameData.Get<UniversalCameraData>();
+        var volumeStack = VolumeManager.instance.stack;
+        var comp = volumeStack.GetComponent<Diffusion>();
+
+        // 有効でない場合は何もしない
+        if (!cameraData.postProcessEnabled || comp == null || !comp.IsActive)
+        {
+            return;
+        }
+
+        // 入力テクスチャと出力テクスチャを決定
+        TextureHandle srcTextureHandle = GetTemporaryTexture(frameData, _index, resourceData);
+        TextureHandle dstTextureHandle = CreateTemporaryTexture(renderGraph, frameData, srcTextureHandle, _index, "Diffusion");
+
+        var descHalf = renderGraph.GetTextureDesc(srcTextureHandle);
+        descHalf.name = "Temp_DiffusionBlurBuffer";
+        descHalf.width /= 2;
+        descHalf.height /= 2;
+        descHalf.msaaSamples = MSAASamples.None; // MSAA 無効
+        descHalf.depthBufferBits = 0; // 深度バッファ無効
+
+        // ぼかし用の一時テクスチャを作成
+        TextureHandle blurBuffer1 = renderGraph.CreateTexture(descHalf);
+        TextureHandle blurBuffer2 = renderGraph.CreateTexture(descHalf);
+
+        // 1. コントラスト調整パス
+        using (var builder = renderGraph.AddRasterRenderPass("Diffusion: Contrast", out PassData passData))
+        {
+            builder.UseTexture(srcTextureHandle, AccessFlags.Read);
+            builder.SetRenderAttachment(blurBuffer1, 0, AccessFlags.Write);
             
-        commandBuffer.ReleaseTemporaryRT(tempBlurBuffer1);
-        commandBuffer.ReleaseTemporaryRT(tempBlurBuffer2);
-    }
+            passData.material = _diffusionMaterial;
+            passData.srcTextureHandle = srcTextureHandle;
+            passData.contrast = comp.Contrast.value;
 
-    protected override bool IsActive()
-    {
-        return Component.IsActive;
+            builder.SetRenderFunc((PassData data, RasterGraphContext context) =>
+            {
+                //data.material.SetTexture(_cameraMainTextureId, passData.srcTextureHandle);
+                data.material.SetFloat(contrastId, data.contrast);
+                ExecutePass(data.srcTextureHandle, data.material, context, 0);
+            });
+        }
+        
+        // 2. ブラー1パス
+        using (var builder = renderGraph.AddRasterRenderPass("Diffusion: Blur1", out PassData passData))
+        {
+            builder.UseTexture(blurBuffer1, AccessFlags.Read);
+            builder.SetRenderAttachment(blurBuffer2, 0, AccessFlags.Write);
+            
+            passData.material = _diffusionMaterial;
+            passData.srcTextureHandle = blurBuffer1;
+
+            builder.SetRenderFunc((PassData data, RasterGraphContext context) =>
+            {
+                ExecutePass(data.srcTextureHandle, data.material, context, 1);
+            });
+        }
+        
+        // 3. ブラー2パス
+        using (var builder = renderGraph.AddRasterRenderPass("Diffusion: Blur2", out PassData passData))
+        {
+            builder.UseTexture(blurBuffer2, AccessFlags.Read);
+            builder.SetRenderAttachment(blurBuffer1, 0, AccessFlags.Write);
+            
+            passData.material = _diffusionMaterial;
+            passData.srcTextureHandle = blurBuffer2;
+
+            builder.SetRenderFunc((PassData data, RasterGraphContext context) =>
+            {
+                ExecutePass(data.srcTextureHandle, data.material, context, 2);
+            });
+        }
+
+        // 4. 合成パス
+        using (var builder = renderGraph.AddRasterRenderPass("Diffusion: Composite", out PassData passData))
+        {
+            builder.UseTexture(srcTextureHandle, AccessFlags.Read);
+            builder.UseTexture(blurBuffer1, AccessFlags.Read);
+            builder.SetRenderAttachment(dstTextureHandle, 0, AccessFlags.Write);
+
+            passData.material = _diffusionMaterial;
+            passData.srcTextureHandle = srcTextureHandle;
+            passData.blurBuffer1 = blurBuffer1;
+            passData.intensity = comp.Intensity.value;
+            
+            builder.SetRenderFunc((PassData data, RasterGraphContext context) =>
+            {
+                data.material.SetFloat(intensityId, data.intensity);
+                data.material.SetTexture(blurTexId, data.blurBuffer1);
+                ExecutePass(data.srcTextureHandle, data.material, context, 3);
+            });
+        }
+
+        // 最後のパスなら、カメラバッファに書き込む
+        if (_index == _maxIndex)
+        {
+            using (var builder = renderGraph.AddRasterRenderPass("Final Copy Pass (Diffusion)", out PassData pd))
+            {
+                builder.UseTexture(dstTextureHandle, AccessFlags.Read);
+                builder.SetRenderAttachment(resourceData.activeColorTexture, 0, AccessFlags.Write);
+                pd.srcTextureHandle = dstTextureHandle;
+                pd.material = null; // コピーなのでマテリアルは不要
+                builder.SetRenderFunc((PassData data, RasterGraphContext ctx) => ExecutePass(data.srcTextureHandle, null, ctx));
+            }
+        }
     }
 }

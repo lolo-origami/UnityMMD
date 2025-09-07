@@ -39,7 +39,8 @@ public class FlarePass : ScriptableRenderPass
 
     public void SetFrameOrder(int index, int maxIndex)
     {
-        _index = index; _maxindex = maxIndex;
+        _index = index; 
+        _maxindex = maxIndex;
     }
     
     public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData)
@@ -61,7 +62,7 @@ public class FlarePass : ScriptableRenderPass
 
         // 1:一時的なレンダーテクスチャを作成
         TextureHandle srcTextureHandle = GetTemporaryTexture(frameData, _index, resourceData);
-        TextureHandle dstTextureHandle = CreateTemporaryTexture(renderGraph, frameData, srcTextureHandle, _index);
+        TextureHandle dstTextureHandle = CreateTemporaryTexture(renderGraph, frameData, srcTextureHandle, _index, "FlarePass");
         
         // 2:カメラのカラーバッファをマテリアルを適用しながら一時的なレンダーテクスチャーに書き込む
         using (IRasterRenderGraphBuilder builder = renderGraph.AddRasterRenderPass("Apply Flare Pass", out PassData passData))

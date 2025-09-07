@@ -43,7 +43,8 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: -5792080647792747134}
   - {fileID: 2807732030523044294}
-  m_RendererFeatureMap: 821de6ad56659eafc6f1cfdf6711f726
+  - {fileID: 1108160615963672661}
+  m_RendererFeatureMap: 821de6ad56659eafc6f1cfdf6711f72655c0977c35fa600f
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -69,6 +70,22 @@ MonoBehaviour:
   m_DepthTextureFormat: 0
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 1
+--- !u!114 &1108160615963672661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bcdae46723e8324990352eacac3a761, type: 3}
+  m_Name: Diffusion
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    renderPassEvent: 550
+    shader: {fileID: 4800000, guid: 349e9939e09a5a74fae9d2f207bc0fe3, type: 3}
 --- !u!114 &2807732030523044294
 MonoBehaviour:
   m_ObjectHideFlags: 0

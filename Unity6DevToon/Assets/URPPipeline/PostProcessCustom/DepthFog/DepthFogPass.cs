@@ -77,7 +77,7 @@ public class DepthFogPass : ScriptableRenderPass
         
         //1:⼀時的なレンダーテクスチャ
         TextureHandle srcTextureHandle = GetTemporaryTexture(frameData, _index, resourceData);
-        TextureHandle dstTextureHandle = CreateTemporaryTexture(renderGraph, frameData, srcTextureHandle, _index);
+        TextureHandle dstTextureHandle = CreateTemporaryTexture(renderGraph, frameData, srcTextureHandle, _index, "DepthFog");
 
         
         //カメラのカラーバッファをマテリアルを適⽤しながら⼀時的なレンダーテクスチャーに書き込む
