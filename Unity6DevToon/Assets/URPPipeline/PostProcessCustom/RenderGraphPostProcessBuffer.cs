@@ -11,16 +11,61 @@ public static class RenderGraphPostProcessBuffer
     /// </summary>
     public class FrameTempBuffers : ContextItem
     {
-        public bool IsCreateChainTempBuffer;
-        public TextureHandle chainTempBuffer; // 直近のチェーン用 TempBuffer
-        public Dictionary<string, TextureHandle> namedBufferDicionary = new(); // 名前付き保存
+        //public bool IsCreateChainTempBuffer;
+        public TextureHandle[] ChainTempBuffers = new TextureHandle[2];
+        private int _pingPongIndex = 0;
+        public Dictionary<string, TextureHandle> NamedBufferDicionary = new(); // 名前付き保存
         public override void Reset()
         {
-            IsCreateChainTempBuffer = false;
-            chainTempBuffer = TextureHandle.nullHandle;
-            namedBufferDicionary.Clear();
+            //IsCreateChainTempBuffer = false;
+            _pingPongIndex = 0;
+            ChainTempBuffers[0] = TextureHandle.nullHandle;
+            ChainTempBuffers[1] = TextureHandle.nullHandle;;
+            NamedBufferDicionary.Clear();
         }
         
+        /// <summary>
+        /// PingPong を進めて次のチェーン用バッファを返す
+        /// </summary>
+        public TextureHandle GetNextChainBuffer(RenderGraph rg, TextureHandle refTex)
+        {
+            _pingPongIndex ^= 1; // 0 ⇔ 1
+            if (!ChainTempBuffers[_pingPongIndex].IsValid())
+            {
+                var desc = rg.GetTextureDesc(refTex);
+                desc.msaaSamples = MSAASamples.None;
+                desc.depthBufferBits = 0;
+                desc.name = $"_TempRT_{_pingPongIndex}";
+                ChainTempBuffers[_pingPongIndex] = rg.CreateTexture(desc);
+            }
+            return ChainTempBuffers[_pingPongIndex];
+        }
+        
+        
+        /// <summary>
+        /// 現在の読み取り側チェーンを返す
+        /// </summary>
+        public TextureHandle GetCurrentChainOrCamera(UniversalResourceData resourceData)
+        {
+            return ChainTempBuffers[_pingPongIndex].IsValid() ? ChainTempBuffers[_pingPongIndex] : resourceData.activeColorTexture;
+        }
+
+        public void Save(string name, TextureHandle handle)
+        {
+            if (!string.IsNullOrEmpty(name) && handle.IsValid())
+                NamedBufferDicionary[name] = handle;
+        }
+
+        public bool TryGet(string name, out TextureHandle handle)
+        {
+            if (!string.IsNullOrEmpty(name) && NamedBufferDicionary.TryGetValue(name, out var h) && h.IsValid())
+            {
+                handle = h;
+                return true;
+            }
+            handle = TextureHandle.nullHandle;
+            return false;
+        }
     }
     
     /// <summary>
@@ -32,9 +77,7 @@ public static class RenderGraphPostProcessBuffer
     public static TextureHandle GetChainBufferOrCamera(ContextContainer frameData, UniversalResourceData resourceData)
     {
         var store = frameData.GetOrCreate<FrameTempBuffers>();
-        
-        return store.IsCreateChainTempBuffer ? 
-            store.chainTempBuffer : resourceData.activeColorTexture;
+        return store.GetCurrentChainOrCamera(resourceData);
     }
     
     /// <summary>
@@ -45,25 +88,10 @@ public static class RenderGraphPostProcessBuffer
     /// <param name="refTexture"></param>
     /// <param name="debugName"></param>
     /// <returns></returns>
-    public static TextureHandle GetChainBuffer(RenderGraph renderGraph, ContextContainer frameData, TextureHandle refTexture)
+    public static TextureHandle GetNextChainBuffer(RenderGraph renderGraph, ContextContainer frameData, TextureHandle refTexture)
     {
-        //あるものを返す
         var store = frameData.GetOrCreate<FrameTempBuffers>();
-        if (store.IsCreateChainTempBuffer)
-        {
-            return store.chainTempBuffer;
-        }
-
-        //無ければ作る
-        var desc = renderGraph.GetTextureDesc(refTexture);
-        desc.msaaSamples = MSAASamples.None;
-        desc.depthBufferBits = 0;
-        desc.name = $"_TempRT";
-        store.chainTempBuffer = renderGraph.CreateTexture(desc);
-        
-        store.IsCreateChainTempBuffer = true;
-        
-        return store.chainTempBuffer;
+        return store.GetNextChainBuffer(renderGraph, refTexture);
     }
     
     /// <summary>
@@ -74,26 +102,15 @@ public static class RenderGraphPostProcessBuffer
     /// <param name="handle"></param>
     public static void CreateNamedBuffer(RenderGraph renderGraph, ContextContainer frameData, TextureHandle refTexture, string name)
     {
+        
         var desc = renderGraph.GetTextureDesc(refTexture);
         desc.msaaSamples = MSAASamples.None;
         desc.depthBufferBits = 0;
         desc.name = $"_TempRT_{name}";
         
         var store = frameData.GetOrCreate<FrameTempBuffers>();
-        store.namedBufferDicionary[name] = renderGraph.CreateTexture(desc);
+        store.NamedBufferDicionary[name] = renderGraph.CreateTexture(desc);
     }
-    
-    public static TextureHandle CreateTempBufferNamedChainTexture(RenderGraph renderGraph, ContextContainer frameData, TextureHandle refTexture, string debugName)
-    {
-        var store = frameData.GetOrCreate<FrameTempBuffers>();
-        var desc = renderGraph.GetTextureDesc(refTexture);
-        desc.msaaSamples = MSAASamples.None;
-        desc.depthBufferBits = 0;
-        desc.name = $"_TempRT_{debugName}";
-        store.chainTempBuffer = renderGraph.CreateTexture(desc);
-        return store.chainTempBuffer;
-    }    
-
     
     /// <summary>
     /// SaveされたBufferの取得
@@ -105,24 +122,19 @@ public static class RenderGraphPostProcessBuffer
     public static bool TryGetSavedBuffer(ContextContainer frameData, string name, out TextureHandle handle)
     {
         var store = frameData.GetOrCreate<FrameTempBuffers>();
-        if (!string.IsNullOrEmpty(name) && store.namedBufferDicionary.TryGetValue(name, out var h) && h.IsValid())
+        if (!string.IsNullOrEmpty(name) && store.NamedBufferDicionary.TryGetValue(name, out var h) && h.IsValid())
         {
             handle = h; return true;
         }
         handle = default; return false;
     }
-
-
-    /// <summary>
-    /// TempBufferをSetする
-    /// </summary>
-    /// <param name="frameData"></param>
-    /// <param name="handle"></param>
-    public static void SetChainBuffer(ContextContainer frameData, TextureHandle handle)
+    
+    public static void SaveNamedBuffer(ContextContainer frameData, string name, TextureHandle handle)
     {
         var store = frameData.GetOrCreate<FrameTempBuffers>();
-        store.chainTempBuffer = handle;
+        store.Save(name, handle);
     }
+    
     /// <summary>
     /// パスの実行
     /// </summary>

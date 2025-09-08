@@ -48,7 +48,6 @@ public  class CustomPostProcessPassBase : ScriptableRenderPass
             if (!string.IsNullOrEmpty(_saveName) && TryGetSavedBuffer(frameData, _saveName, out var namedDst))
             {
                 dstTextureHandle = namedDst; 
-                SetChainBuffer(frameData, dstTextureHandle);
             }
             else if (!string.IsNullOrEmpty(_saveName))
             {
@@ -57,24 +56,24 @@ public  class CustomPostProcessPassBase : ScriptableRenderPass
                 if (TryGetSavedBuffer(frameData, _saveName, out var created))
                 {
                     dstTextureHandle = created;
-                    SetChainBuffer(frameData, dstTextureHandle);
+                    SaveNamedBuffer(frameData, _saveName, dstTextureHandle);
                 }
                 else
                 {
                     // 想定外: 作成直後に取得できない → フォールバックでチェーン用を確保
-                    dstTextureHandle = GetChainBuffer(renderGraph, frameData, srcTextureHandle);
+                    dstTextureHandle = GetNextChainBuffer(renderGraph, frameData, srcTextureHandle);
                 }
             }
             else
             {
                 // Save 指定だが SaveName 未指定 → 名前付き保存はせず、既存チェーンを使う（無ければ新規）
-                dstTextureHandle = GetChainBuffer(renderGraph, frameData, srcTextureHandle);
+                dstTextureHandle = GetNextChainBuffer(renderGraph, frameData, srcTextureHandle);
             }
         }
         
         else
         {
-            dstTextureHandle = GetChainBuffer(renderGraph, frameData, srcTextureHandle);
+            dstTextureHandle = GetNextChainBuffer(renderGraph, frameData, srcTextureHandle);
         }
 
         return dstTextureHandle;
