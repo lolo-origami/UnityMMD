@@ -2,9 +2,9 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering.Universal;
-using static RenderGraphPostProcessBuffer; // RenderGraphPostProcessUtils.cs は別途作成してください
+using static LLPostProcessBufferManager; // RenderGraphPostProcessUtils.cs は別途作成してください
 
-public  class CustomPostProcessPassBase : ScriptableRenderPass
+public  class LLPostProcessPassBase : ScriptableRenderPass
 {
     protected bool _isSave;
     protected string _saveName;

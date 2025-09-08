@@ -3,9 +3,9 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering.RenderGraphModule.Util;
 using UnityEngine.Rendering.Universal;
-using static RenderGraphPostProcessBuffer;
+using static LLPostProcessBufferManager;
 
-public class FlarePass : CustomPostProcessPassBase
+public class FlarePass : LLPostProcessPassBase
 {
     private static readonly int FlareVectorId = UnityEngine.Shader.PropertyToID("_FlareVector");
     private static readonly int FlareColorId = UnityEngine.Shader.PropertyToID("_FlareColor");

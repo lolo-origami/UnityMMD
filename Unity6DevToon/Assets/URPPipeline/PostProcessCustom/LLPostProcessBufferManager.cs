@@ -4,7 +4,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering.Universal;
 
-public static class RenderGraphPostProcessBuffer
+public static class LLPostProcessBufferManager
 {
     /// <summary>
     /// フレーム中のみ有効なチェーン／名前付き一時バッファの管理。

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public class FlareRenderFeature : CustomPostProcessRFBase
+public class FlareRenderFeature : LLPostProcessRFBase
 {
     private FlarePass _pass;
 
@@ -23,7 +23,7 @@ public class FlareRenderFeature : CustomPostProcessRFBase
     {
         if (!IsActiveThisFrame(ref renderingData)) return;
         int idx = FeatureIndex();
-        var last = CustomPostProcessManager.Instance.GetLastActiveIndexThisFrame(ref renderingData);
+        var last = LLPostProcessRFManager.Instance.GetLastActiveIndexThisFrame(ref renderingData);
         bool isLast = (idx == last);
         _pass.ConfigureBufferPolicy(settings.IsRestore, settings.RestoreName, settings.IsSave, settings.SaveName, isLast);
         renderer.EnqueuePass(_pass);

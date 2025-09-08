@@ -1,55 +1,109 @@
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering.Universal;
+using static LLPostProcessBufferManager; 
 
-public class LightShaftPass : CustomPostProcessingPass<LightShaft>
+public class LightShaftPass : LLPostProcessPassBase
 {
-    private static readonly int FlareVectorId = UnityEngine.Shader.PropertyToID("_FlareVector");
-    private static readonly int FlareColorId = UnityEngine.Shader.PropertyToID("_FlareColor");
-    private static readonly int ParaVectorId = UnityEngine.Shader.PropertyToID("_ParaVector");
-    private static readonly int ParaColorId = UnityEngine.Shader.PropertyToID("_ParaColor");
-    
     private static readonly int LightShaftTempId = UnityEngine.Shader.PropertyToID("_LightShaftTempTex");
     
-    protected override string RenderTag => "LightShaft";
-
-    public LightShaftPass(RenderPassEvent renderPassEvent, Shader shader) : base(renderPassEvent, shader)
+    private class PassData
     {
-    }
-    
-    /// <summary>
-    /// Textureとfloatの設定をマテリアルに送る
-    /// </summary>
-    /// <param name="commandBuffer"></param>
-    /// <param name="renderingData"></param>
-    protected override void BeforeRender(CommandBuffer commandBuffer, ref RenderingData renderingData)
-    {
-        ref var cameraData = ref renderingData.cameraData;
-        var camera = cameraData.camera;
-            
-        Material.SetMatrix("_CamFrustum", FrustumCorners(camera));
-        Material.SetMatrix("_CamToWorld", camera.cameraToWorldMatrix);
-        Material.SetVector("_CamWorldSpace", camera.transform.position);
-        Material.SetInt("_MaxIterations", Component.MaxIterations.value);
-        Material.SetFloat("_MaxDistance", Component.MaxDistance.value);
-        Material.SetFloat("_MinDistance", Component.MinDistance.value);
-        Material.SetFloat("_Intensity", Component.Intensity.value);
+        public Material material;
+        public TextureHandle SrcTextureHandle;
+        public Vector3 camWorldSpace;
+        public Matrix4x4 frustum;
+        public Matrix4x4 camToWorld;
+        public int maxIterations;
+        public float maxDistance;
+        public float minDistance;
+        public float intensity;
     }
 
-    protected override void Render(CommandBuffer commandBuffer, ref RenderingData renderingData, RenderTargetIdentifier source, RenderTargetIdentifier dest)
+    private Material _lightShaftMaterial;
+    public Material LightShaftMaterial => _lightShaftMaterial;
+    private Shader _lightShaftShader;
+
+    public LightShaftPass(RenderPassEvent renderPassEvent, Shader shader)
     {
-        ref var cameraData = ref renderingData.cameraData;
-            
-        commandBuffer.GetTemporaryRT(LightShaftTempId,cameraData.camera.scaledPixelWidth / 4, cameraData.camera.scaledPixelHeight / 4);
-            
-        // LightShaft生成
-        commandBuffer.Blit(null, LightShaftTempId, Material, 0);
-        commandBuffer.SetGlobalTexture(LightShaftTempId, new RenderTargetIdentifier(LightShaftTempId));
-        commandBuffer.Blit(source, dest, Material, 1);
-            
-        commandBuffer.ReleaseTemporaryRT(LightShaftTempId);
+        this.renderPassEvent = renderPassEvent;
+        if (shader != null)
+        {
+            _lightShaftMaterial = CoreUtils.CreateEngineMaterial(shader);
+        }
     }
-    
+
+    public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData)
+    {
+        if (_lightShaftMaterial == null)
+        {
+            return;
+        }
+
+        // 1:カメラのカラーバッファの内容にフルスクリーンエフェクトを適⽤して⼀時的なレンダーテクスチャーに書き込み
+        // 2:⼀時的なレンダーテクスチャーの内容を⼀時的なレンダーテクスチャーにコピー
+        var resourceData = frameData.Get<UniversalResourceData>();
+        var cameraData = frameData.Get<UniversalCameraData>();
+        var volumeStack = VolumeManager.instance.stack;
+        var component = volumeStack.GetComponent<LightShaft>();
+
+        if (!cameraData.postProcessEnabled || component == null || !component.active)
+        {
+            return;
+        }
+
+        // 一時的なレンダーテクスチャを確保
+        TextureHandle srcTextureHandle = GetSrcHandle(frameData, resourceData);
+        TextureHandle dstTextureHandle = GetDstHandle(renderGraph, frameData, srcTextureHandle);
+        
+        // Pass 実行
+        using (var builder = renderGraph.AddRasterRenderPass("Light Shaft Pass", out PassData passData))
+        {
+            builder.UseTexture(srcTextureHandle, AccessFlags.Read);
+            builder.SetRenderAttachment(dstTextureHandle, 0, AccessFlags.Write);
+
+
+            passData.SrcTextureHandle = srcTextureHandle;
+            passData.material = _lightShaftMaterial;
+            var cam = cameraData.camera;
+            passData.frustum = FrustumCorners(cam);
+            passData.camToWorld = cam.cameraToWorldMatrix;
+            passData.camWorldSpace = cam.transform.position;
+            passData.maxIterations = component.MaxIterations.value;
+            passData.maxDistance = component.MaxDistance.value;
+            passData.minDistance = component.MinDistance.value;
+            passData.intensity = component.Intensity.value;
+
+
+            builder.SetRenderFunc((PassData data, RasterGraphContext ctx) =>
+            {
+                var material = data.material;
+                material.SetMatrix("_CamFrustum", data.frustum);
+                material.SetMatrix("_CamToWorld", data.camToWorld);
+                material.SetVector("_CamWorldSpace", data.camWorldSpace);
+                material.SetInt("_MaxIterations", data.maxIterations);
+                material.SetFloat("_MaxDistance", data.maxDistance);
+                material.SetFloat("_MinDistance", data.minDistance);
+                material.SetFloat("_Intensity", data.intensity);
+                ExecutePass(data.SrcTextureHandle, material, ctx, 0);
+            });
+        }
+
+        if (_isLast)
+        {
+            using (var builder = renderGraph.AddRasterRenderPass("Final Copy Pass (LightShaft)", out PassData passData))
+            {
+                builder.UseTexture(dstTextureHandle, AccessFlags.Read);
+                builder.SetRenderAttachment(resourceData.activeColorTexture, 0, AccessFlags.Write);
+                passData.SrcTextureHandle = dstTextureHandle;
+                passData.material = null;
+                builder.SetRenderFunc((PassData data, RasterGraphContext ctx) => ExecutePass(data.SrcTextureHandle, null, ctx));
+            }
+        }
+        
+    }
+
     private Matrix4x4 FrustumCorners(Camera cam)
     {
         Transform camtr = cam.transform;
@@ -66,10 +120,5 @@ public class LightShaftPass : CustomPostProcessingPass<LightShaft>
         frustumVectorsArray.SetRow(3, camtr.TransformVector(frustumCorners[2]));
             
         return frustumVectorsArray;
-    }
-
-    protected override bool IsActive()
-    {
-        return Component.IsActive;
     }
 }

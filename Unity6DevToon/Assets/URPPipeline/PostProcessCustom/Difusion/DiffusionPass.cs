@@ -3,9 +3,9 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering.Universal;
-using static RenderGraphPostProcessBuffer;
+using static LLPostProcessBufferManager;
 
-public class DiffusionPass : CustomPostProcessPassBase
+public class DiffusionPass : LLPostProcessPassBase
 {
     private static readonly int blurTexId = UnityEngine.Shader.PropertyToID("_BlurTex");
     private static readonly int contrastId = UnityEngine.Shader.PropertyToID("_Contrast");

@@ -48,7 +48,7 @@
   <ItemGroup>
     <Compile Include="Assets\CustomModelShaders\LLToon\LLToonShader.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\DepthFog\DepthFogPass.cs" />
-    <Compile Include="Assets\URPPipeline\PostProcessCustom\CustomPostProcessRFBase.cs" />
+    <Compile Include="Assets\URPPipeline\PostProcessCustom\LLPostProcessRFManager.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\LightShaft\LightShaftPass.cs" />
     <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimIKTarget.cs" />
     <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimBone.cs" />
@@ -63,24 +63,23 @@
     <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimSpeechHelper.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\LightShaft\LightShaftRenderFeature.cs" />
     <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimAnimMorphHelper.cs" />
-    <Compile Include="Assets\URPPipeline\PostProcessCustom\CustomPostProcessPassBase.cs" />
     <Compile Include="Assets\CameraVMDRoad\MMD_VmdCameraLoad.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\Flare\FlarePass.cs" />
     <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimRigidBody.cs" />
     <Compile Include="Assets\CustomModelShaders\LLToon\LLToonDetailGUI.cs" />
-    <Compile Include="Assets\URPPipeline\PostProcessCustom\RenderGraphPostProcessBuffer.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\DepthFog\DepthFog.cs" />
-    <Compile Include="Assets\URPPipeline\PostProcessCustom\CustomPostProcessingPass.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\Flare\Flare.cs" />
     <Compile Include="Assets\Script\CustomTimeline\MMD\MMDCameraBehaviour.cs" />
+    <Compile Include="Assets\URPPipeline\PostProcessCustom\LLPostProcessPassBase.cs" />
     <Compile Include="Assets\Script\CustomTimeline\MMD\MMDCameraTrack.cs" />
     <Compile Include="Assets\Script\CustomTimeline\MMD\MMDCameraClip.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\LightShaft\LightShaft.cs" />
-    <Compile Include="Assets\URPPipeline\PostProcessCustom\CustomPostProcessManager.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\Difusion\DiffusionPass.cs" />
+    <Compile Include="Assets\URPPipeline\PostProcessCustom\LLPostProcessBufferManager.cs" />
     <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimBulletPhysics.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\Difusion\Diffusion.cs" />
+    <Compile Include="Assets\URPPipeline\PostProcessCustom\LLPostProcessRFBase.cs" />
     <None Include="Assets\CustomModelShaders\LLToon\URPLLToonBGTransparent.shader" />
     <None Include="Assets\CustomModelShaders\LLToon\LLToonInput.hlsl" />
     <None Include="Assets\CustomModelShaders\PostProcessShader\DepthFogShader.shader" />

@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public interface ICustomPostProcessFeature
+public interface ILLPostProcessFeature
 {
     bool IsActiveThisFrame(ref RenderingData renderingData); // ★ そのカメラ/フレームで有効か
 }
 
-public abstract class CustomPostProcessRFBase : ScriptableRendererFeature, ICustomPostProcessFeature
+public abstract class LLPostProcessRFBase : ScriptableRendererFeature, ILLPostProcessFeature
 {
     [System.Serializable]
     public class Settings
@@ -23,7 +23,7 @@ public abstract class CustomPostProcessRFBase : ScriptableRendererFeature, ICust
     
     public override void Create()
     {
-        CustomPostProcessManager.Instance.RegisterFeature(this);
+        LLPostProcessRFManager.Instance.RegisterFeature(this);
         OnCreate();
     }
 
@@ -34,7 +34,7 @@ public abstract class CustomPostProcessRFBase : ScriptableRendererFeature, ICust
     protected override void Dispose(bool disposing)
     {
         base.Dispose(disposing);
-        CustomPostProcessManager.Instance.UnregisterFeature(this);
+        LLPostProcessRFManager.Instance.UnregisterFeature(this);
         OnDispose(disposing);
     }
     
@@ -42,7 +42,7 @@ public abstract class CustomPostProcessRFBase : ScriptableRendererFeature, ICust
     
     public abstract bool IsActiveThisFrame(ref RenderingData renderingData);
     
-    protected int FeatureIndex() => CustomPostProcessManager.Instance.GetFeatureIndex(this);
+    protected int FeatureIndex() => LLPostProcessRFManager.Instance.GetFeatureIndex(this);
     
     public bool IsActiveCheck()
     {

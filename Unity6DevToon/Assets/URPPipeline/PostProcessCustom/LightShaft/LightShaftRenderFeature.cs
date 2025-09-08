@@ -1,30 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering.Universal;
 
-public class LightShaftRenderFeature : ScriptableRendererFeature
+
+public class LightShaftRenderFeature : LLPostProcessRFBase
 {
-    [System.Serializable]
-    public class Settings
-    {
-        public RenderPassEvent renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
-        public Shader shader;
-    }
-
-    public Settings settings = new Settings();
-
     private LightShaftPass _pass;
 
-    public override void Create()
+    protected override void OnCreate()
     {
-        this.name = "LightShaftPass";
         _pass = new LightShaftPass(settings.renderPassEvent, settings.shader);
     }
-
+    
+    public override bool IsActiveThisFrame(ref RenderingData renderingData)
+    {
+        if (!renderingData.cameraData.postProcessEnabled) return false;
+        var comp = VolumeManager.instance.stack.GetComponent<LightShaft>();
+        return comp != null && comp.IsActive;
+    }
+    
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
-        //_pass.Setup(renderer.cameraColorTarget);
+        if (!IsActiveThisFrame(ref renderingData)) return;
+        int idx = FeatureIndex();
+        var last = LLPostProcessRFManager.Instance.GetLastActiveIndexThisFrame(ref renderingData);
+        bool isLast = (idx == last);
+        _pass.ConfigureBufferPolicy(settings.IsRestore, settings.RestoreName, settings.IsSave, settings.SaveName, isLast);
         renderer.EnqueuePass(_pass);
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        base.Dispose(disposing);
+        CoreUtils.Destroy(_pass?.LightShaftMaterial);
     }
 }

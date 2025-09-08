@@ -3,7 +3,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering.Universal;
 
-public class DepthFogRenderFeature : CustomPostProcessRFBase
+public class DepthFogRenderFeature : LLPostProcessRFBase
 {
     private DepthFogPass _pass;
     
@@ -24,7 +24,7 @@ public class DepthFogRenderFeature : CustomPostProcessRFBase
     {
         if (!IsActiveThisFrame(ref renderingData)) return;
         int idx = FeatureIndex();
-        var last = CustomPostProcessManager.Instance.GetLastActiveIndexThisFrame(ref renderingData);
+        var last = LLPostProcessRFManager.Instance.GetLastActiveIndexThisFrame(ref renderingData);
         bool isLast = (idx == last);
         _pass.ConfigureBufferPolicy(settings.IsRestore, settings.RestoreName, settings.IsSave, settings.SaveName, isLast);
         renderer.EnqueuePass(_pass);

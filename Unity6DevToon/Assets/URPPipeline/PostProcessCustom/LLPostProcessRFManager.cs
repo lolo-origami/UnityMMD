@@ -3,28 +3,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CustomPostProcessManager
+public class LLPostProcessRFManager
 {
-    private static CustomPostProcessManager _instance;
-    public static CustomPostProcessManager Instance
+    private static LLPostProcessRFManager _instance;
+    public static LLPostProcessRFManager Instance
     {
         get
         {
             if (_instance == null)
             {
-                _instance = new CustomPostProcessManager();
+                _instance = new LLPostProcessRFManager();
             }
             return _instance;
         }
     }
 
     // 登録されたCustomPostProcessRenderFeatureを保持するリスト
-    private readonly List<CustomPostProcessRFBase> _registeredFeatureList = new List<CustomPostProcessRFBase>();
+    private readonly List<LLPostProcessRFBase> _registeredFeatureList = new List<LLPostProcessRFBase>();
     private int _cachedFrame = -1;
     private int _cachedFirst = -1;
     private int _cachedLast = -1;    
 
-    public void RegisterFeature(CustomPostProcessRFBase feature)
+    public void RegisterFeature(LLPostProcessRFBase feature)
     {
         if (!_registeredFeatureList.Contains(feature))
         {
@@ -32,7 +32,7 @@ public class CustomPostProcessManager
         }
     }
 
-    public void UnregisterFeature(CustomPostProcessRFBase feature)
+    public void UnregisterFeature(LLPostProcessRFBase feature)
     {
         if (_registeredFeatureList.Contains(feature))
         {
@@ -41,7 +41,7 @@ public class CustomPostProcessManager
     }
 
     // 指定されたRenderFeatureのインデックスを返す
-    public int GetFeatureIndex(CustomPostProcessRFBase feature)
+    public int GetFeatureIndex(LLPostProcessRFBase feature)
     {
         return _registeredFeatureList.IndexOf(feature);
     }
@@ -59,7 +59,7 @@ public class CustomPostProcessManager
         {
             var feat = _registeredFeatureList[i];
             if (!feat.IsActiveCheck()) continue; // ☑オフ除外
-            if (feat is ICustomPostProcessFeature p && p.IsActiveThisFrame(ref renderingData))
+            if (feat is ILLPostProcessFeature p && p.IsActiveThisFrame(ref renderingData))
             {
                 if (i < first) first = i;
                 if (i > last) last = i;
@@ -73,5 +73,5 @@ public class CustomPostProcessManager
         return _cachedLast;
     }
     
-    public IReadOnlyList<CustomPostProcessRFBase> FeatureList => _registeredFeatureList;
+    public IReadOnlyList<LLPostProcessRFBase> FeatureList => _registeredFeatureList;
 }

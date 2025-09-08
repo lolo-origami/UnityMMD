@@ -2,9 +2,9 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering.Universal;
-using static RenderGraphPostProcessBuffer; // RenderGraphPostProcessUtils.cs は別途作成してください
+using static LLPostProcessBufferManager;
 
-public class DepthFogPass : CustomPostProcessPassBase
+public class DepthFogPass : LLPostProcessPassBase
 {
     // プロファイラで表示するタグ名
     private const string APPLY_FOG_PASSNAME = "Apply Depth Fog Pass";
