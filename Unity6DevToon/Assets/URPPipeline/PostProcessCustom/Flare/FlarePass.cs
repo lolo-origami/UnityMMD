@@ -80,7 +80,7 @@ public class FlarePass : LLPostProcessPassBase
         }
         
         // 最後に追加されてるパスならカメラに戻す
-        if (_isLast)
+        /*if (_isLast)
         {
             using (var builder = renderGraph.AddRasterRenderPass("Final Copy Pass (Flare)", out PassData pd))
             {
@@ -90,6 +90,6 @@ public class FlarePass : LLPostProcessPassBase
                 pd.flareMaterial = null;
                 builder.SetRenderFunc((PassData data, RasterGraphContext ctx) => ExecutePass(data.srcTextureHandle, null, ctx));
             }
-        }
+        }*/
     }
 }

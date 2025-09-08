@@ -135,7 +135,7 @@ public class DiffusionPass : LLPostProcessPassBase
         }
 
         // 最後のパスなら、カメラバッファに書き込む
-        if (_index == _maxIndex)
+        /*if (_index == _maxIndex)
         {
             using (var builder = renderGraph.AddRasterRenderPass("Final Copy Pass (Diffusion)", out PassData pd))
             {
@@ -146,5 +146,6 @@ public class DiffusionPass : LLPostProcessPassBase
                 builder.SetRenderFunc((PassData data, RasterGraphContext ctx) => ExecutePass(data.srcTextureHandle, null, ctx));
             }
         }
+        */
     }
 }

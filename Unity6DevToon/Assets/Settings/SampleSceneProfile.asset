@@ -221,6 +221,7 @@ MonoBehaviour:
   - {fileID: -592344252784950588}
   - {fileID: -3195685950322449963}
   - {fileID: 5881263965897108262}
+  - {fileID: 2834960290952053654}
 --- !u!114 &849379129802519247
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -261,6 +262,31 @@ MonoBehaviour:
   maxNits:
     m_OverrideState: 1
     m_Value: 647
+--- !u!114 &2834960290952053654
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fce55342696b8444899e8512041eaa2, type: 3}
+  m_Name: LightShaft
+  m_EditorClassIdentifier: 
+  active: 1
+  MaxIterations:
+    m_OverrideState: 1
+    m_Value: 64
+  MaxDistance:
+    m_OverrideState: 1
+    m_Value: 12
+  MinDistance:
+    m_OverrideState: 1
+    m_Value: 0.4
+  Intensity:
+    m_OverrideState: 1
+    m_Value: 0
 --- !u!114 &5881263965897108262
 MonoBehaviour:
   m_ObjectHideFlags: 3

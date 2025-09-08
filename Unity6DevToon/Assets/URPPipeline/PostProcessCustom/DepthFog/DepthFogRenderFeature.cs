@@ -26,8 +26,13 @@ public class DepthFogRenderFeature : LLPostProcessRFBase
         int idx = FeatureIndex();
         var last = LLPostProcessRFManager.Instance.GetLastActiveIndexThisFrame(ref renderingData);
         bool isLast = (idx == last);
-        _pass.ConfigureBufferPolicy(settings.IsRestore, settings.RestoreName, settings.IsSave, settings.SaveName, isLast);
+        _pass.ConfigureBufferPolicy(settings.IsRestore, settings.RestoreName, settings.IsSave, settings.SaveName);
         renderer.EnqueuePass(_pass);
+        
+        if (isLast)
+        {
+            renderer.EnqueuePass(new FinalCopyPass());
+        }
     }
 
     protected override void Dispose(bool disposing)

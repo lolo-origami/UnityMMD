@@ -61,9 +61,9 @@ public class LightShaftPass : LLPostProcessPassBase
         using (var builder = renderGraph.AddRasterRenderPass("Light Shaft Pass", out PassData passData))
         {
             builder.UseTexture(srcTextureHandle, AccessFlags.Read);
+            builder.UseTexture(resourceData.activeDepthTexture, AccessFlags.Read);
             builder.SetRenderAttachment(dstTextureHandle, 0, AccessFlags.Write);
-
-
+            
             passData.SrcTextureHandle = srcTextureHandle;
             passData.material = _lightShaftMaterial;
             var cam = cameraData.camera;
@@ -90,7 +90,7 @@ public class LightShaftPass : LLPostProcessPassBase
             });
         }
 
-        if (_isLast)
+        /*if (_isLast)
         {
             using (var builder = renderGraph.AddRasterRenderPass("Final Copy Pass (LightShaft)", out PassData passData))
             {
@@ -100,7 +100,7 @@ public class LightShaftPass : LLPostProcessPassBase
                 passData.material = null;
                 builder.SetRenderFunc((PassData data, RasterGraphContext ctx) => ExecutePass(data.SrcTextureHandle, null, ctx));
             }
-        }
+        }*/
         
     }
 

@@ -20,9 +20,6 @@ public class LLPostProcessRFManager
 
     // 登録されたCustomPostProcessRenderFeatureを保持するリスト
     private readonly List<LLPostProcessRFBase> _registeredFeatureList = new List<LLPostProcessRFBase>();
-    private int _cachedFrame = -1;
-    private int _cachedFirst = -1;
-    private int _cachedLast = -1;    
 
     public void RegisterFeature(LLPostProcessRFBase feature)
     {
@@ -48,29 +45,19 @@ public class LLPostProcessRFManager
     
     public  int  GetLastActiveIndexThisFrame(ref UnityEngine.Rendering.Universal.RenderingData renderingData)
     {
-        int f = Time.renderedFrameCount;
-        if (_cachedFrame == f)
-            return _cachedLast; // ★ 同フレームはキャッシュ
-
-
-        int first = int.MaxValue;
         int last = -1;
+
         for (int i = 0; i < _registeredFeatureList.Count; i++)
         {
             var feat = _registeredFeatureList[i];
-            if (!feat.IsActiveCheck()) continue; // ☑オフ除外
+            if (!feat.IsActiveCheck()) continue; // ☑ オフのものは無視
             if (feat is ILLPostProcessFeature p && p.IsActiveThisFrame(ref renderingData))
             {
-                if (i < first) first = i;
-                if (i > last) last = i;
+                last = i; // アクティブなもののうち一番後ろを更新
             }
         }
 
-
-        _cachedFrame = f;
-        _cachedFirst = (first == int.MaxValue) ? -1 : first;
-        _cachedLast = last;
-        return _cachedLast;
+        return last;
     }
     
     public IReadOnlyList<LLPostProcessRFBase> FeatureList => _registeredFeatureList;

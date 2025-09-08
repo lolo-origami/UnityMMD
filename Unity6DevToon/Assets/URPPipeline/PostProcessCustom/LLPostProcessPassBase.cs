@@ -12,15 +12,15 @@ public  class LLPostProcessPassBase : ScriptableRenderPass
     protected bool _isRestore; 
     protected string _restoreName;
 
-    protected bool _isLast;
+    //protected bool _isLast;
     
-    public void ConfigureBufferPolicy(bool isRestore, string restoreName, bool isSave, string saveName, bool isLast)
+    public void ConfigureBufferPolicy(bool isRestore, string restoreName, bool isSave, string saveName)
     { 
         _isRestore = isRestore; 
         _restoreName = restoreName; 
         _isSave = isSave; 
         _saveName = saveName; 
-        _isLast = isLast; 
+        //_isLast = isLast; 
     }
 
     /// <summary>

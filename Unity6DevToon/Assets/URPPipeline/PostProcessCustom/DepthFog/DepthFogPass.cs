@@ -64,14 +64,12 @@ public class DepthFogPass : LLPostProcessPassBase
         TextureHandle srcTextureHandle = GetSrcHandle(frameData, resourceData);
         TextureHandle dstTextureHandle = GetDstHandle(renderGraph, frameData, srcTextureHandle);
         
-        // Depthテクスチャ確保
-        var cameraDepthTextureHandle = resourceData.activeDepthTexture;
         
         // 描画
         using (IRasterRenderGraphBuilder builder = renderGraph.AddRasterRenderPass(APPLY_FOG_PASSNAME, out PassData passData, profilingSampler))
         {
             builder.UseTexture(srcTextureHandle, AccessFlags.Read);//src
-            builder.UseTexture(cameraDepthTextureHandle, AccessFlags.Read);
+            builder.UseTexture(resourceData.activeDepthTexture, AccessFlags.Read); //depth
             builder.SetRenderAttachment(dstTextureHandle, 0, AccessFlags.Write);//dest
             passData.srcTextureHandle = srcTextureHandle;
             passData.depthFogMaterial = _depthFogMaterial;
@@ -87,23 +85,6 @@ public class DepthFogPass : LLPostProcessPassBase
                 ExecutePass(passData.srcTextureHandle, passData.depthFogMaterial, graphContext);
             });
         }
-        
-        // 最後に追加されてるパスならカメラに戻す
-        if (_isLast)
-        {
-            using (IRasterRenderGraphBuilder builder = renderGraph.AddRasterRenderPass(COPY_FOG_TO_SCREEN_PASSNAME, out PassData passData, profilingSampler))
-            {
-                builder.UseTexture(dstTextureHandle, AccessFlags.Read);//src
-                builder.SetRenderAttachment(resourceData.activeColorTexture, 0, AccessFlags.Write);//dest
-                passData.srcTextureHandle = dstTextureHandle;
-                passData.depthFogMaterial = null;
-                builder.SetRenderFunc((PassData passData, RasterGraphContext graphContext) =>
-                {
-                    ExecutePass(passData.srcTextureHandle, null, graphContext);
-                });
-            }
-        }     
-      
     }
     
 }

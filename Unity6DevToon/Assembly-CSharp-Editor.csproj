@@ -909,11 +909,11 @@
     <Reference Include="Unity.PlasticSCM.Editor">
       <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.PlasticSCM.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Multiplayer.Center.Editor">
-      <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.Multiplayer.Center.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.MemoryProfiler">
       <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.MemoryProfiler.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Multiplayer.Center.Editor">
+      <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.Multiplayer.Center.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mathematics.Editor">
       <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
