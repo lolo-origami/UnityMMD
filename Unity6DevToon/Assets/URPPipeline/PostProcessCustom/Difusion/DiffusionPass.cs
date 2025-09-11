@@ -133,19 +133,5 @@ public class DiffusionPass : LLPostProcessPassBase
                 ExecutePass(data.srcTextureHandle, data.material, context, 3);
             });
         }
-
-        // 最後のパスなら、カメラバッファに書き込む
-        /*if (_index == _maxIndex)
-        {
-            using (var builder = renderGraph.AddRasterRenderPass("Final Copy Pass (Diffusion)", out PassData pd))
-            {
-                builder.UseTexture(dstTextureHandle, AccessFlags.Read);
-                builder.SetRenderAttachment(resourceData.activeColorTexture, 0, AccessFlags.Write);
-                pd.srcTextureHandle = dstTextureHandle;
-                pd.material = null; // コピーなのでマテリアルは不要
-                builder.SetRenderFunc((PassData data, RasterGraphContext ctx) => ExecutePass(data.srcTextureHandle, null, ctx));
-            }
-        }
-        */
     }
 }

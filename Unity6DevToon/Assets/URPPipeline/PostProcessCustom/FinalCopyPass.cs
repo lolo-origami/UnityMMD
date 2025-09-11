@@ -16,7 +16,7 @@ public class FinalCopyPass : ScriptableRenderPass
 
     public FinalCopyPass()
     {
-        renderPassEvent = RenderPassEvent.AfterRenderingPostProcessing;
+        renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
     }
 
     public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData)

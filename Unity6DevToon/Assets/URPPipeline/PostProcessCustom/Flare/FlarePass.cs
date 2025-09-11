@@ -78,18 +78,5 @@ public class FlarePass : LLPostProcessPassBase
                 ExecutePass(data.srcTextureHandle, data.flareMaterial, graphContext);
             });
         }
-        
-        // 最後に追加されてるパスならカメラに戻す
-        /*if (_isLast)
-        {
-            using (var builder = renderGraph.AddRasterRenderPass("Final Copy Pass (Flare)", out PassData pd))
-            {
-                builder.UseTexture(dstTextureHandle, AccessFlags.Read);
-                builder.SetRenderAttachment(resourceData.activeColorTexture, 0, AccessFlags.Write);
-                pd.srcTextureHandle = dstTextureHandle;
-                pd.flareMaterial = null;
-                builder.SetRenderFunc((PassData data, RasterGraphContext ctx) => ExecutePass(data.srcTextureHandle, null, ctx));
-            }
-        }*/
     }
 }
