@@ -4,7 +4,7 @@ using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering.Universal;
 using static LLPostProcessBufferManager; 
 
-public class LightShaftPass : LLPostProcessPassBase
+public class ScreenSpaceLightShaftPass : LLPostProcessPassBase
 {
     private static readonly int LightShaftTempId = UnityEngine.Shader.PropertyToID("_LightShaftTempTex");
     private static readonly int CamToWorldId = Shader.PropertyToID("_CamToWorld");
@@ -45,7 +45,7 @@ public class LightShaftPass : LLPostProcessPassBase
     public Material LightShaftMaterial => _lightShaftMaterial;
     private Shader _lightShaftShader;
 
-    public LightShaftPass(RenderPassEvent renderPassEvent, Shader shader)
+    public ScreenSpaceLightShaftPass(RenderPassEvent renderPassEvent, Shader shader)
     {
         this.renderPassEvent = renderPassEvent;
         if (shader != null)

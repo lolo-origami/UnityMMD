@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-6624973774310879716
+--- !u!114 &-8665259184149149547
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d21bf303581e20c4aa09ad0973f923ee, type: 3}
-  m_Name: LightShaftRenderFeature
+  m_Name: ScreenSpaceLightShaftRenderFeature
   m_EditorClassIdentifier: 
   m_Active: 1
   settings:
@@ -68,8 +68,8 @@ MonoBehaviour:
   - {fileID: -5792080647792747134}
   - {fileID: 2807732030523044294}
   - {fileID: 1108160615963672661}
-  - {fileID: -6624973774310879716}
-  m_RendererFeatureMap: 821de6ad56659eafc6f1cfdf6711f72655c0977c35fa600f1cceebef735d0fa4
+  - {fileID: -8665259184149149547}
+  m_RendererFeatureMap: 821de6ad56659eafc6f1cfdf6711f72655c0977c35fa600f954819baaed0be87
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}

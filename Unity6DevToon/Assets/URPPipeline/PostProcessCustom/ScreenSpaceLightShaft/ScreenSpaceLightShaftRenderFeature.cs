@@ -4,13 +4,13 @@ using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering.Universal;
 
 
-public class LightShaftRenderFeature : LLPostProcessRFBase
+public class ScreenSpaceLightShaftRenderFeature : LLPostProcessRFBase
 {
-    private LightShaftPass _pass;
+    private ScreenSpaceLightShaftPass _pass;
 
     protected override void OnCreate()
     {
-        _pass = new LightShaftPass(settings.renderPassEvent, settings.shader);
+        _pass = new ScreenSpaceLightShaftPass(settings.renderPassEvent, settings.shader);
     }
     
     public override bool IsActiveThisFrame(ref RenderingData renderingData)
