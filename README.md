@@ -137,7 +137,7 @@ RenderFeatureの登録順で実行順が自動入れ替わります。
 ## SSRaymarchLightShaft
 
 スクリーンスペースでレイマーチ処理を行ってゴッドレイ効果を出すものです。
-遮蔽物が画面内にあれば、その後ろで光がさえぎられている効果を足せます。
+遮蔽物が画面内にあれば、その後ろで光がさえぎられている効果を足せます。レイマーチなので重たいです。
 
 - **RayColor**: レイの基本色。距離に応じてシーンカラーとブレンドされる色。  
 - **Intensity**：レイの強さ
@@ -150,4 +150,11 @@ RenderFeatureの登録順で実行順が自動入れ替わります。
 - **NoiseScale**:ノイズテクスチャのスケール。  
 
 <img width="309" height="553" alt="image" src="https://github.com/user-attachments/assets/7ba09c8a-30b0-42ea-882d-4e26b5fc2add" /> <img width="309" height="554" alt="image" src="https://github.com/user-attachments/assets/58afbe7d-6203-4b13-a174-7ee312af5730" />
+
+## SSRaymarchFog
+
+スクリーンスペースでレイマーチ処理を行ってゴッドレイ効果を出すものです。
+Depthだけで行うフォグよりも、遮蔽物とフォグがかかる箇所がくっきりしています。レイマーチなので重たいです。
+
+<img width="313" height="552" alt="image" src="https://github.com/user-attachments/assets/2e3df06f-9bf0-4a64-9ec2-f272ada1b4d1" /> <img width="310" height="554" alt="image" src="https://github.com/user-attachments/assets/beaaac24-352d-4420-9186-3e9aef7cfe42" />
 
