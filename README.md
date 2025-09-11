@@ -1,4 +1,4 @@
-# LLToon概要
+<img width="309" height="553" alt="image" src="https://github.com/user-attachments/assets/bfee23f5-dcef-4090-a8ef-167a610dc6a9" /># LLToon概要
 
 トゥーンシェーダーは、より柔軟でイラスト表現を目指した様々な機能を持つオリジナルのシェーダーです。
 基本のトゥーンライティングにどんどん光を加算する、という思想で作成されています。暗部での情報量を増やしやすいのが特徴です。
@@ -133,4 +133,21 @@ RenderFeatureの登録順で実行順が自動入れ替わります。
 合成は、加算、スクリーン、比較(明)が選べます。
 
 <img width="314" height="555" alt="image" src="https://github.com/user-attachments/assets/2b297674-ed36-4981-b6f6-d4a161b7a08d" /> <img width="313" height="552" alt="image" src="https://github.com/user-attachments/assets/0151c260-71e4-4293-aeb5-08a43870b763" />
+
+## SSRaymarchLightShaft
+
+スクリーンスペースでレイマーチ処理を行ってゴッドレイ効果を出すものです。
+遮蔽物が画面内にあれば、その後ろで光がさえぎられている効果を足せます。
+
+- **RayColor**: レイの基本色。距離に応じてシーンカラーとブレンドされる色。  
+- **Intensity**：レイの強さ
+- **MaxIterations**：サンプリング回数。大きくするとフォグの精度が上がるが、処理コストも増える。  
+- **MinDistance**:カメラからレイマーチ開始距離。
+- **MaxDistance**:レイマーチ終了距離。  
+- **Decay**:レイを減衰させる係数。1.0 で減衰なし、0.9 などで徐々に薄れていく。  
+- **FalloffPower**:密度変化を制御するカーブ。小さい値で均一、大きくすると距離に応じて急激に濃くなる。  
+- **JitterStrength**:サンプリング位置にランダムな揺らぎを与える。  
+- **NoiseScale**:ノイズテクスチャのスケール。  
+
+<img width="309" height="553" alt="image" src="https://github.com/user-attachments/assets/7ba09c8a-30b0-42ea-882d-4e26b5fc2add" /> <img width="309" height="554" alt="image" src="https://github.com/user-attachments/assets/58afbe7d-6203-4b13-a174-7ee312af5730" />
 
