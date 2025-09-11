@@ -156,5 +156,6 @@ RenderFeatureの登録順で実行順が自動入れ替わります。
 スクリーンスペースでレイマーチ処理を行ってゴッドレイ効果を出すものです。
 Depthだけで行うフォグよりも、遮蔽物とフォグがかかる箇所がくっきりしています。レイマーチなので重たいです。
 
-<img width="313" height="552" alt="image" src="https://github.com/user-attachments/assets/2e3df06f-9bf0-4a64-9ec2-f272ada1b4d1" /> <img width="310" height="554" alt="image" src="https://github.com/user-attachments/assets/beaaac24-352d-4420-9186-3e9aef7cfe42" />
+<img width="313" height="552" alt="image" src="https://github.com/user-attachments/assets/2e3df06f-9bf0-4a64-9ec2-f272ada1b4d1" /> <img width="309" height="549" alt="image" src="https://github.com/user-attachments/assets/306691fc-99e2-4f3d-b4fb-4400501c2045" />
+
 
