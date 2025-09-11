@@ -4,7 +4,7 @@ using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering.Universal;
 using static LLPostProcessBufferManager; 
 
-public class ScreenSpaceLightShaftPass : LLPostProcessPassBase
+public class SSRaymarchLightShaftPass : LLPostProcessPassBase
 {
     private static readonly int LightShaftTempId = UnityEngine.Shader.PropertyToID("_LightShaftTempTex");
     private static readonly int CamToWorldId = Shader.PropertyToID("_CamToWorld");
@@ -45,7 +45,7 @@ public class ScreenSpaceLightShaftPass : LLPostProcessPassBase
     public Material LightShaftMaterial => _lightShaftMaterial;
     private Shader _lightShaftShader;
 
-    public ScreenSpaceLightShaftPass(RenderPassEvent renderPassEvent, Shader shader)
+    public SSRaymarchLightShaftPass(RenderPassEvent renderPassEvent, Shader shader)
     {
         this.renderPassEvent = renderPassEvent;
         if (shader != null)
@@ -66,7 +66,7 @@ public class ScreenSpaceLightShaftPass : LLPostProcessPassBase
         var resourceData = frameData.Get<UniversalResourceData>();
         var cameraData = frameData.Get<UniversalCameraData>();
         var volumeStack = VolumeManager.instance.stack;
-        var component = volumeStack.GetComponent<LightShaft>();
+        var component = volumeStack.GetComponent<SSRaymarchLightShaft>();
 
         if (!cameraData.postProcessEnabled || component == null || !component.active)
         {

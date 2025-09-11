@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8665259184149149547
+--- !u!114 &-8901272090011551647
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d21bf303581e20c4aa09ad0973f923ee, type: 3}
-  m_Name: ScreenSpaceLightShaftRenderFeature
+  m_Name: SSRaymarchLightShaftRenderFeature
   m_EditorClassIdentifier: 
   m_Active: 1
   settings:
     renderPassEvent: 550
-    shader: {fileID: 4800000, guid: 1c2ff0095b321fc46883ce31122b893f, type: 3}
+    shader: {fileID: 0}
     IsSave: 0
     SaveName: 
     IsRestore: 0
@@ -68,8 +68,8 @@ MonoBehaviour:
   - {fileID: -5792080647792747134}
   - {fileID: 2807732030523044294}
   - {fileID: 1108160615963672661}
-  - {fileID: -8665259184149149547}
-  m_RendererFeatureMap: 821de6ad56659eafc6f1cfdf6711f72655c0977c35fa600f954819baaed0be87
+  - {fileID: -8901272090011551647}
+  m_RendererFeatureMap: 821de6ad56659eafc6f1cfdf6711f72655c0977c35fa600f6138c3f131547884
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}

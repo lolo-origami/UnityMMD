@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using Color = UnityEngine.Color;
 
-public class LightShaft : VolumeComponent
+public class SSRaymarchLightShaft : VolumeComponent
 {
     public IntParameter MaxIterations = new IntParameter(64);
     public FloatParameter MaxDistance = new FloatParameter(12f);

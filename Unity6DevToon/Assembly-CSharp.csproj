@@ -46,23 +46,22 @@
     <Analyzer Include="C:\Program Files\Unity\6000.0.53f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\URPPipeline\PostProcessCustom\SSRaymarchLightShaft\SSRaymarchLightShaft.cs" />
     <Compile Include="Assets\CustomModelShaders\LLToon\LLToonShader.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\DepthFog\DepthFogPass.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\LLPostProcessRFManager.cs" />
     <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimIKTarget.cs" />
     <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimBone.cs" />
     <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimMorphHelper.cs" />
-    <Compile Include="Assets\URPPipeline\PostProcessCustom\ScreenSpaceLightShaft\ScreenSpaceLightShaftRenderFeature.cs" />
-    <Compile Include="Assets\URPPipeline\PostProcessCustom\ScreenSpaceLightShaft\ScreenSpaceLightShaftPass.cs" />
     <Compile Include="Assets\URPPipeline\PassScript\GroundReflectionPassFeature.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\DepthFog\DepthFogRenderFeature.cs" />
     <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimModel.cs" />
     <Compile Include="Assets\Script\CustomTimeline\MMD\MMDCameraBehaviourDrawer.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\Flare\FlareRenderFeature.cs" />
     <Compile Include="Assets\Script\CustomTimeline\MMD\MMDCameraMixer.cs" />
-    <Compile Include="Assets\URPPipeline\PostProcessCustom\ScreenSpaceLightShaft\ScreenSpaceLightShaft.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\FinalCopyPass.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\Difusion\DiffusionRenderFeature.cs" />
+    <Compile Include="Assets\URPPipeline\PostProcessCustom\SSRaymarchLightShaft\SSRaymarchLightShaftRenderFeature.cs" />
     <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimSpeechHelper.cs" />
     <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimAnimMorphHelper.cs" />
     <Compile Include="Assets\CameraVMDRoad\MMD_VmdCameraLoad.cs" />
@@ -73,6 +72,7 @@
     <Compile Include="Assets\URPPipeline\PostProcessCustom\DepthFog\DepthFog.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\Flare\Flare.cs" />
     <Compile Include="Assets\Script\CustomTimeline\MMD\MMDCameraBehaviour.cs" />
+    <Compile Include="Assets\URPPipeline\PostProcessCustom\SSRaymarchLightShaft\SSRaymarchLightShaftPass.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\LLPostProcessPassBase.cs" />
     <Compile Include="Assets\Script\CustomTimeline\MMD\MMDCameraTrack.cs" />
     <Compile Include="Assets\Script\CustomTimeline\MMD\MMDCameraClip.cs" />
@@ -96,7 +96,7 @@
     <None Include="Assets\CustomModelShaders\LLToon\URPLLToonBG.shader" />
     <None Include="Assets\CustomModelShaders\PostProcessShader\FlareShader.shader" />
     <None Include="Assets\Model\Lilise\lili\彩澄りりせ.MMD4Mecanim.xml" />
-    <None Include="Assets\CustomModelShaders\PostProcessShader\ScreenSpaceLightShaftShader.shader" />
+    <None Include="Assets\CustomModelShaders\PostProcessShader\SSRaymarchLightShaftShader.shader" />
     <None Include="Assets\Stage\kotami stage070\りどみ.txt" />
     <None Include="Assets\CustomModelShaders\LLToon\LLToonForwardLighting.hlsl" />
     <None Include="Assets\CustomModelShaders\LLToon\LLToonLighting.hlsl" />

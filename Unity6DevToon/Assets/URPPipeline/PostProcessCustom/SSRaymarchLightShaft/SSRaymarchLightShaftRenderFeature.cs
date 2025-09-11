@@ -4,19 +4,19 @@ using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering.Universal;
 
 
-public class ScreenSpaceLightShaftRenderFeature : LLPostProcessRFBase
+public class SSRaymarchLightShaftRenderFeature : LLPostProcessRFBase
 {
-    private ScreenSpaceLightShaftPass _pass;
+    private SSRaymarchLightShaftPass _pass;
 
     protected override void OnCreate()
     {
-        _pass = new ScreenSpaceLightShaftPass(settings.renderPassEvent, settings.shader);
+        _pass = new SSRaymarchLightShaftPass(settings.renderPassEvent, settings.shader);
     }
     
     public override bool IsActiveThisFrame(ref RenderingData renderingData)
     {
         if (!renderingData.cameraData.postProcessEnabled) return false;
-        var comp = VolumeManager.instance.stack.GetComponent<LightShaft>();
+        var comp = VolumeManager.instance.stack.GetComponent<SSRaymarchLightShaft>();
         return comp != null && comp.IsActive;
     }
     

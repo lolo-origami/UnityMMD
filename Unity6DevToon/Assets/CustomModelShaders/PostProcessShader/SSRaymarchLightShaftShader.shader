@@ -1,4 +1,4 @@
-Shader "Hidden/LightShaftShader"
+Shader "Hidden/SSRaymarchLightShaft"
 {
     Properties
     {
