@@ -15,7 +15,7 @@ MonoBehaviour:
   m_Active: 1
   settings:
     renderPassEvent: 550
-    shader: {fileID: 0}
+    shader: {fileID: 4800000, guid: 1c2ff0095b321fc46883ce31122b893f, type: 3}
     IsSave: 0
     SaveName: 
     IsRestore: 0
@@ -36,6 +36,26 @@ MonoBehaviour:
   settings:
     renderPassEvent: 550
     shader: {fileID: 4800000, guid: 52535ccf8fb45684496d77cd824fe28c, type: 3}
+    IsSave: 0
+    SaveName: 
+    IsRestore: 0
+    RestoreName: 
+--- !u!114 &-4013711050292897865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbd25f1b6a26fc047a206935369b939a, type: 3}
+  m_Name: SSRaymarchFogFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    renderPassEvent: 550
+    shader: {fileID: 4800000, guid: dd6ffbfa1b5dbc646be932f23e417542, type: 3}
     IsSave: 0
     SaveName: 
     IsRestore: 0
@@ -69,7 +89,8 @@ MonoBehaviour:
   - {fileID: 2807732030523044294}
   - {fileID: 1108160615963672661}
   - {fileID: -8901272090011551647}
-  m_RendererFeatureMap: 821de6ad56659eafc6f1cfdf6711f72655c0977c35fa600f6138c3f131547884
+  - {fileID: -4013711050292897865}
+  m_RendererFeatureMap: 821de6ad56659eafc6f1cfdf6711f72655c0977c35fa600f6138c3f131547884b7573bb8106f4cc8
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}

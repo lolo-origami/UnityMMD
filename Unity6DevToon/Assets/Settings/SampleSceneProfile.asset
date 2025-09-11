@@ -47,6 +47,31 @@ MonoBehaviour:
   dirtIntensity:
     m_OverrideState: 0
     m_Value: 0
+--- !u!114 &-7651550607088960668
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a682a3ecc2bf4a4c923490dae6e9865, type: 3}
+  m_Name: SSRaymarchFog
+  m_EditorClassIdentifier: 
+  active: 0
+  MaxIterations:
+    m_OverrideState: 1
+    m_Value: 64
+  MaxDistance:
+    m_OverrideState: 1
+    m_Value: 50
+  MinDistance:
+    m_OverrideState: 1
+    m_Value: 0.1
+  Intensity:
+    m_OverrideState: 1
+    m_Value: 7.82
 --- !u!114 &-4742363082878621170
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -133,7 +158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58bb772d13f454f46a77ee2a85eacbd6, type: 3}
   m_Name: Flare
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   flareColor:
     m_OverrideState: 1
     m_Value: {r: 1, g: 0.3537736, b: 0.3537736, a: 1}
@@ -195,10 +220,10 @@ MonoBehaviour:
   active: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 3
+    m_Value: 25.2
   fogColor:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 0.8726415, b: 0.8726415, a: 1}
+    m_Value: {r: 1, g: 0.8745098, b: 0.8745098, a: 1}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,6 +247,7 @@ MonoBehaviour:
   - {fileID: -3195685950322449963}
   - {fileID: 5881263965897108262}
   - {fileID: 7562313560287028309}
+  - {fileID: -7651550607088960668}
 --- !u!114 &849379129802519247
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -318,7 +344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fce55342696b8444899e8512041eaa2, type: 3}
   m_Name: LightShaft
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   MaxIterations:
     m_OverrideState: 1
     m_Value: 64
@@ -330,10 +356,10 @@ MonoBehaviour:
     m_Value: 0.4
   Intensity:
     m_OverrideState: 1
-    m_Value: 5.8
+    m_Value: 10
   RayColor:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 0.4640533, b: 0.07843137, a: 1}
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
   Decay:
     m_OverrideState: 1
     m_Value: 1
@@ -345,7 +371,7 @@ MonoBehaviour:
     m_Value: 0
   NoiseScale:
     m_OverrideState: 1
-    m_Value: 0.92
+    m_Value: 0.1
   BlueNoiseTex:
     m_OverrideState: 1
     m_Value: {fileID: 2800000, guid: c70f15321c3035249a323dc30bd656e6, type: 3}

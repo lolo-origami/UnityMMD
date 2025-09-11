@@ -39,7 +39,7 @@ Shader "Hidden/SSRaymarchLightShaft"
     SubShader
     {
         Cull Off ZWrite Off ZTest Always
-
+        
         // --- Pass 0: Raymarch ---
         Pass
         {

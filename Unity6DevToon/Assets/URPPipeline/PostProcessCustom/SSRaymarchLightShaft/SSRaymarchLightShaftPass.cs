@@ -68,7 +68,7 @@ public class SSRaymarchLightShaftPass : LLPostProcessPassBase
         var volumeStack = VolumeManager.instance.stack;
         var component = volumeStack.GetComponent<SSRaymarchLightShaft>();
 
-        if (!cameraData.postProcessEnabled || component == null || !component.active)
+        if (!cameraData.postProcessEnabled || component == null || !component.IsActive)
         {
             return;
         }
