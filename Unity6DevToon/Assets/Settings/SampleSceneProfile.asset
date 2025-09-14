@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2db86121404754db890f4c8dfe81b2, type: 3}
   m_Name: Bloom
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   skipIterations:
     m_OverrideState: 1
     m_Value: 0
@@ -84,7 +84,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
   m_Name: DepthOfField
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   mode:
     m_OverrideState: 1
     m_Value: 2
@@ -118,6 +118,41 @@ MonoBehaviour:
   bladeRotation:
     m_OverrideState: 1
     m_Value: 0
+--- !u!114 &-3682817929865172515
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baaafbe3331af9040896f190e0a8ad21, type: 3}
+  m_Name: GuidedFilter
+  m_EditorClassIdentifier: 
+  active: 1
+  Radius:
+    m_OverrideState: 1
+    m_Value: 4
+  Eps:
+    m_OverrideState: 1
+    m_Value: 0.0141
+  GuideMode:
+    m_OverrideState: 1
+    m_Value: 1
+  GuideTex:
+    m_OverrideState: 1
+    m_Value: {fileID: 0}
+    dimension: 1
+  DepthThreshold:
+    m_OverrideState: 1
+    m_Value: 0.534
+  DepthFeather:
+    m_OverrideState: 1
+    m_Value: 0.11
+  DepthColorBlend:
+    m_OverrideState: 1
+    m_Value: 0.218
 --- !u!114 &-3357603926938260329
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -130,7 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 899c54efeace73346a0a16faa3afe726, type: 3}
   m_Name: Vignette
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   color:
     m_OverrideState: 1
     m_Value: {r: 0, g: 0, b: 0, a: 1}
@@ -189,13 +224,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66f335fb1ffd8684294ad653bf1c7564, type: 3}
   m_Name: ColorAdjustments
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   postExposure:
     m_OverrideState: 1
     m_Value: 0
   contrast:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 22
   colorFilter:
     m_OverrideState: 0
     m_Value: {r: 1, g: 1, b: 1, a: 1}
@@ -204,7 +239,7 @@ MonoBehaviour:
     m_Value: 0
   saturation:
     m_OverrideState: 1
-    m_Value: 40
+    m_Value: 25
 --- !u!114 &-592344252784950588
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -217,10 +252,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd5f099a8b8031841946537dad50669f, type: 3}
   m_Name: DepthFog
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 25.2
+    m_Value: 1
   fogColor:
     m_OverrideState: 1
     m_Value: {r: 1, g: 0.8745098, b: 0.8745098, a: 1}
@@ -248,6 +283,7 @@ MonoBehaviour:
   - {fileID: 5881263965897108262}
   - {fileID: 7562313560287028309}
   - {fileID: -7651550607088960668}
+  - {fileID: -3682817929865172515}
 --- !u!114 &849379129802519247
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -260,7 +296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97c23e3b12dc18c42a140437e53d3951, type: 3}
   m_Name: Tonemapping
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   mode:
     m_OverrideState: 1
     m_Value: 1
@@ -300,7 +336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee747d883bc857445962aceb09885737, type: 3}
   m_Name: Diffusion
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   Contrast:
     m_OverrideState: 1
     m_Value: 0.025

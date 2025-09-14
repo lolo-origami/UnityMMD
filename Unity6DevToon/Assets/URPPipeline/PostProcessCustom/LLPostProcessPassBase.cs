@@ -78,4 +78,22 @@ public  class LLPostProcessPassBase : ScriptableRenderPass
 
         return dstTextureHandle;
     }
+    
+    /// <summary>
+    /// TextureHandle のサイズから texelSize (1/width, 1/height) を求める
+    /// </summary>
+    protected Vector2 GetTexelSize(RenderGraph renderGraph, TextureHandle textureHandle)
+    {
+        if (!textureHandle.IsValid())
+        {
+            return Vector2.zero;
+        }
+
+        var desc = renderGraph.GetTextureDesc(textureHandle);
+
+        int width = Mathf.Max(1, desc.width);
+        int height = Mathf.Max(1, desc.height);
+
+        return new Vector2(1.0f / width, 1.0f / height);
+    }    
 }
