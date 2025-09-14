@@ -133,9 +133,19 @@ RenderFeatureの登録順で実行順が自動入れ替わります。
 
 ## Diffusion
 
+<img width="352" height="628" alt="image" src="https://github.com/user-attachments/assets/d13c8c09-a9ac-4477-ac81-d761ceb3d2d4" /> <img width="353" height="628" alt="image" src="https://github.com/user-attachments/assets/ab0f6cdf-1b2f-4f0b-9556-557023c2f30e" />
+
+<img width="470" height="136" alt="image" src="https://github.com/user-attachments/assets/66178d0e-d312-4ec5-ad8a-42e962d4fd0f" />
+
+
 光が拡散するような画像加工を行います。
 コントラストを調整し、縦横のブラーをかけた後に合成を行います。
-合成は、加算、スクリーン、比較(明)が選べます。
+合成は、加算、スクリーン、覆い焼きカラー、比較(明)が選べます。
+
+- **Contrast**:合成前の元画像のコントラストを強める  
+- **Intensity**:Diffusionの強さ  
+- **BlurSize**:ぼかしの強さ  
+- **BlendMode**:合成モード
 
 ## SSRaymarchLightShaft
 
