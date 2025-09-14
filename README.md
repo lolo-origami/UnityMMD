@@ -101,7 +101,7 @@ UniToonをベースにしたアウトライン制御です。
 - **OutlineSaturation**: アウトラインの彩度を調整します。
 - **OutlineBrightness**: アウトラインの明るさを調整します。
 
-# CustomPostProcess概要
+# LLPostProcess概要
 
 独自のVolumePostProcessです。
 URPのRendererに使いたいPostProcessを登録してください。
