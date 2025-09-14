@@ -1,4 +1,4 @@
-<img width="309" height="553" alt="image" src="https://github.com/user-attachments/assets/bfee23f5-dcef-4090-a8ef-167a610dc6a9" /># LLToon概要
+# LLToon概要
 
 トゥーンシェーダーは、より柔軟でイラスト表現を目指した様々な機能を持つオリジナルのシェーダーです。
 基本のトゥーンライティングにどんどん光を加算する、という思想で作成されています。暗部での情報量を増やしやすいのが特徴です。
