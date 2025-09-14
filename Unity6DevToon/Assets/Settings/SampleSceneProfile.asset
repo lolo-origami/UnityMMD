@@ -336,13 +336,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee747d883bc857445962aceb09885737, type: 3}
   m_Name: Diffusion
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   Contrast:
     m_OverrideState: 1
-    m_Value: 0.025
+    m_Value: 0.15
   Intensity:
     m_OverrideState: 1
-    m_Value: 0.258
+    m_Value: 0.29
+  BlurSize:
+    m_OverrideState: 1
+    m_Value: 1.4
 --- !u!114 &7391319092446245454
 MonoBehaviour:
   m_ObjectHideFlags: 3

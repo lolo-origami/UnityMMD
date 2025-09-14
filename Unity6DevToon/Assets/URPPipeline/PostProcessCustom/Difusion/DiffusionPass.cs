@@ -7,9 +7,7 @@ using static LLPostProcessBufferManager;
 
 public class DiffusionPass : LLPostProcessPassBase
 {
-    private static readonly int blurTexId = UnityEngine.Shader.PropertyToID("_BlurTex");
-    private static readonly int contrastId = UnityEngine.Shader.PropertyToID("_Contrast");
-    private static readonly int intensityId = UnityEngine.Shader.PropertyToID("_Intensity");
+    private static readonly int _contrastId = UnityEngine.Shader.PropertyToID("_Contrast");
         
     private readonly Material _diffusionMaterial;
     public Material DiffusionMaterial => _diffusionMaterial;
@@ -25,6 +23,9 @@ public class DiffusionPass : LLPostProcessPassBase
         public TextureHandle blurBuffer2;
         public float contrast;
         public float intensity;
+        public float blurSize;
+        public Vector2 blurTexelSize;
+        public int blendMode;
     }
     
     public DiffusionPass(RenderPassEvent renderPassEvent, Shader shader)
@@ -75,11 +76,14 @@ public class DiffusionPass : LLPostProcessPassBase
             passData.material = _diffusionMaterial;
             passData.srcTextureHandle = srcTextureHandle;
             passData.contrast = comp.Contrast.value;
+            passData.blurSize = comp.BlurSize.value;
+            passData.blurTexelSize = GetTexelSize(renderGraph, blurBuffer1);            
 
             builder.SetRenderFunc((PassData data, RasterGraphContext context) =>
             {
-                //data.material.SetTexture(_cameraMainTextureId, passData.srcTextureHandle);
-                data.material.SetFloat(contrastId, data.contrast);
+                data.material.SetFloat(_blurSizeId, data.blurSize);
+                data.material.SetVector(_blurTexelSizeId, data.blurTexelSize);
+                data.material.SetFloat(_contrastId, data.contrast);
                 ExecutePass(data.srcTextureHandle, data.material, context, 0);
             });
         }
@@ -92,9 +96,13 @@ public class DiffusionPass : LLPostProcessPassBase
             
             passData.material = _diffusionMaterial;
             passData.srcTextureHandle = blurBuffer1;
-
+            passData.blurSize = comp.BlurSize.value;
+            passData.blurTexelSize = GetTexelSize(renderGraph, blurBuffer2);
+            
             builder.SetRenderFunc((PassData data, RasterGraphContext context) =>
             {
+                data.material.SetFloat(_blurSizeId, data.blurSize);
+                data.material.SetVector(_blurTexelSizeId, data.blurTexelSize);
                 ExecutePass(data.srcTextureHandle, data.material, context, 1);
             });
         }
@@ -125,11 +133,13 @@ public class DiffusionPass : LLPostProcessPassBase
             passData.srcTextureHandle = srcTextureHandle;
             passData.blurBuffer1 = blurBuffer1;
             passData.intensity = comp.Intensity.value;
+            passData.blendMode = (int)comp.BlendeMode.value;
             
             builder.SetRenderFunc((PassData data, RasterGraphContext context) =>
             {
-                data.material.SetFloat(intensityId, data.intensity);
-                data.material.SetTexture(blurTexId, data.blurBuffer1);
+                data.material.SetFloat(_intensityId, data.intensity);
+                data.material.SetTexture(_blurTexId, data.blurBuffer1);
+                data.material.SetInt(_blendModeId, data.blendMode);
                 ExecutePass(data.srcTextureHandle, data.material, context, 3);
             });
         }

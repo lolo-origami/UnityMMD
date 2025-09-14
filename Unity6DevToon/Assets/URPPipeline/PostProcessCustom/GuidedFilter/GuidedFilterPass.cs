@@ -6,17 +6,15 @@ using static LLPostProcessBufferManager;
 
 public class GuidedFilterPass : LLPostProcessPassBase
 {
-    private static readonly int guideTexId = Shader.PropertyToID("_GuideTex");
-    private static readonly int radiusId   = Shader.PropertyToID("_Radius");
-    private static readonly int epsId      = Shader.PropertyToID("_Eps");
-    private static readonly int guideModeId= Shader.PropertyToID("_GuideMode");
-    private static readonly int abTexId    = Shader.PropertyToID("_ABTex");
-    private static readonly int depthThresholdId = Shader.PropertyToID("_DepthThreshold");
-    private static readonly int depthFeatherId   = Shader.PropertyToID("_DepthFeather");
-    private static readonly int blurTexelSize   = Shader.PropertyToID("_BlurTexelSize");
-    private static readonly int depthcolorBlendId      = Shader.PropertyToID("_DepthColorBlend");
-    private static readonly int abTex0Id = Shader.PropertyToID("_ABTex0"); // a(RGB)
-    private static readonly int abTex1Id = Shader.PropertyToID("_ABTex1"); // b(RGB)    
+    private static readonly int _guideTexId = Shader.PropertyToID("_GuideTex");
+    private static readonly int _radiusId   = Shader.PropertyToID("_Radius");
+    private static readonly int _epsId      = Shader.PropertyToID("_Eps");
+    private static readonly int _guideModeId= Shader.PropertyToID("_GuideMode");
+    private static readonly int _depthThresholdId = Shader.PropertyToID("_DepthThreshold");
+    private static readonly int _depthFeatherId   = Shader.PropertyToID("_DepthFeather");
+    private static readonly int _depthcolorBlendId      = Shader.PropertyToID("_DepthColorBlend");
+    private static readonly int _abTex0Id = Shader.PropertyToID("_ABTex0"); // a(RGB)
+    private static readonly int _abTex1Id = Shader.PropertyToID("_ABTex1"); // b(RGB)    
 
     private readonly Material _guidedFilterMaterial;
     public Material GuidedFilterMaterial => _guidedFilterMaterial;
@@ -104,16 +102,16 @@ public class GuidedFilterPass : LLPostProcessPassBase
 
             builder.SetRenderFunc((PassData data, RasterGraphContext context) =>
             {
-                data.material.SetInt(radiusId, data.radius);
-                data.material.SetFloat(epsId, data.eps);
-                data.material.SetInt(guideModeId, data.guideMode);
-                data.material.SetFloat(depthThresholdId, data.depthThreshold);
-                data.material.SetFloat(depthFeatherId, data.depthFeather);
-                data.material.SetVector(blurTexelSize, data.blurTexelSize);
-                data.material.SetFloat(depthcolorBlendId, data.depthColorBlend);
+                data.material.SetInt(_radiusId, data.radius);
+                data.material.SetFloat(_epsId, data.eps);
+                data.material.SetInt(_guideModeId, data.guideMode);
+                data.material.SetFloat(_depthThresholdId, data.depthThreshold);
+                data.material.SetFloat(_depthFeatherId, data.depthFeather);
+                data.material.SetVector(_blurTexelSizeId, data.blurTexelSize);
+                data.material.SetFloat(_depthcolorBlendId, data.depthColorBlend);
                 if (data.guideTexture != null)
                 {
-                    data.material.SetTexture(guideTexId, data.guideTexture);
+                    data.material.SetTexture(_guideTexId, data.guideTexture);
                 }
 
                 // Pass 0 = Horizontal
@@ -147,18 +145,19 @@ public class GuidedFilterPass : LLPostProcessPassBase
 
             builder.SetRenderFunc((PassData data, RasterGraphContext context) =>
             {
-                data.material.SetInt(radiusId, data.radius);
-                data.material.SetFloat(epsId, data.eps);
-                data.material.SetInt(guideModeId, data.guideMode);
-                data.material.SetFloat(depthThresholdId, data.depthThreshold);
-                data.material.SetFloat(depthFeatherId, data.depthFeather);
-                data.material.SetFloat(depthcolorBlendId, data.depthColorBlend);
+                data.material.SetInt(_radiusId, data.radius);
+                data.material.SetFloat(_epsId, data.eps);
+                data.material.SetInt(_guideModeId, data.guideMode);
+                data.material.SetFloat(_depthThresholdId, data.depthThreshold);
+                data.material.SetFloat(_depthFeatherId, data.depthFeather);
+                data.material.SetVector(_blurTexelSizeId, data.blurTexelSize);
+                data.material.SetFloat(_depthcolorBlendId, data.depthColorBlend);
                 if (data.guideTexture != null)
                 {
-                    data.material.SetTexture(guideTexId, data.guideTexture);
+                    data.material.SetTexture(_guideTexId, data.guideTexture);
                 }
-                data.material.SetTexture(abTex0Id, data.ab0TextureHandle);
-                data.material.SetTexture(abTex1Id, data.ab1TextureHandle);
+                data.material.SetTexture(_abTex0Id, data.ab0TextureHandle);
+                data.material.SetTexture(_abTex1Id, data.ab1TextureHandle);
 
                 // Pass 1 = Vertical（最終合成 q = meanA * I + meanB）
                 ExecutePass(data.srcTextureHandle, data.material, context, 1);

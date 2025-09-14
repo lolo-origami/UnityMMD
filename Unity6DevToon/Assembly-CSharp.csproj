@@ -100,6 +100,7 @@
     <None Include="Assets\Model\Lilise\lili\彩澄りりせ_MMD利用ガイドライン.txt" />
     <None Include="Assets\Stage\kotami stage070\kotami stage070.xml" />
     <None Include="Assets\CustomModelShaders\LLToon\URPLLToon.shader" />
+    <None Include="Assets\CustomModelShaders\PostProcessShader\LLPostEffectCommon.hlsl" />
     <None Include="Assets\CustomModelShaders\LLToon\URPLLToonTransparent.shader" />
     <None Include="Assets\Model\Lilise\lili\彩澄りりせ.xml" />
     <None Include="Assets\CustomModelShaders\LLToon\LLToonOutline.hlsl" />
@@ -108,6 +109,7 @@
     <None Include="Assets\CustomModelShaders\PostProcessShader\FlareShader.shader" />
     <None Include="Assets\Model\Lilise\lili\彩澄りりせ.MMD4Mecanim.xml" />
     <None Include="Assets\CustomModelShaders\PostProcessShader\SSRaymarchLightShaftShader.shader" />
+    <None Include="Assets\CustomModelShaders\PostProcessShader\LLPostEffectBlend.hlsl" />
     <None Include="Assets\Stage\kotami stage070\りどみ.txt" />
     <None Include="Assets\CustomModelShaders\PostProcessShader\SSRaymarchFogShader.shader" />
     <None Include="Assets\CustomModelShaders\LLToon\LLToonForwardLighting.hlsl" />

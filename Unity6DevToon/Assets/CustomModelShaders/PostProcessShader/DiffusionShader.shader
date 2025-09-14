@@ -12,6 +12,7 @@ Shader "Hidden/DiffusionShader"
         HLSLINCLUDE
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
         #include "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/Common.hlsl"
+        #include "LLPostEffectBlend.hlsl"
 
         //TEXTURE2D_X(_BlitTexture);
         //SAMPLER(sampler_LinearClamp);        
@@ -20,6 +21,9 @@ Shader "Hidden/DiffusionShader"
         CBUFFER_START(UnityPerMaterial)
             float _Contrast;
             float _Intensity;
+            float2 _BlurTexelSize;
+            float _BlurSize;
+            int _BlendMode;
         CBUFFER_END
 
         static const float Weights[9] = {0.5352615, 0.7035879, 0.8553453, 0.9616906, 1, 0.9616906, 0.8553453, 0.7035879, 0.5352615};
@@ -27,7 +31,7 @@ Shader "Hidden/DiffusionShader"
         float3 Contrast(float3 In, float Contrast)
         {
             const float midpoint = pow(0.5, 2.2);
-            return (In - midpoint) * Contrast + midpoint;
+            return saturate((In - midpoint) * Contrast + midpoint);
         }
 
         half4 Frag_Contrast(Varyings input) : SV_Target
@@ -43,36 +47,36 @@ Shader "Hidden/DiffusionShader"
         half4 Frag_Blur1(Varyings input) : SV_Target
         {
             half4 color = 0;
-
             float totalWeight = 0;
+            float blurOffset = _BlurSize * _BlurTexelSize;
             
                 
             totalWeight += Weights[0];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0 * _BlitTexture_TexelSize.x, 0, 0, 0)) * Weights[0];
+            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0 * blurOffset, 0, 0, 0)) * Weights[0];
                 
             totalWeight += Weights[1];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(1 * _BlitTexture_TexelSize.x, 0, 0, 0)) * Weights[1];
+            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(1 * blurOffset, 0, 0, 0)) * Weights[1];
 
             totalWeight += Weights[2];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(2 * _BlitTexture_TexelSize.x, 0, 0, 0)) * Weights[2];
+            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(2 * blurOffset, 0, 0, 0)) * Weights[2];
 
             totalWeight += Weights[3];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(3 * _BlitTexture_TexelSize.x, 0, 0, 0)) * Weights[3];
+            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(3 * blurOffset, 0, 0, 0)) * Weights[3];
 
             totalWeight += Weights[4];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(4 * _BlitTexture_TexelSize.x, 0, 0, 0)) * Weights[4];
+            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(4 * blurOffset, 0, 0, 0)) * Weights[4];
 
             totalWeight += Weights[5];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(5 * _BlitTexture_TexelSize.x, 0, 0, 0)) * Weights[5];
+            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(5 * blurOffset, 0, 0, 0)) * Weights[5];
 
             totalWeight += Weights[6];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(6 * _BlitTexture_TexelSize.x, 0, 0, 0)) * Weights[6];
+            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(6 * blurOffset, 0, 0, 0)) * Weights[6];
 
             totalWeight += Weights[7];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(7 * _BlitTexture_TexelSize.x, 0, 0, 0)) * Weights[7];                
+            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(7 * blurOffset, 0, 0, 0)) * Weights[7];                
 
             totalWeight += Weights[8];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(8 * _BlitTexture_TexelSize.x, 0, 0, 0)) * Weights[8];          
+            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(8 * blurOffset, 0, 0, 0)) * Weights[8];          
             
 
             color /= totalWeight;
@@ -84,27 +88,27 @@ Shader "Hidden/DiffusionShader"
         half4 Frag_Blur2(Varyings input) : SV_Target
         {
             half4 color = 0;
-
             float totalWeight = 0;
+            float blurOffset = _BlurSize * _BlurTexelSize;
             
             totalWeight += Weights[0];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 0 * _BlitTexture_TexelSize.y, 0, 0)) * Weights[0];
+            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 0 * blurOffset, 0, 0)) * Weights[0];
             totalWeight += Weights[1];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 1 * _BlitTexture_TexelSize.y, 0, 0)) * Weights[1];
+            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 1 * blurOffset, 0, 0)) * Weights[1];
             totalWeight += Weights[2];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 2 * _BlitTexture_TexelSize.y, 0, 0)) * Weights[2];
+            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 2 * blurOffset, 0, 0)) * Weights[2];
             totalWeight += Weights[3];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 3 * _BlitTexture_TexelSize.y, 0, 0)) * Weights[3];
+            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 3 * blurOffset, 0, 0)) * Weights[3];
             totalWeight += Weights[4];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 4 * _BlitTexture_TexelSize.y, 0, 0)) * Weights[4];
+            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 4 * blurOffset, 0, 0)) * Weights[4];
             totalWeight += Weights[5];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 5 * _BlitTexture_TexelSize.y, 0, 0)) * Weights[5];
+            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 5 * blurOffset, 0, 0)) * Weights[5];
             totalWeight += Weights[6];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 6 * _BlitTexture_TexelSize.y, 0, 0)) * Weights[6];
+            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 6 * blurOffset, 0, 0)) * Weights[6];
             totalWeight += Weights[7];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 7 * _BlitTexture_TexelSize.y, 0, 0)) * Weights[7];
+            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 7 * blurOffset, 0, 0)) * Weights[7];
             totalWeight += Weights[8];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 8 * _BlitTexture_TexelSize.y, 0, 0)) * Weights[8];
+            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 8 * blurOffset, 0, 0)) * Weights[8];
 
             color /= totalWeight;
             
@@ -114,13 +118,12 @@ Shader "Hidden/DiffusionShader"
         //合成
         half4 Frag_Blend(Varyings input) : SV_Target
         {
-            half4 color = SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp , input.texcoord);
-            half4 blur = SAMPLE_TEXTURE2D_X(_BlurTex, sampler_LinearClamp, input.texcoord);
+            half3 color = SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp , input.texcoord).rgb;
+            half3 blur = SAMPLE_TEXTURE2D_X(_BlurTex, sampler_LinearClamp, input.texcoord).rgb;
 
-            color.rgb = 1.0 - (1.0 - color.rgb) * (1.0 - blur.rgb * _Intensity);
-            // color.rgb = lerp(color.rgb, blur.rgb, _Intensity);
+            half4 result = half4(Blend(color, blur, _Intensity, _BlendMode), 1);
             
-            return color;
+            return result;
         }
 
     ENDHLSL

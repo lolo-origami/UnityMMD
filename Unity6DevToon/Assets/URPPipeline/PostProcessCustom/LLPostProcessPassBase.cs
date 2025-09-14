@@ -6,6 +6,13 @@ using static LLPostProcessBufferManager; // RenderGraphPostProcessUtils.cs „ÅØÂà
 
 public  class LLPostProcessPassBase : ScriptableRenderPass
 {
+    //Id
+    protected static readonly int _intensityId = UnityEngine.Shader.PropertyToID("_Intensity");
+    protected static readonly int _blurTexId = UnityEngine.Shader.PropertyToID("_BlurTex");
+    protected static readonly int _blurSizeId = Shader.PropertyToID("_BlurSize");
+    protected static readonly int _blurTexelSizeId = Shader.PropertyToID("_BlurTexelSize");
+    protected static readonly int _blendModeId = Shader.PropertyToID("_BlendMode");
+    
     protected bool _isSave;
     protected string _saveName;
     
