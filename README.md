@@ -122,6 +122,12 @@ RenderFeatureの登録順で実行順が自動入れ替わります。
 - **FogColor**: フォグの色。
 - **Intensity**: Fogの強さ。
 
+## DepthLightShaft
+
+カメラの Depth Textureを元にしたゴッドレイ効果を出力します。ブラー効果のみで軽量に動作することが可能です。
+
+
+
 ## Flare
 
 アニメやイラストで加工に使われる、特定箇所へのグラデーション設定です。
@@ -148,14 +154,41 @@ RenderFeatureの登録順で実行順が自動入れ替わります。
 - **FalloffPower**:密度変化を制御するカーブ。小さい値で均一、大きくすると距離に応じて急激に濃くなる。  
 - **JitterStrength**:サンプリング位置にランダムな揺らぎを与える。  
 - **NoiseScale**:ノイズテクスチャのスケール。  
-
+<img width="482" height="323" alt="image" src="https://github.com/user-attachments/assets/67f33222-1874-446e-bfee-c315832a4bb7" />
 <img width="309" height="553" alt="image" src="https://github.com/user-attachments/assets/7ba09c8a-30b0-42ea-882d-4e26b5fc2add" /> <img width="309" height="554" alt="image" src="https://github.com/user-attachments/assets/58afbe7d-6203-4b13-a174-7ee312af5730" />
 
 ## SSRaymarchFog
 
-スクリーンスペースでレイマーチ処理を行ってゴッドレイ効果を出すものです。
+スクリーンスペースでレイマーチ処理を行ってフォグ効果を出すものです。
 Depthだけで行うフォグよりも、遮蔽物とフォグがかかる箇所がくっきりしています。レイマーチなので重たいです。
 
+- **Intensity**：フォグの強さ
+- **MaxIterations**：サンプリング回数。大きくするとフォグの精度が上がるが、処理コストも増える。  
+- **MinDistance**:カメラからレイマーチ開始距離。
+- **MaxDistance**:レイマーチ終了距離。  
+<img width="471" height="134" alt="image" src="https://github.com/user-attachments/assets/91c93ccb-67a8-4c39-8572-107f047b78b7" />
 <img width="313" height="552" alt="image" src="https://github.com/user-attachments/assets/2e3df06f-9bf0-4a64-9ec2-f272ada1b4d1" /> <img width="309" height="549" alt="image" src="https://github.com/user-attachments/assets/306691fc-99e2-4f3d-b4fb-4400501c2045" />
+
+
+## GuidedFilter
+
+ガイド画像を用いてエッジを保持しつつ平滑化するフィルタ。
+ガイド画像には「入力カラー（Self）」「深度（Depth）」「外部テクスチャ（Other）」を選択可能。
+単純なブラーと異なり、エッジ付近の構造を保ちながら滑らかにすることができる。
+
+- **Radius**：フィルタの半径。大きくするとより広範囲が平滑化されるが、処理コストも増加します。
+- **Eps**：正則化パラメータ。小さい値にすると入力画像に忠実、大きくすると平滑化が強くなります。
+- **GuideMode**：ガイド画像の種類を選択します。
+  - Self：入力カラーそのものをガイドに利用。色味をなるべく保ちながら平滑化。
+  - Depth：カメラ深度を二値化したマスクをガイドに利用。奥行きに沿ってフォグ・マスク的な平滑化を実現。
+  - Other：外部に指定したテクスチャをガイドに利用。マスク画像や別のレンダリング結果を活用可能。
+- **GuideTex**：外部ガイド用テクスチャ。GuideMode=Other のときのみ利用。
+- **DepthThreshold**：Depthモード時のしきい値。カメラからの深度を基準に、手前と奥を分ける境界を決定します。
+- **DepthFeather**：Depthモード時のフェザー幅。しきい値付近をなめらかに補間することで、エッジのギザつきを防ぎます。
+- **DepthColorBlend**：Depthモード時のみ有効。フィルタ結果 q と元カラー p をブレンドする割合。
+
+<img width="472" height="199" alt="image" src="https://github.com/user-attachments/assets/78f46285-4f45-45e8-a392-41a5b92b3ca3" />
+<img width="313" height="553" alt="image" src="https://github.com/user-attachments/assets/4f25f0c2-c216-4a3e-a18e-b7c5367abd9c" /> <img width="313" height="552" alt="image" src="https://github.com/user-attachments/assets/3a83eb83-190b-45bc-9732-1f5a91723b95" />
+
 
 
