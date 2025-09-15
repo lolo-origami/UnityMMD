@@ -17,7 +17,7 @@ Shader "Hidden/DepthLightShaft"
     CBUFFER_START(UnityPerMaterial)
         float _BlurSizeA;
         float _BlurSizeB;
-        float4 _FogColor;
+        float4 _LightShaftColor;
         float4 _BlurDir;
         //float _Threshold;
         float _DepthRange;
@@ -66,7 +66,7 @@ Shader "Hidden/DepthLightShaft"
     half4 Frag_Combine(Varyings i) : SV_Target
     {
         half4 src   = SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, i.texcoord);
-        half4 shaft = SAMPLE_TEXTURE2D_X(_LightShaftTempBTex, sampler_LinearClamp, i.texcoord) * _FogColor;
+        half4 shaft = SAMPLE_TEXTURE2D_X(_LightShaftTempBTex, sampler_LinearClamp, i.texcoord) * _LightShaftColor;
 
         // Screen合成: 1 - (1 - A) * (1 - B)
         half4 result = half4(Blend(src, shaft, _BlendIntensity, _BlendMode), 1);

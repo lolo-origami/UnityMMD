@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2db86121404754db890f4c8dfe81b2, type: 3}
   m_Name: Bloom
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   skipIterations:
     m_OverrideState: 1
     m_Value: 0
@@ -69,9 +69,46 @@ MonoBehaviour:
   MinDistance:
     m_OverrideState: 1
     m_Value: 0.1
-  Intensity:
+  FogColor:
     m_OverrideState: 1
-    m_Value: 7.82
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+  FogIntensity:
+    m_OverrideState: 1
+    m_Value: 10
+  BlendeMode:
+    m_OverrideState: 1
+    m_Value: 3
+  BlendIntensity:
+    m_OverrideState: 1
+    m_Value: 0.632
+--- !u!114 &-6129875062862446802
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cacfb4e461c17ff4da512453cf87e2dc, type: 3}
+  m_Name: AnimeToneMap
+  m_EditorClassIdentifier: 
+  active: 1
+  Gamma:
+    m_OverrideState: 1
+    m_Value: 1.33
+  Contrast:
+    m_OverrideState: 1
+    m_Value: 0.97
+  Saturation:
+    m_OverrideState: 1
+    m_Value: 1.2
+  HighlightCompress:
+    m_OverrideState: 1
+    m_Value: 1
+  WhitePoint:
+    m_OverrideState: 1
+    m_Value: 1
 --- !u!114 &-4742363082878621170
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -84,7 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
   m_Name: DepthOfField
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   mode:
     m_OverrideState: 1
     m_Value: 2
@@ -152,7 +189,7 @@ MonoBehaviour:
     m_Value: 0.11
   DepthColorBlend:
     m_OverrideState: 1
-    m_Value: 0.218
+    m_Value: 0.576
 --- !u!114 &-3357603926938260329
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -165,7 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 899c54efeace73346a0a16faa3afe726, type: 3}
   m_Name: Vignette
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   color:
     m_OverrideState: 1
     m_Value: {r: 0, g: 0, b: 0, a: 1}
@@ -230,16 +267,16 @@ MonoBehaviour:
     m_Value: 0
   contrast:
     m_OverrideState: 1
-    m_Value: 22
+    m_Value: 0
   colorFilter:
     m_OverrideState: 0
     m_Value: {r: 1, g: 1, b: 1, a: 1}
   hueShift:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 5
   saturation:
     m_OverrideState: 1
-    m_Value: 25
+    m_Value: 0
 --- !u!114 &-592344252784950588
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -253,12 +290,12 @@ MonoBehaviour:
   m_Name: DepthFog
   m_EditorClassIdentifier: 
   active: 0
-  intensity:
+  FogIntensity:
     m_OverrideState: 1
-    m_Value: 1
-  fogColor:
+    m_Value: 7.3
+  FogColor:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 0.8745098, b: 0.8745098, a: 1}
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279,12 +316,13 @@ MonoBehaviour:
   - {fileID: -1769508700694413535}
   - {fileID: -4742363082878621170}
   - {fileID: -592344252784950588}
+  - {fileID: 46770742813359636}
   - {fileID: -3195685950322449963}
   - {fileID: 5881263965897108262}
   - {fileID: 7562313560287028309}
   - {fileID: -7651550607088960668}
   - {fileID: -3682817929865172515}
-  - {fileID: 46770742813359636}
+  - {fileID: -6129875062862446802}
 --- !u!114 &46770742813359636
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -298,9 +336,9 @@ MonoBehaviour:
   m_Name: DepthLightShaft
   m_EditorClassIdentifier: 
   active: 0
-  Intensity:
+  BlendIntensity:
     m_OverrideState: 1
-    m_Value: 0.73
+    m_Value: 0.492
   BlurDirection:
     m_OverrideState: 1
     m_Value: {x: 0.65, y: 1.1, z: 0, w: 0}
@@ -334,7 +372,7 @@ MonoBehaviour:
   active: 0
   mode:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 2
   neutralHDRRangeReductionMode:
     m_OverrideState: 0
     m_Value: 2
@@ -375,15 +413,15 @@ MonoBehaviour:
   Contrast:
     m_OverrideState: 1
     m_Value: 1.04
-  Intensity:
-    m_OverrideState: 1
-    m_Value: 0.238
   BlurSize:
     m_OverrideState: 1
     m_Value: 10
   BlendeMode:
     m_OverrideState: 1
     m_Value: 3
+  BlendIntensity:
+    m_OverrideState: 1
+    m_Value: 0.135
 --- !u!114 &7391319092446245454
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -421,7 +459,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fce55342696b8444899e8512041eaa2, type: 3}
   m_Name: LightShaft
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   MaxIterations:
     m_OverrideState: 1
     m_Value: 64
@@ -431,21 +469,21 @@ MonoBehaviour:
   MinDistance:
     m_OverrideState: 1
     m_Value: 0.4
-  Intensity:
+  RayIntensity:
     m_OverrideState: 1
     m_Value: 10
   RayColor:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    m_Value: {r: 1, g: 0, b: 0.8834677, a: 1}
   Decay:
     m_OverrideState: 1
     m_Value: 1
   RaySpread:
     m_OverrideState: 1
-    m_Value: 0.6
+    m_Value: 0.57
   JitterStrength:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.073
   NoiseScale:
     m_OverrideState: 1
     m_Value: 0.1
@@ -455,10 +493,13 @@ MonoBehaviour:
     dimension: 1
   FalloffPower:
     m_OverrideState: 1
-    m_Value: 0.35
+    m_Value: 0.72
   OcclusionStrength:
     m_OverrideState: 1
-    m_Value: 2.28
+    m_Value: 0.26
   BlendeMode:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 3
+  BlendIntensity:
+    m_OverrideState: 1
+    m_Value: 0.902

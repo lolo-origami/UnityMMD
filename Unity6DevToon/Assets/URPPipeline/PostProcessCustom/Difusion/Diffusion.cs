@@ -18,8 +18,8 @@ public enum BlendModeEnumDiffusion
 public class Diffusion : VolumeComponent
 {
     public FloatParameter Contrast = new FloatParameter(1.0f); 
-    public ClampedFloatParameter BlendIntensity = new ClampedFloatParameter(0f, 0f, 1f);
     public ClampedFloatParameter BlurSize = new ClampedFloatParameter(1f, 0f, 10f);
     public VolumeParameter<BlendModeEnumDiffusion> BlendeMode = new VolumeParameter<BlendModeEnumDiffusion>();
+    public ClampedFloatParameter BlendIntensity = new ClampedFloatParameter(0f, 0f, 1f);
     public bool IsActive => BlendIntensity.value > 0f;
 }

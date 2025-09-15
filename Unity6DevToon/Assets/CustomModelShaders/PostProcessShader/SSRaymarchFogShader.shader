@@ -13,6 +13,7 @@ Shader "Hidden/SSRaymarchFogShader"
     
     CBUFFER_START(UnityPerMaterial)
     float _FogIntensity;
+    float4 _FogColor;
     float4 _CamWorldSpace;
     float4x4 _CamFrustum;
     float4x4 _CamToWorld;
@@ -76,7 +77,7 @@ Shader "Hidden/SSRaymarchFogShader"
                 float3 rayDir = normalize(worldPos - _CamWorldSpace.xyz);
                 float3 rayOrigin = _CamWorldSpace.xyz;
 
-                return SimpleFogRaymarch(rayOrigin, rayDir, depth);
+                return SimpleFogRaymarch(rayOrigin, rayDir, depth) * _FogColor;
             }
             #pragma vertex Vert
             #pragma fragment Frag
@@ -86,7 +87,7 @@ Shader "Hidden/SSRaymarchFogShader"
        // --- Pass 1: Combine ---
         Pass
         {
-            Name "Combine"
+            Name "Blend"
 
             HLSLPROGRAM
             half4 Frag_Blend(Varyings input) : SV_Target

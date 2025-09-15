@@ -63,6 +63,7 @@
     <Compile Include="Assets\Script\CustomTimeline\MMD\MMDCameraBehaviourDrawer.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\Flare\FlareRenderFeature.cs" />
     <Compile Include="Assets\Script\CustomTimeline\MMD\MMDCameraMixer.cs" />
+    <Compile Include="Assets\URPPipeline\PostProcessCustom\AnimeToneMap\AnimeToneMap.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\FinalCopyPass.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\Difusion\DiffusionRenderFeature.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\SSRaymarchLightShaft\SSRaymarchLightShaftRenderFeature.cs" />
@@ -75,6 +76,8 @@
     <Compile Include="Assets\URPPipeline\PostProcessCustom\SSRaymarchFog\SSRaymarchFogRenderFeature.cs" />
     <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimRigidBody.cs" />
     <Compile Include="Assets\CustomModelShaders\LLToon\LLToonDetailGUI.cs" />
+    <Compile Include="Assets\URPPipeline\PostProcessCustom\AnimeToneMap\AnimeToneMapRenderFeature.cs" />
+    <Compile Include="Assets\URPPipeline\PostProcessCustom\AnimeToneMap\AnimeToneMapPass.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\DepthFog\DepthFog.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\GuidedFilter\GuidedFilter.cs" />
@@ -92,6 +95,7 @@
     <Compile Include="Assets\URPPipeline\PostProcessCustom\LLPostProcessRFBase.cs" />
     <None Include="Assets\CustomModelShaders\LLToon\URPLLToonBGTransparent.shader" />
     <None Include="Assets\CustomModelShaders\PostProcessShader\LightGuidedFilterShader.shader" />
+    <None Include="Assets\CustomModelShaders\PostProcessShader\AnimeToneMap.shader" />
     <None Include="Assets\CustomModelShaders\LLToon\LLToonInput.hlsl" />
     <None Include="Assets\CustomModelShaders\PostProcessShader\DepthFogShader.shader" />
     <None Include="Assets\Stage\kotami stage070\kotami stage070.MMD4Mecanim.xml" />

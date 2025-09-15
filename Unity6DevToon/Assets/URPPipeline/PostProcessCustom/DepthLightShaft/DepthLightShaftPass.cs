@@ -14,7 +14,7 @@ public class DepthLightShaftPass : LLPostProcessPassBase
     private static readonly int _blurSizeAId = Shader.PropertyToID("_BlurSizeA");
     private static readonly int _blurSizeBId = Shader.PropertyToID("_BlurSizeB");
     private static readonly int _depthRangeId  = Shader.PropertyToID("_DepthRange");
-    private static readonly int _fogColorId  = Shader.PropertyToID("_FogColor");
+    private static readonly int _lightShaftColorId  = Shader.PropertyToID("_LightShaftColor");
     
     private class PassData
     {
@@ -27,7 +27,7 @@ public class DepthLightShaftPass : LLPostProcessPassBase
         public Vector4 blurDir;
         public float blurSizeA;
         public float blurSizeB;
-        public Color fogColor;
+        public Color lightShaftColor;
         public float depthRange;
         public Vector4 texelSize;
         public int blendMode;
@@ -85,12 +85,12 @@ public class DepthLightShaftPass : LLPostProcessPassBase
             data0.blurDir = comp.BlurDirection.value;
             data0.blurSizeA = comp.BlurSizeA.value;
             data0.blurSizeB = comp.BlurSizeB.value;
-            data0.fogColor = comp.FogColor.value;
+            data0.lightShaftColor = comp.LightShaftColor.value;
             data0.depthRange = comp.DepthRange.value;
             builder.SetRenderFunc((PassData d, RasterGraphContext ctx) =>
             {
                 d.material.SetFloat(_depthRangeId, d.depthRange);
-                d.material.SetColor(_fogColorId, d.fogColor);
+                d.material.SetColor(_lightShaftColorId, d.lightShaftColor);
                 ExecutePass(d.src, d.material, ctx, 0); // Shader Pass0: DepthMask
             });
         }
@@ -153,14 +153,14 @@ public class DepthLightShaftPass : LLPostProcessPassBase
             data3.src = src;
             data3.shaftB = shaftB;
             data3.blendIntensity = comp.BlendIntensity.value;
-            data3.fogColor = comp.FogColor.value;
+            data3.lightShaftColor = comp.LightShaftColor.value;
             data3.blendMode = (int)comp.BlendeMode.value;
 
             builder.SetRenderFunc((PassData d, RasterGraphContext ctx) =>
             {
                 d.material.SetTexture(_lightShaftTempBId, d.shaftB);
                 d.material.SetFloat(_blendIntensityId, d.blendIntensity);
-                d.material.SetColor(_fogColorId, d.fogColor);
+                d.material.SetColor(_lightShaftColorId, d.lightShaftColor);
                 d.material.SetInt(_blendModeId, d.blendMode);
                 ExecutePass(d.src, d.material, ctx, 3);
             });

@@ -92,7 +92,8 @@ MonoBehaviour:
   - {fileID: -4013711050292897865}
   - {fileID: 1480294420506323634}
   - {fileID: 2931960102986855475}
-  m_RendererFeatureMap: 821de6ad56659eafc6f1cfdf6711f72655c0977c35fa600f6138c3f131547884b7573bb8106f4cc8b2aa45b9ee0f8b14333426f22d6ab028
+  - {fileID: 3125142846183942887}
+  m_RendererFeatureMap: 821de6ad56659eafc6f1cfdf6711f72655c0977c35fa600f6138c3f131547884b7573bb8106f4cc8b2aa45b9ee0f8b14333426f22d6ab028e7aa2563dcbc5e2b
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -198,3 +199,19 @@ MonoBehaviour:
     SaveName: 
     IsRestore: 0
     RestoreName: 
+--- !u!114 &3125142846183942887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a725ff1c789800408429b85288080ee, type: 3}
+  m_Name: AnimeToneMapRenderFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    renderPassEvent: 600
+    shader: {fileID: 4800000, guid: e01c8483dc654944e8131f0b56e32602, type: 3}

@@ -15,6 +15,7 @@ public class SSRaymarchFogPass : LLPostProcessPassBase
     private static readonly int _maxDistanceId = Shader.PropertyToID("_MaxDistance");
     private static readonly int _minDistanceId = Shader.PropertyToID("_MinDistance");
     private static readonly int _fogIntensityId = Shader.PropertyToID("_FogIntensity");
+    private static readonly int _fogColorId = Shader.PropertyToID("_FogColor");
     private static readonly int _fogTempTexId = Shader.PropertyToID("_FogTempTex");
 
     private class PassData
@@ -29,6 +30,7 @@ public class SSRaymarchFogPass : LLPostProcessPassBase
         public float maxDistance;
         public float minDistance;
         public float fogIntensity;
+        public Color fogColor;
         public int blendMode;
         public float blendIntensity;
     }
@@ -66,7 +68,6 @@ public class SSRaymarchFogPass : LLPostProcessPassBase
         {
             return;
         }
-
 
         // src/dst 取得
         TextureHandle src = GetSrcHandle(frameData, resourceData);
@@ -106,6 +107,7 @@ public class SSRaymarchFogPass : LLPostProcessPassBase
             pass0.maxDistance = comp.MaxDistance.value;
             pass0.minDistance = comp.MinDistance.value;
             pass0.fogIntensity = comp.FogIntensity.value;
+            pass0.fogColor = comp.FogColor.value;
             pass0.blendMode = (int)comp.BlendeMode.value;
             pass0.blendIntensity = comp.BlendIntensity.value;
 
@@ -119,6 +121,7 @@ public class SSRaymarchFogPass : LLPostProcessPassBase
                 mat.SetFloat(_maxDistanceId, data.maxDistance);
                 mat.SetFloat(_minDistanceId, data.minDistance);
                 mat.SetFloat(_fogIntensityId, data.fogIntensity);
+                mat.SetColor(_fogColorId, data.fogColor);
                 mat.SetInt(_blendModeId, data.blendMode);
                 mat.SetFloat(_blendIntensityId, data.blendIntensity);
 
@@ -135,12 +138,12 @@ public class SSRaymarchFogPass : LLPostProcessPassBase
             builder.UseTexture(src, AccessFlags.Read); // _BlitTexture 用
             builder.UseTexture(fog, AccessFlags.Read); // _FogTempTex 用
             builder.SetRenderAttachment(dst, 0, AccessFlags.Write);
-
-
+            
             pass1.material = _fogMaterial;
             pass1.SrcTextureHandle = src;
             pass1.FogTextureHandle = fog;
             pass1.fogIntensity = comp.FogIntensity.value;
+            pass1.fogColor = comp.FogColor.value;
             pass1.blendMode = (int)comp.BlendeMode.value;
             pass1.blendIntensity = comp.BlendIntensity.value;            
 
@@ -149,6 +152,7 @@ public class SSRaymarchFogPass : LLPostProcessPassBase
                 var mat = data.material;
                 mat.SetTexture(_fogTempTexId, data.FogTextureHandle);
                 mat.SetFloat(_fogIntensityId, data.fogIntensity);
+                mat.SetColor(_fogColorId, data.fogColor);
                 mat.SetInt(_blendModeId, data.blendMode);
                 mat.SetFloat(_blendIntensityId, data.blendIntensity);
                 
