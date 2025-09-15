@@ -152,7 +152,7 @@ Shader "Hidden/SSRaymarchLightShaft"
         // --- Pass 1: Combine ---
         Pass
         {
-            Name "Combine"
+            Name "Blend"
 
             HLSLPROGRAM
             half4 Frag_Blend(Varyings input) : SV_Target
@@ -160,9 +160,9 @@ Shader "Hidden/SSRaymarchLightShaft"
                 half4 color = SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord);
                 half4 shaft = SAMPLE_TEXTURE2D_X(_LightShaftTempTex, sampler_LinearClamp, input.texcoord);
 
-                Blend(color, shaft, _BlendIntensity, _BlendMode);
+                half4 result = half4(Blend(color, shaft, _BlendIntensity, _BlendMode),1);
 
-                return color;
+                return result;
             }
 
             #pragma vertex Vert
