@@ -72,6 +72,8 @@ public class GuidedFilterPass : LLPostProcessPassBase
         var abDesc = renderGraph.GetTextureDesc(srcTextureHandle);
         abDesc.msaaSamples = MSAASamples.None;
         abDesc.depthBufferBits = 0;
+        abDesc.width  /= 2;
+        abDesc.height /= 2;
 
         abDesc.name = "GuidedFilter_A";
         var ab0 = renderGraph.CreateTexture(abDesc);

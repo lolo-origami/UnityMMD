@@ -13,6 +13,7 @@ Shader "Hidden/DiffusionShader"
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
         #include "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/Common.hlsl"
         #include "LLPostEffectBlend.hlsl"
+        #include "LLPostEffectBlur.hlsl"
 
         //TEXTURE2D_X(_BlitTexture);
         //SAMPLER(sampler_LinearClamp);        
@@ -44,75 +45,15 @@ Shader "Hidden/DiffusionShader"
         }
 
         //横ぼかし
-        half4 Frag_Blur1(Varyings input) : SV_Target
+        half4 Frag_BlurHorizon(Varyings input) : SV_Target
         {
-            half4 color = 0;
-            float totalWeight = 0;
-            float blurOffset = _BlurSize * _BlurTexelSize;
-            
-                
-            totalWeight += Weights[0];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0 * blurOffset, 0, 0, 0)) * Weights[0];
-                
-            totalWeight += Weights[1];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(1 * blurOffset, 0, 0, 0)) * Weights[1];
-
-            totalWeight += Weights[2];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(2 * blurOffset, 0, 0, 0)) * Weights[2];
-
-            totalWeight += Weights[3];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(3 * blurOffset, 0, 0, 0)) * Weights[3];
-
-            totalWeight += Weights[4];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(4 * blurOffset, 0, 0, 0)) * Weights[4];
-
-            totalWeight += Weights[5];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(5 * blurOffset, 0, 0, 0)) * Weights[5];
-
-            totalWeight += Weights[6];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(6 * blurOffset, 0, 0, 0)) * Weights[6];
-
-            totalWeight += Weights[7];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(7 * blurOffset, 0, 0, 0)) * Weights[7];                
-
-            totalWeight += Weights[8];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(8 * blurOffset, 0, 0, 0)) * Weights[8];          
-            
-
-            color /= totalWeight;
-            
-            return color;
+            return GaussianBlur9(_BlitTexture, sampler_LinearClamp, input.texcoord, float2(1,0), _BlurSize, _BlurTexelSize);
         }
 
         //縦ぼかし
-        half4 Frag_Blur2(Varyings input) : SV_Target
+        half4 Frag_BlurVertical(Varyings input) : SV_Target
         {
-            half4 color = 0;
-            float totalWeight = 0;
-            float blurOffset = _BlurSize * _BlurTexelSize;
-            
-            totalWeight += Weights[0];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 0 * blurOffset, 0, 0)) * Weights[0];
-            totalWeight += Weights[1];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 1 * blurOffset, 0, 0)) * Weights[1];
-            totalWeight += Weights[2];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 2 * blurOffset, 0, 0)) * Weights[2];
-            totalWeight += Weights[3];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 3 * blurOffset, 0, 0)) * Weights[3];
-            totalWeight += Weights[4];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 4 * blurOffset, 0, 0)) * Weights[4];
-            totalWeight += Weights[5];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 5 * blurOffset, 0, 0)) * Weights[5];
-            totalWeight += Weights[6];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 6 * blurOffset, 0, 0)) * Weights[6];
-            totalWeight += Weights[7];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 7 * blurOffset, 0, 0)) * Weights[7];
-            totalWeight += Weights[8];
-            color += SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord + float4(0, 8 * blurOffset, 0, 0)) * Weights[8];
-
-            color /= totalWeight;
-            
-            return color;
+            return GaussianBlur9(_BlitTexture, sampler_LinearClamp, input.texcoord, float2(0,1), _BlurSize, _BlurTexelSize);;
         }
 
         //合成
@@ -148,7 +89,7 @@ Shader "Hidden/DiffusionShader"
             
             HLSLPROGRAM
                 #pragma vertex Vert
-                #pragma fragment Frag_Blur1
+                #pragma fragment Frag_BlurHorizon
             ENDHLSL
         }     
            
@@ -158,7 +99,7 @@ Shader "Hidden/DiffusionShader"
             
             HLSLPROGRAM
                 #pragma vertex Vert
-                #pragma fragment Frag_Blur2
+                #pragma fragment Frag_BlurVertical
             ENDHLSL
         }
         

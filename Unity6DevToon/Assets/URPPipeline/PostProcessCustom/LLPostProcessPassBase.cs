@@ -12,6 +12,7 @@ public  class LLPostProcessPassBase : ScriptableRenderPass
     protected static readonly int _blurSizeId = Shader.PropertyToID("_BlurSize");
     protected static readonly int _blurTexelSizeId = Shader.PropertyToID("_BlurTexelSize");
     protected static readonly int _blendModeId = Shader.PropertyToID("_BlendMode");
+    protected static readonly int _fogColorId = Shader.PropertyToID("_FogColor");
     
     protected bool _isSave;
     protected string _saveName;

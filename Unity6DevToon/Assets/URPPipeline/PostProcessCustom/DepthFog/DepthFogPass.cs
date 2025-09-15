@@ -12,7 +12,6 @@ public class DepthFogPass : LLPostProcessPassBase
 
     // シェーダープロパティIDをここで定義
     //private static readonly int _rampTexId = Shader.PropertyToID("_RampTex");
-    private static readonly int _fogColorId = Shader.PropertyToID("_FogColor");
     //private static readonly int _cameraDepthTextureId = Shader.PropertyToID("_CameraDepthTexture");
 
     private class PassData
