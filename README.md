@@ -217,7 +217,8 @@ Depthだけで行うフォグよりも、遮蔽物とフォグがかかる箇所
 
 <img width="351" height="628" alt="image" src="https://github.com/user-attachments/assets/466bbb25-725a-4dfc-ba52-08f8c63869a0" />
 
-<img width="359" height="630" alt="image" src="https://github.com/user-attachments/assets/86049d75-f78b-44e7-86a7-b18b9865a37b" />
+<img width="351" height="628" alt="image" src="https://github.com/user-attachments/assets/1adc0ea6-b7bc-4070-97e8-ce691f8e423f" />
+
 
 白飛びの軽減
 
