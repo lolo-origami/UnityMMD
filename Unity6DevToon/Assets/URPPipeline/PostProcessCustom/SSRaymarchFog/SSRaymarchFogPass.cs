@@ -7,14 +7,15 @@ using static LLPostProcessBufferManager; // ExecutePass/GetSrcHandle/GetDstHandl
 public class SSRaymarchFogPass : LLPostProcessPassBase
 {
     // Shader Property IDs
-    private static readonly int CamWorldSpaceId = Shader.PropertyToID("_CamWorldSpace");
-    private static readonly int CamFrustumId = Shader.PropertyToID("_CamFrustum");
-    private static readonly int CamToWorldId = Shader.PropertyToID("_CamToWorld");
-    private static readonly int MaxIterationsId = Shader.PropertyToID("_MaxIterations");
-    private static readonly int MaxDistanceId = Shader.PropertyToID("_MaxDistance");
-    private static readonly int MinDistanceId = Shader.PropertyToID("_MinDistance");
-    private static readonly int IntensityId = Shader.PropertyToID("_Intensity");
-    private static readonly int FogTempTexId = Shader.PropertyToID("_FogTempTex");
+    
+    private static readonly int _camWorldSpaceId = Shader.PropertyToID("_CamWorldSpace");
+    private static readonly int _camFrustumId = Shader.PropertyToID("_CamFrustum");
+    private static readonly int _camToWorldId = Shader.PropertyToID("_CamToWorld");
+    private static readonly int _maxIterationsId = Shader.PropertyToID("_MaxIterations");
+    private static readonly int _maxDistanceId = Shader.PropertyToID("_MaxDistance");
+    private static readonly int _minDistanceId = Shader.PropertyToID("_MinDistance");
+    private static readonly int _fogIntensityId = Shader.PropertyToID("_FogIntensity");
+    private static readonly int _fogTempTexId = Shader.PropertyToID("_FogTempTex");
 
     private class PassData
     {
@@ -27,7 +28,9 @@ public class SSRaymarchFogPass : LLPostProcessPassBase
         public int maxIterations;
         public float maxDistance;
         public float minDistance;
-        public float intensity;
+        public float fogIntensity;
+        public int blendMode;
+        public float blendIntensity;
     }
 
 
@@ -102,20 +105,22 @@ public class SSRaymarchFogPass : LLPostProcessPassBase
             pass0.maxIterations = comp.MaxIterations.value;
             pass0.maxDistance = comp.MaxDistance.value;
             pass0.minDistance = comp.MinDistance.value;
-            pass0.intensity = comp.Intensity.value;
-
+            pass0.fogIntensity = comp.FogIntensity.value;
+            pass0.blendMode = (int)comp.BlendeMode.value;
+            pass0.blendIntensity = comp.BlendIntensity.value;
 
             builder.SetRenderFunc((PassData data, RasterGraphContext ctx) =>
             {
                 var mat = data.material;
-                mat.SetVector(CamWorldSpaceId, data.camWorldSpace);
-                mat.SetMatrix(CamFrustumId, data.camFrustum);
-                mat.SetMatrix(CamToWorldId, data.camToWorld);
-                mat.SetInt(MaxIterationsId, data.maxIterations);
-                mat.SetFloat(MaxDistanceId, data.maxDistance);
-                mat.SetFloat(MinDistanceId, data.minDistance);
-                mat.SetFloat(IntensityId, data.intensity);
-
+                mat.SetVector(_camWorldSpaceId, data.camWorldSpace);
+                mat.SetMatrix(_camFrustumId, data.camFrustum);
+                mat.SetMatrix(_camToWorldId, data.camToWorld);
+                mat.SetInt(_maxIterationsId, data.maxIterations);
+                mat.SetFloat(_maxDistanceId, data.maxDistance);
+                mat.SetFloat(_minDistanceId, data.minDistance);
+                mat.SetFloat(_fogIntensityId, data.fogIntensity);
+                mat.SetInt(_blendModeId, data.blendMode);
+                mat.SetFloat(_blendIntensityId, data.blendIntensity);
 
                 // Fog 計算結果を単体で出力（Pass=0: Fog）
                 ExecutePass(data.SrcTextureHandle, mat, ctx, 0);
@@ -135,14 +140,18 @@ public class SSRaymarchFogPass : LLPostProcessPassBase
             pass1.material = _fogMaterial;
             pass1.SrcTextureHandle = src;
             pass1.FogTextureHandle = fog;
-            pass1.intensity = comp.Intensity.value;
-
+            pass1.fogIntensity = comp.FogIntensity.value;
+            pass1.blendMode = (int)comp.BlendeMode.value;
+            pass1.blendIntensity = comp.BlendIntensity.value;            
 
             builder.SetRenderFunc((PassData data, RasterGraphContext ctx) =>
             {
                 var mat = data.material;
-                mat.SetTexture(FogTempTexId, data.FogTextureHandle);
-                mat.SetFloat(IntensityId, data.intensity);
+                mat.SetTexture(_fogTempTexId, data.FogTextureHandle);
+                mat.SetFloat(_fogIntensityId, data.fogIntensity);
+                mat.SetInt(_blendModeId, data.blendMode);
+                mat.SetFloat(_blendIntensityId, data.blendIntensity);
+                
                 // 合成（Pass=1: Combine）
                 ExecutePass(data.SrcTextureHandle, mat, ctx, 1);
             });

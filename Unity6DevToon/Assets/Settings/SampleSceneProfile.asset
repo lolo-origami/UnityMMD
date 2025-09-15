@@ -297,22 +297,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fef9c83e7b5e35478f8dff61e9de2f0, type: 3}
   m_Name: DepthLightShaft
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   Intensity:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.73
   BlurDirection:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 0, z: 0, w: 0}
-  BlurSize:
+    m_Value: {x: 0.65, y: 1.1, z: 0, w: 0}
+  BlurSizeA:
     m_OverrideState: 1
-    m_Value: 2.14
+    m_Value: 2.49
+  BlurSizeB:
+    m_OverrideState: 1
+    m_Value: 3.06
   FogColor:
     m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
   DepthRange:
     m_OverrideState: 1
     m_Value: 0.00375
+  BlendeMode:
+    m_OverrideState: 1
+    m_Value: 3
 --- !u!114 &849379129802519247
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -374,7 +380,7 @@ MonoBehaviour:
     m_Value: 0.238
   BlurSize:
     m_OverrideState: 1
-    m_Value: 4.04
+    m_Value: 10
   BlendeMode:
     m_OverrideState: 1
     m_Value: 3
@@ -415,7 +421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fce55342696b8444899e8512041eaa2, type: 3}
   m_Name: LightShaft
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   MaxIterations:
     m_OverrideState: 1
     m_Value: 64
@@ -453,3 +459,6 @@ MonoBehaviour:
   OcclusionStrength:
     m_OverrideState: 1
     m_Value: 2.28
+  BlendeMode:
+    m_OverrideState: 1
+    m_Value: 0

@@ -3,7 +3,7 @@ Shader "Hidden/DepthFogShader"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _Intensity ("Common Bloom Factor", range(0.0, 100.0)) = 1.0
+        _FogIntensity ("Common Bloom Factor", range(0.0, 100.0)) = 1.0
         _FogColor ("_FogColor", Color) = (1, 1, 1, 1)
     }
     
@@ -14,7 +14,7 @@ HLSLINCLUDE
 
 CBUFFER_START(UnityPerMaterial)
     //EXTURE2D_X(_RampTex);
-    float _Intensity;
+    float _FogIntensity;
     float4 _FogColor;
 CBUFFER_END
 
@@ -28,7 +28,7 @@ CBUFFER_END
         depth = Linear01Depth(depth, _ZBufferParams);
 
         // Fog適用
-        color.rgb = lerp(color.rgb, _FogColor.rgb, depth * _Intensity);
+        color.rgb = lerp(color.rgb, _FogColor.rgb, depth * _FogIntensity);
 
         return color;
     }

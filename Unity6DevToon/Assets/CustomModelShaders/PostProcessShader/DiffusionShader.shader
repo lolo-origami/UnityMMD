@@ -4,7 +4,7 @@ Shader "Hidden/DiffusionShader"
     {
         _MainTex ("Texture", 2D) = "white" {}
         _Contrast ("Contrast", range(0.0, 1.0)) = 0.0
-        _Intensity ("Intensity", range(0.0, 1.0)) = 0.0
+        _BlendIntensity ("Intensity", range(0.0, 1.0)) = 0.0
     }
     SubShader
     {
@@ -21,7 +21,7 @@ Shader "Hidden/DiffusionShader"
         
         CBUFFER_START(UnityPerMaterial)
             float _Contrast;
-            float _Intensity;
+            float _BlendIntensity;
             float2 _BlurTexelSize;
             float _BlurSize;
             int _BlendMode;
@@ -62,7 +62,7 @@ Shader "Hidden/DiffusionShader"
             half3 color = SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp , input.texcoord).rgb;
             half3 blur = SAMPLE_TEXTURE2D_X(_BlurTex, sampler_LinearClamp, input.texcoord).rgb;
 
-            half4 result = half4(Blend(color, blur, _Intensity, _BlendMode), 1);
+            half4 result = half4(Blend(color, blur, _BlendIntensity, _BlendMode), 1);
             
             return result;
         }

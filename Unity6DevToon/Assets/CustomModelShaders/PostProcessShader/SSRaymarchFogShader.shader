@@ -7,17 +7,20 @@ Shader "Hidden/SSRaymarchFogShader"
     #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
     #include "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/Common.hlsl"
     #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
+    #include "LLPostEffectBlend.hlsl"
 
     TEXTURE2D_X(_FogTempTex);
     
     CBUFFER_START(UnityPerMaterial)
+    float _FogIntensity;
     float4 _CamWorldSpace;
     float4x4 _CamFrustum;
     float4x4 _CamToWorld;
     int _MaxIterations;
     float _MaxDistance;
     float _MinDistance;
-    float _Intensity;
+    int _BlendMode;
+    float _BlendIntensity;
     
     CBUFFER_END
     
@@ -52,7 +55,7 @@ Shader "Hidden/SSRaymarchFogShader"
                     t += step;
                 }
                 half4 result = float4(_MainLightColor.xyz * alpha, alpha);
-                result *= _Intensity;
+                result *= _FogIntensity;
                 result.a *= saturate(alpha);
                 return result;
             }
@@ -86,16 +89,17 @@ Shader "Hidden/SSRaymarchFogShader"
             Name "Combine"
 
             HLSLPROGRAM
-            half4 Frag_Combine(Varyings input) : SV_Target
+            half4 Frag_Blend(Varyings input) : SV_Target
             {
                 half4 color = SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord);
                 half4 fog = SAMPLE_TEXTURE2D_X(_FogTempTex, sampler_LinearClamp, input.texcoord);
                 color.rgb = color.rgb * (1 - fog.a) + fog.rgb * fog.a;
+                Blend(color, fog, _BlendIntensity, _BlendMode);
                 return color;
             }
 
             #pragma vertex Vert
-            #pragma fragment Frag_Combine
+            #pragma fragment Frag_Blend
             ENDHLSL
         }
  

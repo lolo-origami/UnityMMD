@@ -9,7 +9,10 @@ public class DepthFogPass : LLPostProcessPassBase
     // プロファイラで表示するタグ名
     private const string APPLY_FOG_PASSNAME = "Apply Depth Fog Pass";
     private const string COPY_FOG_TO_SCREEN_PASSNAME = "Copy Fog To Screen Pass";
-
+    
+    protected static readonly int _fogIntensityId = Shader.PropertyToID("_FogIntensity");
+    protected static readonly int _fogColorId = Shader.PropertyToID("_FogColor");
+    
     // シェーダープロパティIDをここで定義
     //private static readonly int _rampTexId = Shader.PropertyToID("_RampTex");
     //private static readonly int _cameraDepthTextureId = Shader.PropertyToID("_CameraDepthTexture");
@@ -72,13 +75,13 @@ public class DepthFogPass : LLPostProcessPassBase
             passData.srcTextureHandle = srcTextureHandle;
             passData.depthFogMaterial = _depthFogMaterial;
             //passData.depthTextureHandle = cameraDepthTextureHandle;
-            passData.intensity = depthFogComponent.intensity;
-            passData.fogColor = depthFogComponent.fogColor;
+            passData.intensity = depthFogComponent.FogIntensity;
+            passData.fogColor = depthFogComponent.FogColor;
             //passData.rampTexture = depthFogComponent.rampTexture;
 
             builder.SetRenderFunc((PassData passData, RasterGraphContext graphContext) =>
             {
-                passData.depthFogMaterial.SetFloat(_intensityId, passData.intensity.value);
+                passData.depthFogMaterial.SetFloat(_fogIntensityId, passData.intensity.value);
                 passData.depthFogMaterial.SetColor(_fogColorId, passData.fogColor.value);
                 ExecutePass(passData.srcTextureHandle, passData.depthFogMaterial, graphContext);
             });

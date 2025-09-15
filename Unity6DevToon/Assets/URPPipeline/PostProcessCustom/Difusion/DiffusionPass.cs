@@ -22,7 +22,7 @@ public class DiffusionPass : LLPostProcessPassBase
         public TextureHandle blurBuffer1;
         public TextureHandle blurBuffer2;
         public float contrast;
-        public float intensity;
+        public float blendIntensity;
         public float blurSize;
         public Vector2 blurTexelSize;
         public int blendMode;
@@ -132,12 +132,12 @@ public class DiffusionPass : LLPostProcessPassBase
             passData.material = _diffusionMaterial;
             passData.srcTextureHandle = srcTextureHandle;
             passData.blurBuffer1 = blurBuffer1;
-            passData.intensity = comp.Intensity.value;
+            passData.blendIntensity = comp.BlendIntensity.value;
             passData.blendMode = (int)comp.BlendeMode.value;
             
             builder.SetRenderFunc((PassData data, RasterGraphContext context) =>
             {
-                data.material.SetFloat(_intensityId, data.intensity);
+                data.material.SetFloat(_blendIntensityId, data.blendIntensity);
                 data.material.SetTexture(_blurTexId, data.blurBuffer1);
                 data.material.SetInt(_blendModeId, data.blendMode);
                 ExecutePass(data.srcTextureHandle, data.material, context, 3);

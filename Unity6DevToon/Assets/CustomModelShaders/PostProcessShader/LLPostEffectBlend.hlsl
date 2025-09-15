@@ -57,14 +57,14 @@ half3 Blend_Darken(half3 base, half3 blend)
 // 0=Add, 1=Multiply, 2=Alpha, 3=Screen,
 // 4=ColorBurn, 5=LinearBurn, 6=ColorDodge,
 // 7=Lighten, 8=Darken
-half3 Blend(half3 base, half3 blend, half intensity, int mode, half alpha = 1.0h)
+half3 Blend(half3 base, half3 blend, half intensity, int mode)
 {
     // intensity を最初に blend に掛ける
     half3 adjBlend = blend * intensity;
 
     if (mode == 0) return Blend_Add(base, adjBlend);
     if (mode == 1) return Blend_Multiply(base, adjBlend);
-    if (mode == 2) return Blend_Alpha(base, adjBlend, alpha);
+    if (mode == 2) return Blend_Alpha(base, blend, intensity);
     if (mode == 3) return Blend_Screen(base, adjBlend);
     if (mode == 4) return Blend_ColorBurn(base, adjBlend);
     if (mode == 5) return Blend_LinearBurn(base, adjBlend);

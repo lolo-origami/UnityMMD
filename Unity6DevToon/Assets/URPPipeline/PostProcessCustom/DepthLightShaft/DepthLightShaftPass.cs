@@ -14,7 +14,8 @@ public class DepthLightShaftPass : LLPostProcessPassBase
     private static readonly int _blurSizeAId = Shader.PropertyToID("_BlurSizeA");
     private static readonly int _blurSizeBId = Shader.PropertyToID("_BlurSizeB");
     private static readonly int _depthRangeId  = Shader.PropertyToID("_DepthRange");
-
+    private static readonly int _fogColorId  = Shader.PropertyToID("_FogColor");
+    
     private class PassData
     {
         public Material material;
@@ -22,7 +23,7 @@ public class DepthLightShaftPass : LLPostProcessPassBase
         public TextureHandle mask;
         public TextureHandle shaftA;
         public TextureHandle shaftB;
-        public float intensity;
+        public float blendIntensity;
         public Vector4 blurDir;
         public float blurSizeA;
         public float blurSizeB;
@@ -80,7 +81,7 @@ public class DepthLightShaftPass : LLPostProcessPassBase
             data0.material = _material;
             data0.src = src;
             data0.mask = mask;
-            data0.intensity = comp.Intensity.value;
+            data0.blendIntensity = comp.BlendIntensity.value;
             data0.blurDir = comp.BlurDirection.value;
             data0.blurSizeA = comp.BlurSizeA.value;
             data0.blurSizeB = comp.BlurSizeB.value;
@@ -151,14 +152,14 @@ public class DepthLightShaftPass : LLPostProcessPassBase
             data3.material = _material;
             data3.src = src;
             data3.shaftB = shaftB;
-            data3.intensity = comp.Intensity.value;
+            data3.blendIntensity = comp.BlendIntensity.value;
             data3.fogColor = comp.FogColor.value;
             data3.blendMode = (int)comp.BlendeMode.value;
 
             builder.SetRenderFunc((PassData d, RasterGraphContext ctx) =>
             {
                 d.material.SetTexture(_lightShaftTempBId, d.shaftB);
-                d.material.SetFloat(_intensityId, d.intensity);
+                d.material.SetFloat(_blendIntensityId, d.blendIntensity);
                 d.material.SetColor(_fogColorId, d.fogColor);
                 d.material.SetInt(_blendModeId, d.blendMode);
                 ExecutePass(d.src, d.material, ctx, 3);

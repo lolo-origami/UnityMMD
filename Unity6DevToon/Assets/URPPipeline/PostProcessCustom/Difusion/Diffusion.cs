@@ -1,6 +1,7 @@
 using System.Drawing;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 using Color = UnityEngine.Color;
 
 // 0=Add, 1=Multiply, 2=Alpha, 3=Screen,
@@ -16,9 +17,9 @@ public enum BlendModeEnumDiffusion
 
 public class Diffusion : VolumeComponent
 {
-    public FloatParameter Contrast = new FloatParameter(1.0f);
-    public ClampedFloatParameter Intensity = new ClampedFloatParameter(0f, 0f, 1f);
+    public FloatParameter Contrast = new FloatParameter(1.0f); 
+    public ClampedFloatParameter BlendIntensity = new ClampedFloatParameter(0f, 0f, 1f);
     public ClampedFloatParameter BlurSize = new ClampedFloatParameter(1f, 0f, 10f);
     public VolumeParameter<BlendModeEnumDiffusion> BlendeMode = new VolumeParameter<BlendModeEnumDiffusion>();
-    public bool IsActive => Intensity.value > 0f;
+    public bool IsActive => BlendIntensity.value > 0f;
 }

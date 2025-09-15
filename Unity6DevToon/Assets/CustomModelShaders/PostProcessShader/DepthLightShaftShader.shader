@@ -2,7 +2,7 @@ Shader "Hidden/DepthLightShaft"
 {
     Properties
     {
-        _Intensity ("Intensity", Range(0,5)) = 1.0
+        _BlendIntensity ("Intensity", Range(0,5)) = 1.0
         _FogColor ("Fog Color", Color) = (1,1,1,1)
         _BlurDir ("Blur Direction", Vector) = (1,0,0,0)
     }
@@ -15,7 +15,6 @@ Shader "Hidden/DepthLightShaft"
     #include "LLPostEffectBlur.hlsl"
 
     CBUFFER_START(UnityPerMaterial)
-        float _Intensity;
         float _BlurSizeA;
         float _BlurSizeB;
         float4 _FogColor;
@@ -24,6 +23,7 @@ Shader "Hidden/DepthLightShaft"
         float _DepthRange;
         float2 _BlurTexelSize;
         int _BlendMode;
+        float _BlendIntensity;
     CBUFFER_END
 
     static const float Weights[9] = {0.5352615, 0.7035879, 0.8553453, 0.9616906, 1, 0.9616906, 0.8553453, 0.7035879, 0.5352615};
@@ -69,7 +69,7 @@ Shader "Hidden/DepthLightShaft"
         half4 shaft = SAMPLE_TEXTURE2D_X(_LightShaftTempBTex, sampler_LinearClamp, i.texcoord) * _FogColor;
 
         // Screen合成: 1 - (1 - A) * (1 - B)
-        half4 result = half4(Blend(src, shaft, _Intensity, _BlendMode), 1);
+        half4 result = half4(Blend(src, shaft, _BlendIntensity, _BlendMode), 1);
 
         return result;
     }

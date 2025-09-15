@@ -3,6 +3,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// 0=Add, 1=Multiply, 2=Alpha, 3=Screen,
+// 4=ColorBurn, 5=LinearBurn, 6=ColorDodge,
+// 7=Lighten, 8=Darken
+public enum BlendModeEnum
+{
+    Add = 0,
+    Multiply = 1,
+    Alpha = 2,
+    Screen = 3,
+    ColorBurn = 4,
+    LinearBurn = 5,
+    ColorDodge = 6,
+    Lighten = 7,
+    Darken = 8
+}
+
 public class LLPostProcessRFManager
 {
     private static LLPostProcessRFManager _instance;

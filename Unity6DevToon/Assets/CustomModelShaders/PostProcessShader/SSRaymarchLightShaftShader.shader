@@ -9,7 +9,8 @@ Shader "Hidden/SSRaymarchLightShaft"
     #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
     #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
     #include "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/Common.hlsl"
-    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"         
+    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
+    #include "LLPostEffectBlend.hlsl"
 
     TEXTURE2D_X(_LightShaftTempTex);
     TEXTURE2D_X(_BlueNoiseTex);
@@ -22,7 +23,7 @@ Shader "Hidden/SSRaymarchLightShaft"
     int _MaxIterations;
     float _MaxDistance;
     float _MinDistance;
-    float _Intensity;
+    float _RayIntensity;
 
     float4 _RayColor;     // 光筋の色 (RGB=色, A=未使用)
     float _Decay;         // 距離減衰率（1.0で無減衰、0.9などで徐々に弱くなる）
@@ -31,7 +32,8 @@ Shader "Hidden/SSRaymarchLightShaft"
     float _NoiseScale;    // ノイズのスケール
     float _FalloffPower;  //距離によるカーブ
     float _OcclusionStrength; // 遮蔽の強調係数
-    
+    int _BlendMode;
+    float  _BlendIntensity;
     CBUFFER_END
     
     ENDHLSL
@@ -137,7 +139,7 @@ Shader "Hidden/SSRaymarchLightShaft"
                 // ④ 出力カラー計算（光の色 × 積算したalpha）
                 // -------------------------
                 half4 result = float4(_RayColor.rgb * alpha, alpha);
-                result *= _Intensity;          // ユーザー指定の強度でスケール
+                result *= _RayIntensity;          // ユーザー指定の強度でスケール
                 result.a = saturate(alpha);   // αを正規化して出力
                 return result;
             }
@@ -153,20 +155,18 @@ Shader "Hidden/SSRaymarchLightShaft"
             Name "Combine"
 
             HLSLPROGRAM
-            half4 Frag_Combine(Varyings input) : SV_Target
+            half4 Frag_Blend(Varyings input) : SV_Target
             {
                 half4 color = SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, input.texcoord);
                 half4 shaft = SAMPLE_TEXTURE2D_X(_LightShaftTempTex, sampler_LinearClamp, input.texcoord);
 
-                color.rgb = color.rgb * (1 - shaft.a) + shaft.rgb * shaft.a;
-                //color.rgb += shaft.rgb;
-                //color.rgb += shaft.rgb * shaft.a;
+                Blend(color, shaft, _BlendIntensity, _BlendMode);
 
                 return color;
             }
 
             #pragma vertex Vert
-            #pragma fragment Frag_Combine
+            #pragma fragment Frag_Blend
             ENDHLSL
         }
     }

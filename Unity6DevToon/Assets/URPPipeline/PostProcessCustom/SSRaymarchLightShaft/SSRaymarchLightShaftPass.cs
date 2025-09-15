@@ -6,20 +6,20 @@ using static LLPostProcessBufferManager;
 
 public class SSRaymarchLightShaftPass : LLPostProcessPassBase
 {
-    private static readonly int LightShaftTempId = UnityEngine.Shader.PropertyToID("_LightShaftTempTex");
-    private static readonly int CamToWorldId = Shader.PropertyToID("_CamToWorld");
-    private static readonly int MaxIterationsId = Shader.PropertyToID("_MaxIterations");
-    private static readonly int MaxDistanceId = Shader.PropertyToID("_MaxDistance");
-    private static readonly int MinDistanceId = Shader.PropertyToID("_MinDistance");
-    private static readonly int IntensityId = Shader.PropertyToID("_Intensity");
-    private static readonly int RayColorId        = Shader.PropertyToID("_RayColor");
-    private static readonly int DecayId           = Shader.PropertyToID("_Decay");
-    private static readonly int RaySpreadId       = Shader.PropertyToID("_RaySpread");
-    private static readonly int JitterStrengthId  = Shader.PropertyToID("_JitterStrength");
-    private static readonly int NoiseScaleId      = Shader.PropertyToID("_NoiseScale");
-    private static readonly int BlueNoiseTexId    = Shader.PropertyToID("_BlueNoiseTex");
-    private static readonly int FalloffPowerId      = Shader.PropertyToID("_FalloffPower");
-    private static readonly int OcclusionStrengthId   = Shader.PropertyToID("_OcclusionStrength");
+    private static readonly int _lightShaftTempId = UnityEngine.Shader.PropertyToID("_LightShaftTempTex");
+    private static readonly int _camToWorldId = Shader.PropertyToID("_CamToWorld");
+    private static readonly int _maxIterationsId = Shader.PropertyToID("_MaxIterations");
+    private static readonly int _maxDistanceId = Shader.PropertyToID("_MaxDistance");
+    private static readonly int _minDistanceId = Shader.PropertyToID("_MinDistance");
+    private static readonly int _rayIntensityId = Shader.PropertyToID("_RayIntensity");
+    private static readonly int _rayColorId        = Shader.PropertyToID("_RayColor");
+    private static readonly int _decayId           = Shader.PropertyToID("_Decay");
+    private static readonly int _raySpreadId       = Shader.PropertyToID("_RaySpread");
+    private static readonly int _jitterStrengthId  = Shader.PropertyToID("_JitterStrength");
+    private static readonly int _noiseScaleId      = Shader.PropertyToID("_NoiseScale");
+    private static readonly int _blueNoiseTexId    = Shader.PropertyToID("_BlueNoiseTex");
+    private static readonly int _falloffPowerId      = Shader.PropertyToID("_FalloffPower");
+    private static readonly int _occlusionStrengthId   = Shader.PropertyToID("_OcclusionStrength");
     
     private class PassData
     {
@@ -30,7 +30,7 @@ public class SSRaymarchLightShaftPass : LLPostProcessPassBase
         public int maxIterations;
         public float maxDistance;
         public float minDistance;
-        public float intensity;
+        public float rayIntensity;
         public Color rayColor;
         public float decay;
         public float raySpread;
@@ -39,6 +39,8 @@ public class SSRaymarchLightShaftPass : LLPostProcessPassBase
         public Texture blueNoiseTex;
         public float falloffPower;
         public float occlusionStrength;
+        public int blendMode;
+        public float blendIntensity;
     }
 
     private Material _lightShaftMaterial;
@@ -104,7 +106,7 @@ public class SSRaymarchLightShaftPass : LLPostProcessPassBase
             passData.maxIterations = component.MaxIterations.value;
             passData.maxDistance = component.MaxDistance.value;
             passData.minDistance = component.MinDistance.value;
-            passData.intensity = component.Intensity.value;
+            passData.rayIntensity = component.RayIntensity.value;
             passData.rayColor        = component.RayColor.value;
             passData.decay           = component.Decay.value;
             passData.raySpread       = component.RaySpread.value;
@@ -113,24 +115,29 @@ public class SSRaymarchLightShaftPass : LLPostProcessPassBase
             passData.blueNoiseTex    = component.BlueNoiseTex.value;         
             passData.falloffPower   = component.FalloffPower.value;
             passData.occlusionStrength = component.OcclusionStrength.value;
+            passData.blendMode = (int)component.BlendeMode.value;
+            passData.blendIntensity = component.BlendIntensity.value;
 
             builder.SetRenderFunc((PassData data, RasterGraphContext ctx) =>
             {
                 var material = data.material;
-                material.SetMatrix(CamToWorldId, data.camToWorld);
-                material.SetInt(MaxIterationsId, data.maxIterations);
-                material.SetFloat(MaxDistanceId, data.maxDistance);
-                material.SetFloat(MinDistanceId, data.minDistance);
-                material.SetColor(RayColorId, data.rayColor);
-                material.SetFloat(DecayId, data.decay);
-                material.SetFloat(RaySpreadId, data.raySpread);
-                material.SetFloat(JitterStrengthId, data.jitterStrength);
-                material.SetFloat(NoiseScaleId, data.noiseScale);
-                material.SetFloat(FalloffPowerId, data.falloffPower);
-                material.SetFloat(OcclusionStrengthId, data.occlusionStrength);
+                material.SetMatrix(_camToWorldId, data.camToWorld);
+                material.SetInt(_maxIterationsId, data.maxIterations);
+                material.SetFloat(_maxDistanceId, data.maxDistance);
+                material.SetFloat(_minDistanceId, data.minDistance);
+                material.SetFloat(_rayIntensityId, data.rayIntensity);
+                material.SetColor(_rayColorId, data.rayColor);
+                material.SetFloat(_decayId, data.decay);
+                material.SetFloat(_raySpreadId, data.raySpread);
+                material.SetFloat(_jitterStrengthId, data.jitterStrength);
+                material.SetFloat(_noiseScaleId, data.noiseScale);
+                material.SetFloat(_falloffPowerId, data.falloffPower);
+                material.SetFloat(_occlusionStrengthId, data.occlusionStrength);
+                material.SetInt(_blendModeId, data.blendMode);
+                material.SetFloat(_blendIntensityId, data.blendIntensity);
                 if (data.blueNoiseTex != null)
                 {
-                    material.SetTexture(BlueNoiseTexId, data.blueNoiseTex);
+                    material.SetTexture(_blueNoiseTexId, data.blueNoiseTex);
                 }
 
                 ExecutePass(data.SrcTextureHandle, material, ctx, 0);
@@ -150,16 +157,17 @@ public class SSRaymarchLightShaftPass : LLPostProcessPassBase
             pass1.SrcTextureHandle = srcTextureHandle; // 元絵
             pass1.ShaftTextureHandle = shaftTexHandle; // SunShaft 出力
             pass1.material = _lightShaftMaterial;
-            pass1.intensity = component.Intensity.value; // 必要なら Combine でも使用
-
+            pass1.blendIntensity = component.BlendIntensity.value; // 必要なら Combine でも使用
+            pass1.blendMode = (int)component.BlendeMode.value;
 
             builder.SetRenderFunc((PassData data, RasterGraphContext ctx) =>
             {
                 var material = data.material;
                     
                 // Combine パスで参照される一時テクスチャをバインド
-                material.SetTexture(LightShaftTempId, data.ShaftTextureHandle);
-                material.SetFloat(IntensityId, data.intensity);
+                material.SetTexture(_lightShaftTempId, data.ShaftTextureHandle);
+                material.SetFloat(_blendIntensityId, data.blendIntensity);
+                material.SetInt(_blendModeId, data.blendMode);
                 ExecutePass(data.SrcTextureHandle, material, ctx, 1); // pass 1: Combine
             });
         }  
