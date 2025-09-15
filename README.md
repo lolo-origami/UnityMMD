@@ -119,12 +119,26 @@ RenderFeatureの登録順で実行順が自動入れ替わります。
 <img width="458" height="97" alt="image" src="https://github.com/user-attachments/assets/a26a83e3-25a8-4ac0-a87a-207f06586f2e" />
 
 - **FogColor**: フォグの色。
-- **Intensity**: Fogの強さ。
+- **FogIntensity**: Fogの強さ。
 
 ## DepthLightShaft
 
 カメラの Depth Textureを元にしたゴッドレイ効果を出力します。ブラー効果のみで軽量に動作することが可能です。
+ブラーを特定方向に二回かけて、ボケを大きくしています。
 
+<img width="353" height="630" alt="image" src="https://github.com/user-attachments/assets/2ef96f47-ad4e-4995-a835-1197718c93bf" />
+
+<img width="357" height="628" alt="image" src="https://github.com/user-attachments/assets/f8a77603-ceda-4503-a551-ce597b9d0f01" />
+
+<img width="467" height="233" alt="image" src="https://github.com/user-attachments/assets/e0c65bf4-aa6a-4c7b-a697-f9878c3790a3" />
+
+- **BlurDirection**: ぼかす方向
+- **BlurSizeA**: 一回目のブラーサイズ
+- **BlurSizeB**: 二回目のブラーサイズ
+- **LightShaftColor**:ゴッドレイの色
+- **DepthRange**：どのデプス値までをマスクにするか
+- **BlendMode**:合成モード
+- **BlendIntensity**:合成の強さ  
 
 
 ## Flare
