@@ -38,7 +38,7 @@ Shader "Hidden/DepthLightShaft"
     // -------------------------------------------------
     half4 Frag_DepthMask(Varyings i) : SV_Target
     {
-        float rawDepth = SAMPLE_TEXTURE2D_X(_CameraDepthTexture, sampler_LinearClamp, i.texcoord).r;
+        float rawDepth = SAMPLE_TEXTURE2D_X(_CameraDepthTexture, sampler_PointClamp, i.texcoord).r;
         float depth    = Linear01Depth(rawDepth, _ZBufferParams);
         float mask = (depth < _DepthRange) ? 1.0 : 0.0;
         return half4(mask, mask, mask, mask);

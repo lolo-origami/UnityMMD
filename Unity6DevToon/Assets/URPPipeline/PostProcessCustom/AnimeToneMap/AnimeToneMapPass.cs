@@ -4,7 +4,7 @@ using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering.Universal;
 using static LLPostProcessBufferManager;
 
-public class AnimeToneMapPass : LLPostProcessPassBase
+public class AnimeToneMapPass : ScriptableRenderPass
 {
     private static readonly int _gammaId = Shader.PropertyToID("_Gamma");
     private static readonly int _contrastId = Shader.PropertyToID("_Contrast");
@@ -61,7 +61,7 @@ public class AnimeToneMapPass : LLPostProcessPassBase
         // src/dst 取得
         //TextureHandle src = resourceData.activeColorTexture;
 
-        TextureHandle src = GetSrcHandle(frameData, resourceData);
+        TextureHandle src = resourceData.activeColorTexture;
         RenderTextureDescriptor descriptor = cameraData.cameraTargetDescriptor;
         descriptor.depthBufferBits = 0;
         TextureHandle temp = UniversalRenderer.CreateRenderGraphTexture(renderGraph, descriptor, "_AnimeToneMapTmepRT", true);

@@ -277,6 +277,55 @@ MonoBehaviour:
   saturation:
     m_OverrideState: 1
     m_Value: 0
+--- !u!114 &-804048390093419599
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 834d76c2a028b4f47af3fe6a4d228001, type: 3}
+  m_Name: DepthColorAdjust
+  m_EditorClassIdentifier: 
+  active: 1
+  NearExposure:
+    m_OverrideState: 0
+    m_Value: 0
+  NearContrast:
+    m_OverrideState: 0
+    m_Value: 0
+  NearColorFilter:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+  NearHueShift:
+    m_OverrideState: 0
+    m_Value: 0
+  NearSaturation:
+    m_OverrideState: 0
+    m_Value: 0
+  FarExposure:
+    m_OverrideState: 0
+    m_Value: 0
+  FarContrast:
+    m_OverrideState: 0
+    m_Value: 0
+  FarColorFilter:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+  FarHueShift:
+    m_OverrideState: 0
+    m_Value: 0
+  FarSaturation:
+    m_OverrideState: 0
+    m_Value: 0
+  IntermediateMin:
+    m_OverrideState: 0
+    m_Value: 0.3
+  IntermediateMax:
+    m_OverrideState: 0
+    m_Value: 0.7
 --- !u!114 &-592344252784950588
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -323,6 +372,7 @@ MonoBehaviour:
   - {fileID: -7651550607088960668}
   - {fileID: -3682817929865172515}
   - {fileID: -6129875062862446802}
+  - {fileID: -804048390093419599}
 --- !u!114 &46770742813359636
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -336,9 +386,6 @@ MonoBehaviour:
   m_Name: DepthLightShaft
   m_EditorClassIdentifier: 
   active: 0
-  BlendIntensity:
-    m_OverrideState: 1
-    m_Value: 0.492
   BlurDirection:
     m_OverrideState: 1
     m_Value: {x: 0.65, y: 1.1, z: 0, w: 0}
@@ -348,8 +395,8 @@ MonoBehaviour:
   BlurSizeB:
     m_OverrideState: 1
     m_Value: 3.06
-  FogColor:
-    m_OverrideState: 1
+  LightShaftColor:
+    m_OverrideState: 0
     m_Value: {r: 1, g: 1, b: 1, a: 1}
   DepthRange:
     m_OverrideState: 1
@@ -357,6 +404,9 @@ MonoBehaviour:
   BlendeMode:
     m_OverrideState: 1
     m_Value: 3
+  BlendIntensity:
+    m_OverrideState: 1
+    m_Value: 0.492
 --- !u!114 &849379129802519247
 MonoBehaviour:
   m_ObjectHideFlags: 3

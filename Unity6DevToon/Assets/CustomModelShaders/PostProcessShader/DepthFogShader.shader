@@ -24,7 +24,7 @@ CBUFFER_END
         half4 color = SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp , input.texcoord) * _FogColor;
         
         // デプス取得（0:カメラ近, 1:遠）
-        float depth = SAMPLE_TEXTURE2D_X(_CameraDepthTexture, sampler_LinearClamp, input.texcoord).r;
+        float depth = SAMPLE_TEXTURE2D_X(_CameraDepthTexture, sampler_PointClamp, input.texcoord).r;
         depth = Linear01Depth(depth, _ZBufferParams);
 
         // Fog適用
