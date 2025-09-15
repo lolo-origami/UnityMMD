@@ -214,6 +214,7 @@ Depthだけで行うフォグよりも、遮蔽物とフォグがかかる箇所
 アニメ的な色彩、彩度とコントラストを保持しながら、必要に応じてガンマ補正やハイライト圧縮を行います。。
 
 黒の持ち上げ
+
 <img width="351" height="628" alt="image" src="https://github.com/user-attachments/assets/466bbb25-725a-4dfc-ba52-08f8c63869a0" />
 
 <img width="359" height="630" alt="image" src="https://github.com/user-attachments/assets/86049d75-f78b-44e7-86a7-b18b9865a37b" />
