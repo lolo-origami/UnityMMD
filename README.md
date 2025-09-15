@@ -227,7 +227,7 @@ Depthだけで行うフォグよりも、遮蔽物とフォグがかかる箇所
 <img width="351" height="628" alt="image" src="https://github.com/user-attachments/assets/22777c8f-6cdd-445e-ba1e-6680a1565563" />
 
 
-Unity標準のACES
+Unity標準のACES(比較用)
 
 <img width="352" height="626" alt="image" src="https://github.com/user-attachments/assets/9b470c9b-010d-4221-b9fd-1f7386d670fd" />
 
