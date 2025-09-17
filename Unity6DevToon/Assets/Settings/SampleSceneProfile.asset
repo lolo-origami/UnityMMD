@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baaafbe3331af9040896f190e0a8ad21, type: 3}
   m_Name: GuidedFilter
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   Radius:
     m_OverrideState: 1
     m_Value: 4
@@ -183,10 +183,10 @@ MonoBehaviour:
     dimension: 1
   DepthThreshold:
     m_OverrideState: 1
-    m_Value: 0.534
+    m_Value: 0.037
   DepthFeather:
     m_OverrideState: 1
-    m_Value: 0.11
+    m_Value: 0.017
   DepthColorBlend:
     m_OverrideState: 1
     m_Value: 0.576
@@ -205,13 +205,13 @@ MonoBehaviour:
   active: 1
   color:
     m_OverrideState: 1
-    m_Value: {r: 0, g: 0, b: 0, a: 1}
+    m_Value: {r: 0.5754717, g: 0.2035867, b: 0.21757455, a: 1}
   center:
     m_OverrideState: 0
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.2
+    m_Value: 0.414
   smoothness:
     m_OverrideState: 0
     m_Value: 0.2
@@ -261,19 +261,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66f335fb1ffd8684294ad653bf1c7564, type: 3}
   m_Name: ColorAdjustments
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   postExposure:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.07
   contrast:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: -11.5
   colorFilter:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
   hueShift:
     m_OverrideState: 1
-    m_Value: 5
+    m_Value: 0
   saturation:
     m_OverrideState: 1
     m_Value: 0
@@ -291,41 +291,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   NearExposure:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 0.24
   NearContrast:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   NearColorFilter:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
   NearHueShift:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   NearSaturation:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   FarExposure:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 1.87
   FarContrast:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   FarColorFilter:
-    m_OverrideState: 0
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    m_OverrideState: 1
+    m_Value: {r: 0.18867922, g: 0.075649686, b: 0.11175631, a: 1}
   FarHueShift:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   FarSaturation:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   IntermediateMin:
-    m_OverrideState: 0
-    m_Value: 0.3
+    m_OverrideState: 1
+    m_Value: 0
   IntermediateMax:
-    m_OverrideState: 0
-    m_Value: 0.7
+    m_OverrideState: 1
+    m_Value: 0.02
 --- !u!114 &-592344252784950588
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -459,19 +459,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee747d883bc857445962aceb09885737, type: 3}
   m_Name: Diffusion
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   Contrast:
     m_OverrideState: 1
-    m_Value: 1.04
+    m_Value: 0.46
   BlurSize:
     m_OverrideState: 1
-    m_Value: 10
+    m_Value: 6.25
   BlendeMode:
     m_OverrideState: 1
     m_Value: 3
   BlendIntensity:
     m_OverrideState: 1
-    m_Value: 0.135
+    m_Value: 0.118
 --- !u!114 &7391319092446245454
 MonoBehaviour:
   m_ObjectHideFlags: 3

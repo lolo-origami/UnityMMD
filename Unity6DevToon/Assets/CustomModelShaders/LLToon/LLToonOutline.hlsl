@@ -17,7 +17,32 @@ half3 shift(half3 color, half3 shift)
     );
 }
 
-//アウトラインかく
+// SobelFilterとノーマルマップで 内側ライン検出
+float SobelInnerEdge(float2 uv)
+{
+    float2 texel = 1.0 / _ScreenParams.xy; //太さ調整_SobelWidth
+
+    float3 n[9];
+    int k = 0;
+    [unroll]
+    for (int y = -1; y <= 1; y++)
+    {
+        for (int x = -1; x <= 1; x++)
+        {
+            float2 offset = uv + float2(x, y) * texel;
+            n[k] = SAMPLE_TEXTURE2D(_CameraNormalsTexture, sampler_CameraNormalsTexture, offset).xyz;
+            k++;
+        }
+    }
+
+    float3 gx = n[2] + 2*n[5] + n[8] - (n[0] + 2*n[3] + n[6]);
+    float3 gy = n[0] + 2*n[1] + n[2] - (n[6] + 2*n[7] + n[8]);
+
+    float edge = length(gx) + length(gy);
+    return saturate(edge * 1); //出やすさ調整_SobelStrength
+}
+
+//アウトラインかく(外側)
 float SoftOutline(float2 uv, half width, half strength, half power)
 {
     float sceneDepth = sampleSceneDepth(uv);

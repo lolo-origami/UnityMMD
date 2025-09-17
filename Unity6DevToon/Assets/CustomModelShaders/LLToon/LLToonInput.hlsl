@@ -7,6 +7,7 @@
 #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/ParallaxMapping.hlsl"
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DBuffer.hlsl"
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
+#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareNormalsTexture.hlsl"
 
 #if defined(_DETAIL_MULX2) || defined(_DETAIL_SCALED)
 #define _DETAIL
@@ -280,8 +281,11 @@ SamplerState my_linear_clamp_sampler;
 //デプス取得
 float sampleSceneDepth(float2 uv)
 {
-    float sceneDepth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, my_linear_clamp_sampler, uv);
-    return Linear01Depth(sceneDepth, _ZBufferParams) * _ProjectionParams.z;
+    //float sceneDepth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, my_linear_clamp_sampler, uv);
+    //return Linear01Depth(sceneDepth, _ZBufferParams) * _ProjectionParams.z;
+
+    float depth = SAMPLE_TEXTURE2D_X(_CameraDepthTexture, sampler_PointClamp, uv);
+    return Linear01Depth(depth, _ZBufferParams);
 }
 
 inline void InitializeStandardSurfaceDataLL(float2 uv, out SurfaceData outSurfaceData, float4 screenPosData)

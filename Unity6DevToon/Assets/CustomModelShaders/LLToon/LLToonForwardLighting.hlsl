@@ -301,10 +301,21 @@ half4 LLFragmentChara(Varyings input) : SV_Target
     // Outline作る
     float2 screenPos = ComputeScreenPos(input.screenPos / input.screenPos.w).xy;
     half width = lerp(_OutlineWidth, _OutlineWidth * 0.5, lllData.RampOutline * _OutlineLightAffects);
-    width *= SAMPLE_TEXTURE2D(_OutlineMask, sampler_OutlineMask, input.uv).r;
-    half outlineFactor = SoftOutline(screenPos, width, _OutlineStrength, _OutlineSmoothness);
+    //width *= SAMPLE_TEXTURE2D(_OutlineMask, sampler_OutlineMask, input.uv).r;
+    half outlineOuter  = SoftOutline(screenPos, width, _OutlineStrength, _OutlineSmoothness);
     half lerpValue = lllData.HalfLambert > 1.0 ? lllData.HalfLambert * _OutlineLightAffects : lllData.RampOutline * _OutlineLightAffects;
-    finalColor.rgb = lerp(finalColor.rgb, shift(finalColor.rgb, half3(0.0, _OutlineSaturation, lerp(_OutlineBrightness, saturate(_OutlineBrightness * 2.0), lerpValue))), outlineFactor);
+
+    // 内側（Sobel）
+    half outlineInner = SobelInnerEdge(screenPos);
+
+    // 外側が検出された部分はSobelを抑制（マスク）
+    outlineInner *= (1 - outlineOuter);
+
+    // 合成
+    half outlineFactor = max(outlineOuter, outlineInner);
+
+    float3 outlineColor = shift(finalColor.rgb, half3(0.0, _OutlineSaturation, lerp(_OutlineBrightness, saturate(_OutlineBrightness * 2.0), lerpValue)));
+    finalColor.rgb = lerp(finalColor.rgb, outlineColor, outlineFactor);
 
     // apply fog
     finalColor.rgb = MixFog(finalColor.rgb, inputData.baseInputData.fogCoord);
