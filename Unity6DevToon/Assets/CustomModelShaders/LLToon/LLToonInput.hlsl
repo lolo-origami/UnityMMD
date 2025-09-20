@@ -108,6 +108,10 @@ float _OutlineSaturation;
 float _OutlineBrightness;
 float _OutlineStrength;
 float _OutlineSmoothness;
+float _InnerStrength;
+float _InnerWidth;
+float _InnerThreshold;
+float _InnerSharpness;
 //float3 _ReceiveShadowMultColor;
 
 //half4 _MedColor;

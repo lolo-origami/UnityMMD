@@ -106,6 +106,11 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
         protected MaterialProperty OutlineBrightnessProp { get; set; }
         protected MaterialProperty OutlineStrengthProp { get; set; }
         protected MaterialProperty OutlineSmoothnessProp { get; set; }
+        
+        protected MaterialProperty InnerWidthProp { get; set; }
+        protected MaterialProperty InnerStrengthProp { get; set; }
+        protected MaterialProperty InnerThresholdProp { get; set; }
+        protected MaterialProperty InnerSmoothnessProp { get; set; }
 
         #endregion
         
@@ -220,6 +225,11 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             public static readonly GUIContent OutlineBrightnessOptions = EditorGUIUtility.TrTextContent("OutlineBrightness", "");
             public static readonly GUIContent OutlineStrengthOptions = EditorGUIUtility.TrTextContent("OutlineStrength", "M");
             public static readonly GUIContent OutlineSmoothnessptions = EditorGUIUtility.TrTextContent("OutlineSmoothness", "");
+            public static readonly GUIContent InnerWidthOptions     = EditorGUIUtility.TrTextContent("Inner Outline Width", "");
+            public static readonly GUIContent InnerStrengthOptions  = EditorGUIUtility.TrTextContent("Inner Outline Strength", "");
+            public static readonly GUIContent InnerThresholdOptions = EditorGUIUtility.TrTextContent("Inner Outline Threshold", "");
+            public static readonly GUIContent InnerSmoothnessOptions= EditorGUIUtility.TrTextContent("Inner Outline Smoothness", "");
+
         }
         
         protected enum ExpandableLL
@@ -386,6 +396,11 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             OutlineBrightnessProp = FindProperty("_OutlineBrightness", properties, false);
             OutlineStrengthProp = FindProperty("_OutlineStrength", properties, false);
             OutlineSmoothnessProp = FindProperty("_OutlineSmoothness", properties, false);
+            InnerWidthProp     = FindProperty("_InnerWidth", properties, false);
+            InnerStrengthProp  = FindProperty("_InnerStrength", properties, false);
+            InnerThresholdProp = FindProperty("_InnerThreshold", properties, false);
+            InnerSmoothnessProp= FindProperty("_InnerSmoothness", properties, false);
+
         }
 
         // material changed check
@@ -724,44 +739,63 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
 
 #region Outline
 
-        protected void DrawOutlinePropertiesLL(Material material)
+    protected void DrawOutlinePropertiesLL(Material material)
+    {
+        if (OutlineMaskProp != null)
         {
-            if (OutlineMaskProp != null)
-            {
-                materialEditor.TextureProperty(OutlineMaskProp, "OutlineMask");
-            }
-
-            if (OutlineWidthProp != null)
-            {
-                DrawFloatSliderValue(CustomStyleLL.OutlineWidthOptions, 0, 50, OutlineWidthProp);
-            }
-            
-            if (OutlineLightAffectsProp != null)
-            {
-                DrawFloatSliderValue(CustomStyleLL.OutlineLightAffectsOptions, 0, 50, OutlineLightAffectsProp);
-            }
-            
-            if (OutlineSaturationProp != null)
-            {
-                DrawFloatSliderValue(CustomStyleLL.OutlineSaturationOptions, 0, 4, OutlineSaturationProp);
-            }
-            
-            if (OutlineBrightnessProp != null)
-            {
-                DrawFloatSliderValue(CustomStyleLL.OutlineBrightnessOptions, 0, 1, OutlineBrightnessProp);
-            }
-            
-            if (OutlineStrengthProp != null)
-            {
-                DrawFloatSliderValue(CustomStyleLL.OutlineStrengthOptions, 0, 1, OutlineStrengthProp);
-            }
-            
-            if (OutlineSmoothnessProp != null)
-            {
-                DrawFloatSliderValue(CustomStyleLL.OutlineSmoothnessptions, 0, 1, OutlineSmoothnessProp);
-            }
+            materialEditor.TextureProperty(OutlineMaskProp, "OutlineMask");
         }
-        #endregion
+
+        if (OutlineWidthProp != null)
+        {
+            DrawFloatSliderValue(CustomStyleLL.OutlineWidthOptions, 0, 50, OutlineWidthProp);
+        }
+
+        if (OutlineLightAffectsProp != null)
+        {
+            DrawFloatSliderValue(CustomStyleLL.OutlineLightAffectsOptions, 0, 50, OutlineLightAffectsProp);
+        }
+
+        if (OutlineSaturationProp != null)
+        {
+            DrawFloatSliderValue(CustomStyleLL.OutlineSaturationOptions, 0, 4, OutlineSaturationProp);
+        }
+
+        if (OutlineBrightnessProp != null)
+        {
+            DrawFloatSliderValue(CustomStyleLL.OutlineBrightnessOptions, 0, 1, OutlineBrightnessProp);
+        }
+
+        if (OutlineStrengthProp != null)
+        {
+            DrawFloatSliderValue(CustomStyleLL.OutlineStrengthOptions, 0, 1, OutlineStrengthProp);
+        }
+
+        if (OutlineSmoothnessProp != null)
+        {
+            DrawFloatSliderValue(CustomStyleLL.OutlineSmoothnessptions, 0, 1, OutlineSmoothnessProp);
+        }
+
+        if (InnerWidthProp != null)
+        {
+            DrawFloatSliderValue(CustomStyleLL.InnerWidthOptions, 0, 10, InnerWidthProp);
+        }
+
+        if (InnerStrengthProp != null){
+            DrawFloatSliderValue(CustomStyleLL.InnerStrengthOptions, 0, 5, InnerStrengthProp);
+        }
+
+        if (InnerThresholdProp != null)
+        {
+            DrawFloatSliderValue(CustomStyleLL.InnerThresholdOptions, 0, 1, InnerThresholdProp);
+        }
+
+        if (InnerSmoothnessProp != null)
+        {
+            DrawFloatSliderValue(CustomStyleLL.InnerSmoothnessOptions, 0, 1, InnerSmoothnessProp);
+        }
+    }
+#endregion
 
 // material main advanced options
         public override void AssignNewShaderToMaterial(Material material, Shader oldShader, Shader newShader)

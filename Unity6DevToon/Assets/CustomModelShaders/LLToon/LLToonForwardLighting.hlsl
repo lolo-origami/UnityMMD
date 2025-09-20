@@ -306,7 +306,7 @@ half4 LLFragmentChara(Varyings input) : SV_Target
     half lerpValue = lllData.HalfLambert > 1.0 ? lllData.HalfLambert * _OutlineLightAffects : lllData.RampOutline * _OutlineLightAffects;
 
     // 内側（Sobel）
-    half outlineInner = SobelInnerEdge(screenPos);
+    half outlineInner = SobelInnerEdge(screenPos, _InnerWidth, _InnerStrength, _InnerSharpness, _InnerThreshold);
 
     // 外側が検出された部分はSobelを抑制（マスク）
     outlineInner *= (1 - outlineOuter);
@@ -315,6 +315,7 @@ half4 LLFragmentChara(Varyings input) : SV_Target
     half outlineFactor = max(outlineOuter, outlineInner);
 
     float3 outlineColor = shift(finalColor.rgb, half3(0.0, _OutlineSaturation, lerp(_OutlineBrightness, saturate(_OutlineBrightness * 2.0), lerpValue)));
+    //finalColor.rgb = float3(1,1,1);
     finalColor.rgb = lerp(finalColor.rgb, outlineColor, outlineFactor);
 
     // apply fog

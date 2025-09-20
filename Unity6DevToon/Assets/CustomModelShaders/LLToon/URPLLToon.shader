@@ -115,6 +115,10 @@ Shader "Universal Render Pipeline/URPLLToon"
         _OutlineBrightness("Outline Brightness", Range(0.0, 1.0)) = 0.25
         _OutlineStrength("Outline Strength", Range(0.0, 1.0)) = 0.5
         _OutlineSmoothness("Outline Smoothness", Range(0.0, 1.0)) = 1.0
+        _InnerStrength  ("_Inner Strength", Range(0.0, 5.0)) = 1.0
+        _InnerWidth     ("_Inner Width", Range(0.5, 5.0))    = 1.0
+        _InnerThreshold ("_Inner Threshold", Range(0.0, 1.0)) = 0.1
+        _InnerSharpness ("_Inner Sharpness", Range(1.0, 10.0)) = 5.0        
         [HideInInspector]_OutlineZOffset ("_OutlineZOffset (View Space) (increase it if is face!)", Range(0, 1)) = 0.0001
 
         [Header(Alpha)]

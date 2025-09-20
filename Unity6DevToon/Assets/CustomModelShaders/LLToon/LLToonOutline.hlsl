@@ -18,9 +18,9 @@ half3 shift(half3 color, half3 shift)
 }
 
 // SobelFilterとノーマルマップで 内側ライン検出
-float SobelInnerEdge(float2 uv)
+float SobelInnerEdge(float2 uv, float sobelWIdth, float sobelStrength, float sobelSharpness, float sobelThreshold)
 {
-    float2 texel = 1.0 / _ScreenParams.xy; //太さ調整_SobelWidth
+    float2 texel = sobelWIdth/ _ScreenParams.xy; //太さ調整_SobelWidth
 
     float3 n[9];
     int k = 0;
@@ -39,7 +39,10 @@ float SobelInnerEdge(float2 uv)
     float3 gy = n[0] + 2*n[1] + n[2] - (n[6] + 2*n[7] + n[8]);
 
     float edge = length(gx) + length(gy);
-    return saturate(edge * 1); //出やすさ調整_SobelStrength
+    // ✅ 強調 & しきい値処理
+    edge *= sobelStrength;
+    edge = saturate((edge - sobelThreshold) * sobelSharpness);
+    return edge;
 }
 
 //アウトラインかく(外側)
