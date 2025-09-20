@@ -45,6 +45,8 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
         #region BRDF
         protected MaterialProperty MetallicProp { get; set; }
         protected MaterialProperty SmoothnessProp { get; set; }
+        protected MaterialProperty AOMapProp { get; set; }
+        protected MaterialProperty AOStrengthProp { get; set; }        
         protected MaterialProperty EnableSpecularProp { get; set; }
         protected MaterialProperty LightSpecColorProperty { get; set; }
         protected MaterialProperty _LightSpecShadowColorProperty { get; set; }
@@ -173,7 +175,10 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             
             //BRDF
             public static readonly GUIContent MetallicOptions = EditorGUIUtility.TrTextContent("Metallic", "");
-            public static readonly GUIContent SmoothnessOptions = EditorGUIUtility.TrTextContent("Smoothness", "");   
+            public static readonly GUIContent SmoothnessOptions = EditorGUIUtility.TrTextContent("Smoothness", "");
+            public static readonly GUIContent AOEnableOptions = EditorGUIUtility.TrTextContent("AOEnable", "");
+            public static readonly GUIContent AOMapOptions = EditorGUIUtility.TrTextContent("AOMap", "");   
+            public static readonly GUIContent AOStrengthOptions = EditorGUIUtility.TrTextContent("AOStrength", "");   
             public static readonly GUIContent EnableSpecularOptions = EditorGUIUtility.TrTextContent("EnableSpecular", "");
             public static readonly GUIContent DiffuseIntensityOptions = EditorGUIUtility.TrTextContent("DiffuseIntensity", "");
             public static readonly GUIContent SpecularIntensityOptions = EditorGUIUtility.TrTextContent("SpeclarIntensity", "");
@@ -329,6 +334,8 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
 
             MetallicProp = FindProperty("_Metallic", properties, false);
             SmoothnessProp = FindProperty("_Smoothness", properties, false);
+            AOMapProp = FindProperty("_OcclusionMap", properties, false);
+            AOStrengthProp = FindProperty("_AOStrength", properties, false);            
             EnableSpecularProp = FindProperty("_EnableSpecular", properties, false);
             LightSpecColorProperty = FindProperty("_LightSpecColor", properties, false);
             _LightSpecShadowColorProperty = FindProperty("_LightSpecShadowColor", properties, false);
@@ -542,7 +549,15 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             {
                 DrawFloatSliderValue(CustomStyleLL.SmoothnessOptions, 0, 1, SmoothnessProp);
             }
-
+            if (AOMapProp != null)
+            {
+                materialEditor.TexturePropertySingleLine(CustomStyleLL.AOMapOptions, AOMapProp);
+            }
+            if (AOStrengthProp != null)
+            {
+                DrawFloatSliderValue(CustomStyleLL.AOStrengthOptions, 0, 1, AOStrengthProp);
+            }
+            
             if (EnableSpecularProp != null)
             {
                 DrawFloatToggleProperty(CustomStyleLL.EnableSpecularOptions, EnableSpecularProp);

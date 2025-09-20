@@ -68,6 +68,7 @@
     <Compile Include="Assets\URPPipeline\PostProcessCustom\AnimeToneMap\AnimeToneMap.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\FinalCopyPass.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\Difusion\DiffusionRenderFeature.cs" />
+    <Compile Include="Assets\URPPipeline\PassScript\LLPrePass.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\SSRaymarchLightShaft\SSRaymarchLightShaftRenderFeature.cs" />
     <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimSpeechHelper.cs" />
     <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimAnimMorphHelper.cs" />

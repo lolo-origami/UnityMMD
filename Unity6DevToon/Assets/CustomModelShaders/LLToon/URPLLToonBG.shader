@@ -18,10 +18,11 @@ Shader "Universal Render Pipeline/URPLLToonBG"
         _BumpMap("Normal Map", 2D) = "bump" {}
         [Space(30)]
         
-        [Header(BRDF)]
+        [Header(Surface)]
         [Space(5)]
         _Metallic("Metalic", Range(0.0, 1.0)) = 0.5
         _Smoothness("Smoothness", Range(0.0, 1.0)) = 0.5
+        _AOStrength("AO Strength", Range(0,1)) = 1.0
         // SRP batching compatibility for Clear Coat (Not used in Lit)
         [HideInInspector ]_BumpScale("Scale", Float) = 1.0
         [HideInInspector] _ClearCoatMask("_ClearCoatMask", Float) = 0.0
@@ -391,6 +392,7 @@ Shader "Universal Render Pipeline/URPLLToonBG"
             #pragma multi_compile _ LIGHTMAP_ON
             #pragma multi_compile _ DYNAMICLIGHTMAP_ON
             #pragma multi_compile_fragment _ _GBUFFER_NORMALS_OCT
+            #pragma multi_compile _ _SCREEN_SPACE_OCCLUSION
 
             
             #pragma vertex VertexBase

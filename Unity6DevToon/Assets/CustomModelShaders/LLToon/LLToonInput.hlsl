@@ -72,6 +72,7 @@ int _ReceiveShadows;
 //half4 _RampArea34;
 //half2 _RampArea5;
 //float _RampShadowRange;
+half _AOStrength;
 float _EnableSpecular;
 float4 _LightSpecColor;
 float4 _LightSpecShadowColor;
@@ -298,6 +299,7 @@ inline void InitializeStandardSurfaceDataLL(float2 uv, out SurfaceData outSurfac
     float specularMask = SAMPLE_TEXTURE2D(_MaskMap, sampler_MaskMap, uv).g;
     outSurfaceData.metallic = _Metallic * specularMask;
     outSurfaceData.specular = _Metallic.rrr * specularMask;
+    outSurfaceData.occlusion = 
 
     outSurfaceData.smoothness = albedoAlpha * _Smoothness;
     float2 screenPos = ComputeScreenPos(screenPosData / screenPosData.w).xy;

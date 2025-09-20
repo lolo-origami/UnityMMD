@@ -335,6 +335,7 @@ void LLToonLighting (
     //メインライトの情報取得
     half4 shadowMask = CalculateShadowMask(inputData.baseInputData);
     AmbientOcclusionFactor aoFactor = CreateAmbientOcclusionFactor(inputData.baseInputData, surfaceData);
+    aoFactor.indirectAmbientOcclusion = lerp(1.0h, aoFactor.indirectAmbientOcclusion, _AOStrength);;
     Light mainLight = GetMainLight(inputData.baseInputData, shadowMask, aoFactor);
     
     //影を受ける
@@ -350,6 +351,7 @@ void LLToonLighting (
     LLToonLightingData.GIColor.rgb = GlobalIllumination(brdfData, brdfDataClearCoat, surfaceData.clearCoatMask,
                                               inputData.baseInputData.bakedGI, aoFactor.indirectAmbientOcclusion, inputData.baseInputData.positionWS,
                                               inputData.baseInputData.normalWS, inputData.baseInputData.viewDirectionWS) * maskGI;
+    //LLToonLightingData.GIColor.rgb = aoFactor.indirectAmbientOcclusion;
     LLToonLightingData.GIColor.a = 0;
     
     LLToonLightingData.AdditionalLightsColor = half4(0,0,0,0); //追加光

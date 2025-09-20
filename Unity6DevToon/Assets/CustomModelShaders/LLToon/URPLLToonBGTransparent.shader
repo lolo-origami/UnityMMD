@@ -18,7 +18,7 @@ Shader "Universal Render Pipeline/URPLLToonBGTransparent"
         [Space(30)]
         
         
-        [Header(BRDF)]
+        [Header(Surface)]
         [Space(5)]
         _Metallic("Metalic", Range(0.0, 1.0)) = 0.5
         _Smoothness("Smoothness", Range(0.0, 1.0)) = 0.5
@@ -343,7 +343,7 @@ Shader "Universal Render Pipeline/URPLLToonBGTransparent"
             #pragma shader_feature_local_fragment ENABLE_MIRROR
             //#pragma shader_feature_local_fragment ENABLE_RAMP_SHADOW_ORIGIN
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
-
+            
             // -------------------------------------
             // Unity defined keywords
             #pragma multi_compile _ LIGHTMAP_SHADOW_MIXING

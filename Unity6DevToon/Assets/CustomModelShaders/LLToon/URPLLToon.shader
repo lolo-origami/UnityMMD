@@ -23,10 +23,11 @@ Shader "Universal Render Pipeline/URPLLToon"
         
         [Space(30)]
         
-        [Header(BRDF)]
+        [Header(Surface)]
         [Space(5)]
         _Metallic("Metalic", Range(0.0, 1.0)) = 0.5
         _Smoothness("Smoothness", Range(0.0, 1.0)) = 0.5
+        _AOStrength("AO Strength", Range(0,1)) = 1.0         
         // SRP batching compatibility for Clear Coat (Not used in Lit)
         [HideInInspector ]_BumpScale("Scale", Float) = 1.0
         [HideInInspector] _ClearCoatMask("_ClearCoatMask", Float) = 0.0
@@ -302,6 +303,7 @@ Shader "Universal Render Pipeline/URPLLToon"
             #pragma multi_compile _ DYNAMICLIGHTMAP_ON
             #pragma multi_compile_fragment _ _GBUFFER_NORMALS_OCT
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            #pragma multi_compile _ _SCREEN_SPACE_OCCLUSION
             
             #pragma vertex VertexBase
             #pragma fragment LLFragmentChara
