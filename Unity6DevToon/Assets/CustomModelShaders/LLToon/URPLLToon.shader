@@ -27,7 +27,6 @@ Shader "Universal Render Pipeline/URPLLToon"
         [Space(5)]
         _Metallic("Metalic", Range(0.0, 1.0)) = 0.5
         _Smoothness("Smoothness", Range(0.0, 1.0)) = 0.5
-        _AOStrength("AO Strength", Range(0,1)) = 1.0         
         // SRP batching compatibility for Clear Coat (Not used in Lit)
         [HideInInspector ]_BumpScale("Scale", Float) = 1.0
         [HideInInspector] _ClearCoatMask("_ClearCoatMask", Float) = 0.0
@@ -80,6 +79,8 @@ Shader "Universal Render Pipeline/URPLLToon"
         [Toggle] _EnableSpecular ("Enable Specular", float) = 0
         [HDR]_LightSpecColor ("Specular Color", color) = (0.8, 0.8, 0.8, 1)
         [HDR]_LightSpecShadowColor ("ShadowHilight Color", color) = (0.8, 0.8, 0.8, 1)
+        _SpecContrast("Contrast", float) = 1
+        
         
         [Toggle(ENABLE_FACE_CHEEK)] _EnableFaceCheek ("Enable FaceCheek", float) = 0
         [Toggle(ENABLE_CHARA_ON_SHADOW)] _EnableCharaOnShadow ("Enable On Shadow", float) = 0
@@ -103,6 +104,32 @@ Shader "Universal Render Pipeline/URPLLToon"
         [HDR]_DarkSideRimColor ("DarkSide Rim Color", Color) = (1, 1, 1, 1)
         _DarkSideRimSmooth ("DarkSide Rim Smooth", Range(0.001, 10.0)) = 10
         _DarkSideRimPow ("DarkSide Rim Pow", Range(0.0, 10.0)) = 1.0
+
+        [Header(Lighting)]
+        _OcclusionMap ("Texture", 2D) = "white" {}
+        _AOStrength("AO Strength", Range(0,1)) = 1.0     
+        
+        [Header(Unique)]
+        [Toggle(_ENABLE_TIGHTS)] _EnableTights      ("Enable Tights", Float) = 0
+        _TightsColor             ("Tights Color", Color) = (0.1, 0.1, 0.1, 1)
+        _TightsBaseAlpha         ("Tights Base Alpha", Range(0,1)) = 0.2
+        _TightsMaxAlpha          ("Tights Max Alpha", Range(0,1)) = 0.8
+        _TightsFresnelPow        ("Tights Fresnel Pow", Range(0.1,8)) = 2
+        _TightsFresnelStrength   ("Tights Fresnel Strength", Range(0,2)) = 1
+        _TightsBlendStrength     ("Tights Blend Strength", Range(0,1)) = 0.7
+        _TightsHighlightMap      ("Tights Highlight Map", 2D) = "white" {}
+        _TightsHighlightScale    ("Tights Highlight Scale", Float) = 20
+        _TightsHighlightIntensity("Tights Highlight Intensity", Range(0,1)) = 0.2
+        _TightsFiberDir ("Tights Fiber Direction (0=Vertical,1=Horizontal)", Range(0,1)) = 1
+        _TightsNoiseTex("Tights Noise Tex", 2D) = "white" {}
+        _TightsNoiseDir("Tights Noise Direction", Float) = 0   // 0=横, 1=縦
+        _TightsNoiseScale("Tights Noise Scale", Float) = 40
+        _TightsNoiseSharpness("Tights Noise Sharpness", Float) = 4
+        _TightsNoiseJitter("Tights Noise Jitter", Float) = 1
+        _UseTightsNoiseTex("Use Tights NoiseTex", Float) = 0
+        _TightsSpecContrast("Tights Spec Contrast", Range(0,4)) = 1
+        _TightsSpecThreshold ("Tights Spec Threshold", Range(0,1)) = 0.8
+        _TightsSpecWidth     ("Tights Spec Width", Range(0,1)) = 0.2
         
         [Space(30)]
 
@@ -308,6 +335,7 @@ Shader "Universal Render Pipeline/URPLLToon"
             #pragma multi_compile_fragment _ _GBUFFER_NORMALS_OCT
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
             #pragma multi_compile _ _SCREEN_SPACE_OCCLUSION
+            #pragma multi_compile _ _ENABLE_TIGHTS
             
             #pragma vertex VertexBase
             #pragma fragment LLFragmentChara

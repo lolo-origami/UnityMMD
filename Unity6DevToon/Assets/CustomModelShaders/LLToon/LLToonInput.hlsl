@@ -86,6 +86,7 @@ float _DiffuseIntensity;
 float _SpecularIntensity;
 float _SpecularIntensityHigh;
 float _SpecularIntensityShadow;
+float _SpecContrast;
 float _MatCapIntensity;
 half _AddLightIntensity;
 
@@ -100,6 +101,24 @@ half4 _DarkSideRimColor;
 float _DarkSideRimSmooth;
 float _DarkSideRimPow;
 float _DarkEmissionIntensity;
+
+float _EnableTights;
+float4 _TightsColor;
+float _TightsBaseAlpha;
+float _TightsMaxAlpha;
+float _TightsFresnelPow;
+float _TightsFresnelStrength;
+float _TightsHighlightScale;
+float _TightsHighlightIntensity;
+float _TightsFiberDir;
+float _TightsNoiseDir;
+float _TightsNoiseScale;
+float _TightsNoiseSharpness;
+float _TightsNoiseJitter;
+float _UseTightsNoiseTex;
+float _TightsSpecContrast;
+float _TightsSpecThreshold;
+float _TightsSpecWidth;
 
 float _OutlineWidth;
 float _OutlineLightAffects;
@@ -186,6 +205,8 @@ TEXTURE2D(_MaskMap);    SAMPLER(sampler_MaskMap);
 TEXTURE2D(_MaskMap2);    SAMPLER(sampler_MaskMap2);
 TEXTURE2D(_CharaShadowMaskMap);  SAMPLER(sampler_CharaShadowMap);
 TEXTURE2D(_MatCap);  SAMPLER(sampler_MatCap);
+TEXTURE2D(_TightsHighlightMap); SAMPLER(sampler_TightsHighlightMap);
+TEXTURE2D(_TightsNoiseTex); SAMPLER(sampler_TightsNoiseTex);
 //TEXTURE2D(_JitterMap);              SAMPLER(sampler_JitterMap);
 
 #define SAMPLE_METALLICSPECULAR(uv) SAMPLE_TEXTURE2D(_MetallicGlossMap, sampler_MetallicGlossMap, uv).g

@@ -105,6 +105,7 @@
     <None Include="Assets\Stage\kotami stage070\kotami stage070.MMD4Mecanim.xml" />
     <None Include="Assets\CustomModelShaders\PostProcessShader\DiffusionShader.shader" />
     <None Include="Assets\CustomModelShaders\PostProcessShader\DepthLightShaftShader.shader" />
+    <None Include="Assets\CustomModelShaders\LLToon\LLToonNoise.hlsl" />
     <None Include="Assets\Model\Lilise\lili\彩澄りりせ_MMD利用ガイドライン.txt" />
     <None Include="Assets\Stage\kotami stage070\kotami stage070.xml" />
     <None Include="Assets\CustomModelShaders\LLToon\URPLLToon.shader" />

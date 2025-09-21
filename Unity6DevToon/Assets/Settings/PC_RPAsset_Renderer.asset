@@ -20,6 +20,19 @@ MonoBehaviour:
     SaveName: 
     IsRestore: 0
     RestoreName: 
+--- !u!114 &-7757715282470462409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53e892c9c3437b24391cfe481b71641e, type: 3}
+  m_Name: LLPrePassFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
 --- !u!114 &-5949474987496826535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,6 +134,7 @@ MonoBehaviour:
     probeSamplingDebugTexture: {fileID: 0}
     probeVolumeBlendStatesCS: {fileID: 0}
   m_RendererFeatures:
+  - {fileID: -7757715282470462409}
   - {fileID: -5792080647792747134}
   - {fileID: 2807732030523044294}
   - {fileID: 1108160615963672661}
@@ -131,7 +145,7 @@ MonoBehaviour:
   - {fileID: -2314287699636913027}
   - {fileID: -5949474987496826535}
   - {fileID: 6618716962357745617}
-  m_RendererFeatureMap: 821de6ad56659eafc6f1cfdf6711f72655c0977c35fa600f6138c3f131547884b7573bb8106f4cc8b2aa45b9ee0f8b14333426f22d6ab0287dfc154b99ffe1df59192e4205386fadd1972f820268da5b
+  m_RendererFeatureMap: 379cba7f0d0f5794821de6ad56659eafc6f1cfdf6711f72655c0977c35fa600f6138c3f131547884b7573bb8106f4cc8b2aa45b9ee0f8b14333426f22d6ab0287dfc154b99ffe1df59192e4205386fadd1972f820268da5b
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -256,10 +270,10 @@ MonoBehaviour:
     AfterOpaque: 0
     Source: 1
     NormalSamples: 1
-    Intensity: 0.09
+    Intensity: 0.63
     DirectLightingStrength: 0.152
-    Radius: 2.81
+    Radius: 3.87
     Samples: 0
     BlurQuality: 0
-    Falloff: 97.7
+    Falloff: 10
     SampleCount: -1

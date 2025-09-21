@@ -22,6 +22,7 @@ Shader "Universal Render Pipeline/URPLLToonBG"
         [Space(5)]
         _Metallic("Metalic", Range(0.0, 1.0)) = 0.5
         _Smoothness("Smoothness", Range(0.0, 1.0)) = 0.5
+        _OcclusionMap ("Texture", 2D) = "white" {}
         _AOStrength("AO Strength", Range(0,1)) = 1.0
         // SRP batching compatibility for Clear Coat (Not used in Lit)
         [HideInInspector ]_BumpScale("Scale", Float) = 1.0
@@ -103,6 +104,7 @@ Shader "Universal Render Pipeline/URPLLToonBG"
         [Space(5)]
         [Toggle] _EnableSpecular ("Enable Specular", float) = 0
         [HDR]_LightSpecColor ("Specular Color", color) = (0.8, 0.8, 0.8, 1)
+        _SpecContrast("Contrast", float) = 1
         [HideInInspector][HDR]_LightSpecShadowColor ("ShadowHilight Color", color) = (0.8, 0.8, 0.8, 1)
         [HideInInspector]_Shininess ("Shininess", range(0.1, 20.0)) = 10.0
         [HideInInspector]_SpecMulti ("Multiple Factor", range(0.1, 1.0)) = 1

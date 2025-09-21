@@ -60,6 +60,7 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
         protected MaterialProperty SpecularIntensityProperty { get; set; }
         protected MaterialProperty SpecularHighIntensityProperty { get; set; }
         protected MaterialProperty SpecularIntensityShadowProperty { get; set; }
+        protected MaterialProperty SpecularContrastProperty { get; set; }
         
         protected MaterialProperty EnableInverseDarkShadowProperty { get; set; }
         
@@ -99,6 +100,26 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
 
         protected MaterialProperty enableEmissionOnlyProp { get; set; }
         
+        protected MaterialProperty EnableTightsProp{ get; set; }
+        protected MaterialProperty TightsColorProp{ get; set; }
+        protected MaterialProperty TightsBaseAlphaProp{ get; set; }
+        protected MaterialProperty TightsMaxAlphaProp{ get; set; }
+        protected MaterialProperty TightsFresnelPowProp{ get; set; }
+        protected MaterialProperty TightsFresnelStrengthProp{ get; set; }
+        protected MaterialProperty TightsBlendStrengthProp{ get; set; }
+        protected MaterialProperty TightsHighlightMapProp{ get; set; }
+        protected MaterialProperty TightsHighlightScaleProp{ get; set; }
+        protected MaterialProperty TightsHighlightIntensityProp{ get; set; }
+        protected MaterialProperty TightsNoiseTexProp { get; set; }
+        protected MaterialProperty TightsNoiseDirProp { get; set; }
+        protected MaterialProperty TightsNoiseScaleProp { get; set; }
+        protected MaterialProperty TightsNoiseSharpnessProp { get; set; }
+        protected MaterialProperty TightsNoiseJitterProp { get; set; }
+        protected MaterialProperty UseTightsNoiseTexProp { get; set; }
+        protected MaterialProperty TightsSpecThresholdProp { get; set; }
+        protected MaterialProperty TightsSpecWidthProp { get; set; }        
+        protected MaterialProperty TightsSpecContrastProp { get; set; }        
+        
         protected MaterialProperty OutlineMaskProp { get; set; }
         protected MaterialProperty OutlineWidthProp { get; set; }
         protected MaterialProperty OutlineLightAffectsProp { get; set; }
@@ -126,7 +147,9 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
 
             public static readonly GUIContent BRDFInputs = EditorGUIUtility.TrTextContent("BRDF Inputs", "LLToonBRDF Parameter.");
             
-            public static readonly GUIContent BloomEmissiveInputs = EditorGUIUtility.TrTextContent("Bloom Inputs", "BloomEmissiveInputs.");
+            public static readonly GUIContent LightingInputs = EditorGUIUtility.TrTextContent("Lighting Inputs", "LightingInputs.");
+            
+            public static readonly GUIContent UniqueInputs = EditorGUIUtility.TrTextContent("Unique Inputs", "Special material features (Tights, etc).");
             
             public static readonly GUIContent OutlineInputs = EditorGUIUtility.TrTextContent("Outline Inputs", "OutlineParamInputs.");
             
@@ -189,6 +212,7 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             public static readonly GUIContent SpecularIntensityOptions = EditorGUIUtility.TrTextContent("SpeclarIntensity", "");
             public static readonly GUIContent SpecularHighIntensityOptions = EditorGUIUtility.TrTextContent("SpeclarHighIntensity", "");
             public static readonly GUIContent SpecularIntensityShadowOptions = EditorGUIUtility.TrTextContent("SpeclarIntensityShadow", "");
+            public static readonly GUIContent SpecularContrast = EditorGUIUtility.TrTextContent("SpecularContrast", "");
             public static readonly GUIContent MatCapIntensityOptions = EditorGUIUtility.TrTextContent("MatCapIntensity", "");
             public static readonly GUIContent EnableMirrorOptions = EditorGUIUtility.TrTextContent("EnableMirror", "MirrorObject for Transparent.");
             public static readonly GUIContent EnableHairOptions = EditorGUIUtility.TrTextContent("EnableHair", ".");
@@ -218,6 +242,26 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             public static readonly GUIContent DarkRimPowOptions = EditorGUIUtility.TrTextContent("DarkRim Pow", "");
             public static readonly GUIContent EnableEmissionOnlyOptions = EditorGUIUtility.TrTextContent("EnableEmissionOnly", "");
             
+            //タイツ
+            public static readonly GUIContent EnableTightsOptions = EditorGUIUtility.TrTextContent("Enable Tights", "");
+            public static readonly GUIContent TightsColorOptions = EditorGUIUtility.TrTextContent("Tights Color", "");
+            public static readonly GUIContent TightsBaseAlphaOptions = EditorGUIUtility.TrTextContent("Base Alpha", "");
+            public static readonly GUIContent TightsMaxAlphaOptions = EditorGUIUtility.TrTextContent("Max Alpha", "");
+            public static readonly GUIContent TightsFresnelPowOptions = EditorGUIUtility.TrTextContent("Fresnel Pow", "");
+            public static readonly GUIContent TightsFresnelStrengthOptions = EditorGUIUtility.TrTextContent("Fresnel Strength", "");
+            public static readonly GUIContent TightsBlendStrengthOptions = EditorGUIUtility.TrTextContent("Blend Strength", "");
+            public static readonly GUIContent TightsHighlightMapOptions = EditorGUIUtility.TrTextContent("Highlight Map", "");
+            public static readonly GUIContent TightsHighlightScaleOptions = EditorGUIUtility.TrTextContent("Highlight Scale", "");
+            public static readonly GUIContent TightsHighlightIntensityOptions = EditorGUIUtility.TrTextContent("Highlight Intensity", "");     
+            public static readonly GUIContent UseTightsNoiseTexOptions = EditorGUIUtility.TrTextContent("Use Tights NoiseTex", "Use texture instead of procedural noise.");
+            public static readonly GUIContent TightsNoiseDirOptions = EditorGUIUtility.TrTextContent("Noise Direction", "0 = Horizontal, 1 = Vertical.");
+            public static readonly GUIContent TightsNoiseScaleOptions = EditorGUIUtility.TrTextContent("Noise Scale", "Scale of tights noise.");
+            public static readonly GUIContent TightsNoiseSharpnessOptions = EditorGUIUtility.TrTextContent("Noise Sharpness", "Sharpness of tights fiber lines.");
+            public static readonly GUIContent TightsNoiseJitterOptions = EditorGUIUtility.TrTextContent("Noise Jitter", "Random jitter amount per fiber row.");
+            public static readonly GUIContent TightsSpecContrastOptions = EditorGUIUtility.TrTextContent("Spec Contrast", "Contrast boost for specular radiance on tights.");
+            public static readonly GUIContent TightsSpecThresholdOptions = EditorGUIUtility.TrTextContent("Spec Threshold", "Minimum radiance before tights noise is applied.");
+            public static readonly GUIContent TightsSpecWidthOptions = EditorGUIUtility.TrTextContent("Spec Width", "Smooth transition width for tights highlight mask.");            
+            
             //Outline
             public static readonly GUIContent OutlineWidthOptions = EditorGUIUtility.TrTextContent("OutlineWidth", "");   
             public static readonly GUIContent OutlineLightAffectsOptions = EditorGUIUtility.TrTextContent("OutlineLightAffects", "");
@@ -238,9 +282,10 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             TexInputs = 1 << 1,
             ShaderInputs = 1 << 2,
             BRDFInputs = 1 << 3,
-            BloomEmissiveInputs = 1 << 4,
-            Outline = 1 << 5,
-            Advanced = 1 << 6,
+            LightingInputs = 1 << 4,
+            UniqueInputs   = 1 << 5,
+            Outline = 1 << 6,
+            Advanced = 1 << 7,
         }
         
         public void ShaderPropertiesGUILL(Material material)
@@ -271,8 +316,11 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             if (filter.HasFlag(ExpandableLL.BRDFInputs))
                 m_MaterialScopeListLL.RegisterHeaderScope(CustomStyleLL.BRDFInputs, (uint)ExpandableLL.BRDFInputs, DrawBRDFPropertiesLL);
             
-            if (filter.HasFlag(ExpandableLL.BloomEmissiveInputs))
-                m_MaterialScopeListLL.RegisterHeaderScope(CustomStyleLL.BloomEmissiveInputs, (uint)ExpandableLL.BloomEmissiveInputs, DrawBloomEmissivePropertiesLL);
+            if (filter.HasFlag(ExpandableLL.LightingInputs))
+                m_MaterialScopeListLL.RegisterHeaderScope(CustomStyleLL.LightingInputs, (uint)ExpandableLL.LightingInputs, DrawBloomEmissivePropertiesLL);
+            
+            if (filter.HasFlag(ExpandableLL.UniqueInputs))
+                m_MaterialScopeListLL.RegisterHeaderScope(CustomStyleLL.UniqueInputs, (uint)ExpandableLL.UniqueInputs, DrawUniquePropertiesLL);
             
             if (filter.HasFlag(ExpandableLL.Outline))
                 m_MaterialScopeListLL.RegisterHeaderScope(CustomStyleLL.OutlineInputs, (uint)ExpandableLL.Outline, DrawOutlinePropertiesLL);
@@ -360,6 +408,7 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             SpecularIntensityProperty = FindProperty("_SpecularIntensity", properties, false);
             SpecularHighIntensityProperty = FindProperty("_SpecularIntensityHigh", properties, false);
             SpecularIntensityShadowProperty = FindProperty("_SpecularIntensityShadow", properties, false);
+            SpecularContrastProperty = FindProperty("_SpecContrast", properties, false);
             enableMirrorProp = FindProperty("_EnableMirror", properties, false);
             reflectIntensityProp = FindProperty("_ReflectIntensity", properties, false);
         
@@ -389,6 +438,26 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             enableEmissionOnlyProp = FindProperty("_EnableEmissionOnly", properties, false);
             AddLightInfluenceProp = FindProperty("_AddLightIntensity", properties, false);
             
+            EnableTightsProp           = FindProperty("_EnableTights", properties, false);
+            TightsColorProp            = FindProperty("_TightsColor", properties, false);
+            TightsBaseAlphaProp        = FindProperty("_TightsBaseAlpha", properties, false);
+            TightsMaxAlphaProp         = FindProperty("_TightsMaxAlpha", properties, false);
+            TightsFresnelPowProp       = FindProperty("_TightsFresnelPow", properties, false);
+            TightsFresnelStrengthProp  = FindProperty("_TightsFresnelStrength", properties, false);
+            TightsBlendStrengthProp    = FindProperty("_TightsBlendStrength", properties, false);
+            TightsHighlightMapProp     = FindProperty("_TightsHighlightMap", properties, false);
+            TightsHighlightScaleProp   = FindProperty("_TightsHighlightScale", properties, false);
+            TightsHighlightIntensityProp = FindProperty("_TightsHighlightIntensity", properties, false);
+            TightsNoiseTexProp = FindProperty("_TightsNoiseTex", properties, false);
+            TightsNoiseDirProp = FindProperty("_TightsNoiseDir", properties, false);
+            TightsNoiseScaleProp = FindProperty("_TightsNoiseScale", properties, false);
+            TightsNoiseSharpnessProp = FindProperty("_TightsNoiseSharpness", properties, false);
+            TightsNoiseJitterProp = FindProperty("_TightsNoiseJitter", properties, false);
+            UseTightsNoiseTexProp = FindProperty("_UseTightsNoiseTex", properties, false);
+            TightsSpecContrastProp = FindProperty("_TightsSpecContrast", properties, false);
+            TightsSpecThresholdProp = FindProperty("_TightsSpecThreshold", properties, false);
+            TightsSpecWidthProp     = FindProperty("_TightsSpecWidth", properties, false);            
+            
             OutlineMaskProp = FindProperty("_OutlineMask", properties, false);
             OutlineWidthProp = FindProperty("_OutlineWidth", properties, false);
             OutlineLightAffectsProp = FindProperty("_OutlineLightAffects", properties, false);
@@ -415,6 +484,12 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             // Normal Map
             if (material.HasProperty("_BumpMap"))
                 CoreUtils.SetKeyword(material, ShaderKeywordStrings._NORMALMAP, material.GetTexture("_BumpMap"));
+            
+            if (material.HasProperty("_EnableTights"))
+            {
+                bool enabled = material.GetFloat("_EnableTights") > 0.5f;
+                CoreUtils.SetKeyword(material, "_ENABLE_TIGHTS", enabled);
+            }
         }
         
 #region Surface
@@ -564,14 +639,6 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             {
                 DrawFloatSliderValue(CustomStyleLL.SmoothnessOptions, 0, 1, SmoothnessProp);
             }
-            if (AOMapProp != null)
-            {
-                materialEditor.TexturePropertySingleLine(CustomStyleLL.AOMapOptions, AOMapProp);
-            }
-            if (AOStrengthProp != null)
-            {
-                DrawFloatSliderValue(CustomStyleLL.AOStrengthOptions, 0, 1, AOStrengthProp);
-            }
             
             if (EnableSpecularProp != null)
             {
@@ -585,6 +652,7 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
                 {
                     materialEditor.ColorProperty(_LightSpecShadowColorProperty, "ShadowHighlightColor");
                 }
+                DrawFloatSliderValue(CustomStyleLL.SpecularContrast, 0, 10, SpecularContrastProperty);
             }
             if (EnableHairProperty != null && SharpnessProperty != null && SpecularIntensityProperty != null && SpecularHighIntensityProperty != null && SpecularIntensityShadowProperty != null)
             {
@@ -734,7 +802,54 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
                     CoreUtils.SetKeyword(material, "ENABLE_EDGE_RIM", enableEdgeRim);
                 }                
             }
+            
+            if (AOMapProp != null)
+            {
+                materialEditor.TexturePropertySingleLine(CustomStyleLL.AOMapOptions, AOMapProp);
+            }
+            if (AOStrengthProp != null)
+            {
+                DrawFloatSliderValue(CustomStyleLL.AOStrengthOptions, 0, 1, AOStrengthProp);
+            }
+
         }
+#endregion
+
+#region 固有
+
+    protected void DrawUniquePropertiesLL(Material material)
+    {
+        if (EnableTightsProp != null)
+        {
+            DrawFloatToggleProperty(CustomStyleLL.EnableTightsOptions, EnableTightsProp);
+            bool enabled = EnableTightsProp.floatValue > 0.5f;
+            if (enabled)
+            {
+                materialEditor.ColorProperty(TightsColorProp, "Tights Color");
+                DrawFloatSliderValue(CustomStyleLL.TightsBaseAlphaOptions, 0, 1, TightsBaseAlphaProp);
+                DrawFloatSliderValue(CustomStyleLL.TightsMaxAlphaOptions, 0, 1, TightsMaxAlphaProp);
+                DrawFloatSliderValue(CustomStyleLL.TightsFresnelPowOptions, 0.1f, 8f, TightsFresnelPowProp);
+                DrawFloatSliderValue(CustomStyleLL.TightsFresnelStrengthOptions, 0, 2, TightsFresnelStrengthProp);
+                DrawFloatSliderValue(CustomStyleLL.TightsBlendStrengthOptions, 0, 1, TightsBlendStrengthProp);
+
+                materialEditor.TexturePropertySingleLine(CustomStyleLL.TightsHighlightMapOptions, TightsHighlightMapProp);
+                DrawFloatSliderValue(CustomStyleLL.TightsHighlightScaleOptions, 1, 50, TightsHighlightScaleProp);
+                DrawFloatSliderValue(CustomStyleLL.TightsHighlightIntensityOptions, 0, 1, TightsHighlightIntensityProp);
+                
+                DrawFloatToggleProperty(CustomStyleLL.UseTightsNoiseTexOptions, UseTightsNoiseTexProp);
+                DrawFloatSliderValue(CustomStyleLL.TightsNoiseDirOptions, 0, 1, TightsNoiseDirProp);
+                DrawFloatSliderValue(CustomStyleLL.TightsNoiseScaleOptions, 1, 500, TightsNoiseScaleProp);
+                DrawFloatSliderValue(CustomStyleLL.TightsNoiseSharpnessOptions, 0.5f, 100f, TightsNoiseSharpnessProp);
+                DrawFloatSliderValue(CustomStyleLL.TightsNoiseJitterOptions, 0, 2, TightsNoiseJitterProp);
+
+                DrawFloatSliderValue(CustomStyleLL.TightsSpecThresholdOptions, 0, 1, TightsSpecThresholdProp);
+                DrawFloatSliderValue(CustomStyleLL.TightsSpecWidthOptions, 0, 1, TightsSpecWidthProp);
+                DrawFloatSliderValue(CustomStyleLL.TightsSpecContrastOptions, 0, 4, TightsSpecContrastProp);                
+            }
+            CoreUtils.SetKeyword(material, "_ENABLE_TIGHTS", enabled);
+        }
+    }
+
 #endregion
 
 #region Outline

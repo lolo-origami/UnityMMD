@@ -7,6 +7,7 @@
 
 
 #include "LLToonInput.hlsl"
+#include "LLToonNoise.hlsl"
 
 #if defined(LIGHTMAP_ON)
     #define DECLARE_LIGHTMAP_OR_SH(lmName, shName, index) float2 lmName : TEXCOORD##index
@@ -125,6 +126,19 @@ ToonShadowFactor CalculateToonShadowFactor(
     return tsf;
 }
 
+//タイツ計算
+half3 ApplyTightsBase(float3 skinBase, float3 normalWS, float3 viewDirWS)
+{
+    //フレネルで外側だけ厚くする
+    float NdotV   = saturate(dot(normalize(normalWS), normalize(viewDirWS)));
+    float fresnel = pow(1.0 - NdotV, _TightsFresnelPow);
+    float a       = saturate(fresnel * _TightsFresnelStrength);
+    float alpha   = lerp(_TightsBaseAlpha, _TightsMaxAlpha, a);
+
+    // 透け＝肌と布色の単純 lerp
+    return lerp(skinBase, _TightsColor.rgb, alpha);
+}
+
 //Toonシェーディング + スぺキュラ
 half4 ToonBaseLighting(
     float4 baseColor, //ベース色
@@ -173,7 +187,8 @@ half4 LLToonSpecularLighting(
     Light light,
     bool chara,
     float rampS,
-    half specularRadiance
+    half specularRadiance,
+    float2 uv
     )
 {
     half finalSpecularRadiance = specularRadiance <= 0.5 ? 0.5 : specularRadiance; //影でも0.1以下にはしない
@@ -197,14 +212,39 @@ half4 LLToonSpecularLighting(
     float anisoHair = saturate(1.0 - anisoHairFrenel) * specularMask * dot(light.direction, llToonInputData.baseInputData.normalWS);
     finalspecularColor = _LightSpecColor * anisoHair;
     */
+    
 #else
     half directSpecular = DirectBRDFSpecular(brdfData, llToonInputData.baseInputData.normalWS, light.direction, llToonInputData.baseInputData.viewDirectionWS);
     half surfaceSpecular = chara ? 1 : brdfData.specular; //キャラのマテリアルは少し強めにspecular出したい(マスクはここでやってるし)
     half specular = surfaceSpecular * directSpecular  * specularMask * _SpecularIntensity;
     half specularHigh = surfaceSpecular * directSpecular * specularMaskHigh * _SpecularIntensityHigh;
-    float4 specColor = lerp(_LightSpecShadowColor, _LightSpecColor, specularRadiance);
+    finalSpecularRadiance = pow(saturate(finalSpecularRadiance), _SpecContrast);
     
+    #if _ENABLE_TIGHTS     
+    float fiberNoise = AnisotropicNoise(
+        uv,
+        llToonInputData.baseInputData.positionWS,
+        unity_WorldToObject,
+        _TightsNoiseDir,
+        _TightsNoiseTex,
+        sampler_TightsNoiseTex,
+        _TightsNoiseScale,
+        _TightsNoiseSharpness,
+        _TightsNoiseJitter,
+        _UseTightsNoiseTex
+    );
+    
+    // ハイライトの強い部分だけノイズを掛ける
+    float highlightMask = smoothstep(_TightsSpecThreshold, _TightsSpecThreshold + _TightsSpecWidth, specularRadiance);
+
+    // ノイズをスペキュラ強度に「加算」して揺らす（乗算だと暗く見える）
+    finalSpecularRadiance += fiberNoise * highlightMask * _TightsSpecContrast;
+    //finalSpecularRadiance *= fiberNoise;
+    #endif    
+    
+    float4 specColor = lerp(_LightSpecShadowColor, _LightSpecColor, specularRadiance);    
     finalspecularColor = specColor * (specular + specularHigh) * finalSpecularRadiance;
+
 #endif
     finalspecularColor.a = finalspecularColor.a * _BloomFactor;
     
@@ -358,7 +398,10 @@ void LLToonLighting (
 
     // 基礎色計算
     float4 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, uv) * _BaseColor;
-    
+#if defined(_ENABLE_TIGHTS)
+    float3 tightsBase = ApplyTightsBase(baseColor, inputData.baseInputData.normalWS, inputData.baseInputData.viewDirectionWS);
+    baseColor.rgb = tightsBase;
+#endif
     //影色情報を設定
     //2個目のカラーがある場合
     float secondColorMask = 1.0 - SAMPLE_TEXTURE2D(_MaskMap, sampler_MaskMap, uv).a;
@@ -408,7 +451,7 @@ void LLToonLighting (
         //ライティング計算(Toon)
         baseLightingColor = ToonBaseLighting(baseColor, ShadowColor, DarkShadowColorInput, mainLightTSF, DarkShadowColor);
         //スぺキュラ足す
-        baseLightingColor += _EnableSpecular ? LLToonSpecularLighting(brdfData, inputData, specularMask, specularMaskHigh, mainLight, chara, mainLightTSF.rampS * mainLightShadowArea, radianceBase) : 0;
+        baseLightingColor += _EnableSpecular ? LLToonSpecularLighting(brdfData, inputData, specularMask, specularMaskHigh, mainLight, chara, mainLightTSF.rampS * mainLightShadowArea, radianceBase, uv) : 0;
 
         //Matcap設定があれ
 #if ENABLE_MATCAP_SPECULAR
