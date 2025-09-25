@@ -61,6 +61,15 @@ struct LLToonInputData
     float2 matcapUV;
 };
 
+// 特定方向からの簡易シャドウ
+inline float LLToonFixedDirShadow(float3 nWS, float3 fixedDirWS, float area, float smooth, float strength)
+{
+    float d = dot(normalize(nWS), normalize(fixedDirWS));   // 法線と固定方向の角度
+    float v = saturate(-d * 0.5 + 0.5);                     // 0=同方向, 1=逆方向
+    float t = smoothstep(saturate(area - smooth), saturate(area + smooth), v);
+    return lerp(1.0, 1.0 - strength, t);
+}
+
 //ライト情報からToonシェードに必要な情報を取得しておく
 ToonShadowFactor CalculateToonShadowFactor(
     Light light, //ライト情報
@@ -77,7 +86,12 @@ ToonShadowFactor CalculateToonShadowFactor(
     float3 lightDirWS = normalize(light.direction.xyz);
 #if ENABLE_FACE_CHEEK
     lightDirWS = normalize(light.direction.xyz + pos); //顔は常に一定の位置から照らす
-#endif    
+#endif
+    // ★ 固定方向影が有効ならライト方向を上書き
+    if (_EnableFixedDirShadow > 0.5)
+    {
+        lightDirWS = normalize(mul((float3x3)unity_ObjectToWorld, _FixedDirOS.xyz));
+    }
     float3 fixedlightDirWS = normalize(float3(lightDirWS.x, _FixLightY, lightDirWS.z));
     lightDirWS = _IgnoreLightY ? fixedlightDirWS: lightDirWS;
 
@@ -220,7 +234,25 @@ half4 LLToonSpecularLighting(
     half specularHigh = surfaceSpecular * directSpecular * specularMaskHigh * _SpecularIntensityHigh;
     finalSpecularRadiance = pow(saturate(finalSpecularRadiance), _SpecContrast);
     
-    #if _ENABLE_TIGHTS     
+#if ENABLE_TIGHTS
+    // -------------------------
+    // 正面ハイライト(線) × 高さプロファイル
+    // -------------------------
+    float3 viewDir = normalize(llToonInputData.baseInputData.viewDirectionWS);
+    float3 normal  = normalize(llToonInputData.baseInputData.normalWS);
+    float facing   = saturate(dot(viewDir, normal));
+    // 線っぽさ：ここで形状は完成
+    float baseline = pow(facing, _TightsHighlightScale);
+
+    // 太もも範囲の0..1正規化
+    float h = saturate((uv.y - _TightsThighStart) / max(1e-5, (_TightsThighEnd - _TightsThighStart)));
+
+    // 「どの高さで最強にするか」を制御（中心=_SpecThreshold, 半幅=_SpecWidth）
+    // 三角～ベル型の高さマスク。_SpecContrastでシャープさ可変。
+    float band = 1.0 - abs(h - _TightsSpecThreshold) / max(1e-5, _TightsSpecWidth); // 中心1→端0
+    float heightMask = pow(saturate(band), _SpecContrast);
+    
+    // ファイバーノイズ
     float fiberNoise = AnisotropicNoise(
         uv,
         llToonInputData.baseInputData.positionWS,
@@ -234,17 +266,26 @@ half4 LLToonSpecularLighting(
         _UseTightsNoiseTex
     );
     
-    // ハイライトの強い部分だけノイズを掛ける
-    float highlightMask = smoothstep(_TightsSpecThreshold, _TightsSpecThreshold + _TightsSpecWidth, specularRadiance);
+    // Radiance によるスケール（弱光でも完全には消さない）
+    float radianceScale = lerp(0.3, 1.0, saturate(finalSpecularRadiance));
 
-    // ノイズをスペキュラ強度に「加算」して揺らす（乗算だと暗く見える）
-    finalSpecularRadiance += fiberNoise * highlightMask * _TightsSpecContrast;
-    //finalSpecularRadiance *= fiberNoise;
-    #endif    
+    // 線×高さプロファイル×強度
+    float highFactor = baseline * heightMask * _TightsHighlightIntensity;
+    highFactor *= (1.0 + fiberNoise * _TightsSpecContrast);
+
+    // specularHigh は残すが最終合成で強制加算する
+    specularHigh = highFactor * radianceScale;
+#endif    
     
     float4 specColor = lerp(_LightSpecShadowColor, _LightSpecColor, specularRadiance);    
     finalspecularColor = specColor * (specular + specularHigh) * finalSpecularRadiance;
 
+#if ENABLE_TIGHTS
+    // 正面ラインを強制加算
+    finalspecularColor = specColor * specular * finalSpecularRadiance;
+    finalspecularColor.rgb = specColor * specularHigh;
+#endif
+    
 #endif
     finalspecularColor.a = finalspecularColor.a * _BloomFactor;
     
@@ -299,6 +340,39 @@ half4 LLToonAddLighting(
     return addLightColor;
 }
 
+// ============================================================
+// LLToonAddLightingSimple
+// ============================================================
+
+half4 LLToonAddLightingSimple(LLToonInputData inputData, float2 uv)
+{
+    half3 N = normalize(inputData.baseInputData.normalWS);
+    float4 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, uv) * _BaseColor;
+
+    half3 result = 0;
+
+    uint count = GetAdditionalLightsCount();
+    [loop] for (uint i = 0u; i < count; i++)
+    {
+        Light light = GetAdditionalLight(i, inputData.baseInputData.positionWS);
+        #ifdef _LIGHT_LAYERS
+        if (!IsMatchingLightLayer(light.layerMask, meshLayers))
+            continue;
+        #endif
+
+        float ndl = saturate(dot(N, -light.direction));
+        ToonShadowFactor tsf = CalculateToonShadowFactor(light, N, 1.0, light.shadowAttenuation, inputData.baseInputData.positionWS);
+
+        // トゥーン影付きライティング（Simple: Specular抜き）
+        half4 toonLit = ToonBaseLighting(baseColor, baseColor.rgb * _ShadowMultColor.rgb, baseColor.rgb * _DarkShadowMultColor.rgb, tsf, baseColor.rgb);
+
+        result += toonLit.rgb * light.color.rgb * light.distanceAttenuation * light.shadowAttenuation;
+    }
+
+    return half4(result, 0);
+}
+
+
 //リムライト
 RimFactor LLToonRimLighting(InputData inputData, float2 uv, float lambert, half4 baseColor)
 {
@@ -319,6 +393,7 @@ RimFactor LLToonRimLighting(InputData inputData, float2 uv, float lambert, half4
     half4 darkRimColor = lerp(_RimColor, _RimColor * baseColor, _BlendRimWithBaseColor);
     Rim.DarkRimColor = _EnableRimDS * pow(darkRimIntensity, 5) * darkRimColor;
     Rim.DarkRimColor.a = _EnableRimDS * darkRimIntensity * _BloomFactor;
+
     return Rim;
 }
 
@@ -335,153 +410,182 @@ half4 LLToonEmission(float2 uv, half4 baseLightingColor, half3 darkShadowColor, 
 half4 LLToonBloom(half baseLightingColorAlpha,half rimAlpha, half3 darkShadowColor, half emissionMask)
 {
     half4 bloom = half4(0,0,0,0);
+    // 暗影色ベースで光色を作る
     bloom.rgb = pow(darkShadowColor, _DarkEmissionIntensity) * _Emission * emissionMask;
+
+    // 強度は Base と Rim の寄与度をまとめる
     bloom.a = (baseLightingColorAlpha + rimAlpha/* + RimDS.a*/);
+
+    // 最終的な輝き調整を BloomFactor に一任
+    bloom.rgb *= _BloomFactor;
+    bloom.a   *= _BloomFactor;
+    
     return bloom * _EnableEmission;
 }
 
-void LLToonLighting (
+// --- マスク情報まとめ
+struct LLMaskData
+{
+    float lightMapMask;
+    float specularMask;
+    float emissionMask;
+    float GIOffMapMask;
+    float specularMaskHigh;
+};
+
+inline LLMaskData SampleLLMask(float2 uv)
+{
+    LLMaskData m;
+    float4 mask1 = SAMPLE_TEXTURE2D(_MaskMap, sampler_MaskMap, uv);
+    float4 mask2 = SAMPLE_TEXTURE2D(_MaskMap2, sampler_MaskMap2, uv);
+
+    m.lightMapMask    = mask1.r;
+    m.specularMask    = mask1.g;
+    m.emissionMask    = mask1.b;
+    m.GIOffMapMask    = mask2.g;
+    m.specularMaskHigh= mask2.b;
+    return m;
+}
+
+// --- BaseColor
+inline float4 SampleLLBaseColor(float2 uv, float3 normalWS, float3 viewDirWS)
+{
+    float4 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, uv) * _BaseColor;
+    #if defined(ENABLE_TIGHTS)
+    baseColor.rgb = ApplyTightsBase(baseColor, normalWS, viewDirWS);
+    #endif
+    return baseColor;
+}
+
+// --- GI計算
+inline float3 CalculateLLGI(LLToonInputData inputData, BRDFData brdfData, BRDFData brdfDataClearCoat,
+                            SurfaceData surfaceData, Light mainLight, float maskGI)
+{
+    AmbientOcclusionFactor aoFactor = CreateAmbientOcclusionFactor(inputData.baseInputData, surfaceData);
+    aoFactor.indirectAmbientOcclusion = lerp(1.0h, aoFactor.indirectAmbientOcclusion, _AOStrength);
+
+    MixRealtimeAndBakedGI(mainLight, inputData.baseInputData.normalWS, inputData.baseInputData.bakedGI);
+
+    return GlobalIllumination(brdfData, brdfDataClearCoat, surfaceData.clearCoatMask,
+                              inputData.baseInputData.bakedGI, aoFactor.indirectAmbientOcclusion,
+                              inputData.baseInputData.positionWS,
+                              inputData.baseInputData.normalWS,
+                              inputData.baseInputData.viewDirectionWS) * maskGI;
+}
+
+// ============================================================
+// Simple GI : bakedGI(SH or Lightmap) のみ
+// ============================================================
+inline float3 CalculateSimpleGI(Light mainLight, LLToonInputData inputData, float maskGI)
+{
+    MixRealtimeAndBakedGI(mainLight, inputData.baseInputData.normalWS, inputData.baseInputData.bakedGI);
+    float ao = 1.0;
+#if defined(_SCREEN_SPACE_OCCLUSION)
+    float2 uv = inputData.baseInputData.normalizedScreenSpaceUV;
+    ao = SAMPLE_TEXTURE2D_X(_ScreenSpaceOcclusionTexture, sampler_ScreenSpaceOcclusionTexture, uv).r;
+#endif
+
+    return inputData.baseInputData.bakedGI * ao * maskGI;
+}
+
+void LLToonLighting(
     LLToonInputData inputData,
     SurfaceData surfaceData,
     float2 uv,
     bool chara,
-    out LLLightingData LLToonLightingData,
+    out LLLightingData o,
     float4 screenPos)
 {
+    o = (LLLightingData)0;
 
-    //マップによるマスク情報
-    float lightMapMask = SAMPLE_TEXTURE2D(_MaskMap, sampler_MaskMap, uv).r;
-    float specularMask = SAMPLE_TEXTURE2D(_MaskMap, sampler_MaskMap, uv).g;
-    float emissionMask = SAMPLE_TEXTURE2D(_MaskMap, sampler_MaskMap, uv).b;
-    float GIOffMapMask = SAMPLE_TEXTURE2D(_MaskMap2, sampler_MaskMap2, uv).g;
-    float specularMaskHigh = SAMPLE_TEXTURE2D(_MaskMap2, sampler_MaskMap2, uv).b;
-    
-    //BRDFデータを計算しておく
+    // --- マスク情報
+    LLMaskData masks = SampleLLMask(uv);
+
+    // --- BRDF
     BRDFData brdfData;
     InitializeBRDFData(surfaceData, brdfData);
-    // Clear-coat計算
     BRDFData brdfDataClearCoat = CreateClearCoatBRDFData(surfaceData, brdfData);
 
-    //デバッグ表示用
+    // --- Debug override
     #if defined(DEBUG_DISPLAY)
     half4 debugColor;
-
     if (CanDebugOverrideOutputColor(inputData, surfaceData, brdfData, debugColor))
     {
-        return debugColor;
+        o.BaseToonLightingColor = debugColor;
+        return;
     }
     #endif
 
-    //メインライトの情報取得
+    // --- Main Light
     half4 shadowMask = CalculateShadowMask(inputData.baseInputData);
     AmbientOcclusionFactor aoFactor = CreateAmbientOcclusionFactor(inputData.baseInputData, surfaceData);
-    aoFactor.indirectAmbientOcclusion = lerp(1.0h, aoFactor.indirectAmbientOcclusion, _AOStrength);
     Light mainLight = GetMainLight(inputData.baseInputData, shadowMask, aoFactor);
-    
-    //影を受ける
+
     float mainLightShadowArea = _ReceiveShadows ? mainLight.shadowAttenuation : 1;
     half NdotL = saturate(dot(inputData.baseInputData.normalWS, mainLight.direction));
-    half radianceBase = mainLightShadowArea * lightMapMask * NdotL;
-    half3 radiance = chara == true ? mainLight.color : radianceBase * mainLight.color;
+    half radianceBase = mainLightShadowArea * masks.lightMapMask * NdotL;
+    half3 radiance = chara ? mainLight.color : radianceBase * mainLight.color;
 
-    float maskGI = chara ? GIOffMapMask : 1.0f;
-    //GIを計算しておく
-    // NOTE: We don't apply AO to the GI here because it's done in the lighting calculation below...
-    MixRealtimeAndBakedGI(mainLight, inputData.baseInputData.normalWS, inputData.baseInputData.bakedGI);
-    LLToonLightingData.GIColor.rgb = GlobalIllumination(brdfData, brdfDataClearCoat, surfaceData.clearCoatMask,
-                                              inputData.baseInputData.bakedGI, aoFactor.indirectAmbientOcclusion, inputData.baseInputData.positionWS,
-                                              inputData.baseInputData.normalWS, inputData.baseInputData.viewDirectionWS) * maskGI;
-    //LLToonLightingData.GIColor.rgb = aoFactor.indirectAmbientOcclusion;
-    LLToonLightingData.GIColor.a = 0;
-    
-    LLToonLightingData.AdditionalLightsColor = half4(0,0,0,0); //追加光
+    float maskGI = chara ? masks.GIOffMapMask : 1.0f;
 
-    // 基礎色計算
-    float4 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, uv) * _BaseColor;
-#if defined(_ENABLE_TIGHTS)
-    float3 tightsBase = ApplyTightsBase(baseColor, inputData.baseInputData.normalWS, inputData.baseInputData.viewDirectionWS);
-    baseColor.rgb = tightsBase;
-#endif
-    //影色情報を設定
-    //2個目のカラーがある場合
+    // --- GI
+    o.GIColor.rgb = CalculateLLGI(inputData, brdfData, brdfDataClearCoat, surfaceData, mainLight, maskGI);
+    o.GIColor.a = 0;
+
+    // --- BaseColor
+    float4 baseColor = SampleLLBaseColor(uv, inputData.baseInputData.normalWS, inputData.baseInputData.viewDirectionWS);
+
+    // --- 影色情報
     float secondColorMask = 1.0 - SAMPLE_TEXTURE2D(_MaskMap, sampler_MaskMap, uv).a;
-    half3 ShadowColor = secondColorMask == 0 ? baseColor.rgb * _ShadowMultColor.rgb : baseColor.rgb * _SceondMaterialShadowColor.rgb;
-    half3 DarkShadowColorInput = secondColorMask == 0 ? baseColor.rgb * _DarkShadowMultColor.rgb : baseColor.rgb * _SceondMaterialDarkShadowColor.rgb;
+    half3 ShadowColor       = secondColorMask == 0 ? baseColor.rgb * _ShadowMultColor.rgb
+                                                   : baseColor.rgb * _SceondMaterialShadowColor.rgb;
+    half3 DarkShadowColorIn = secondColorMask == 0 ? baseColor.rgb * _DarkShadowMultColor.rgb
+                                                   : baseColor.rgb * _SceondMaterialDarkShadowColor.rgb;
 
-    //落ち影のリム調整
-    float RimInShadow = mainLightShadowArea;
-    float DarkRimInShadow = mainLightShadowArea > 0.5 ? 1.0 : 0.25;
-#if ENABLE_CHARA_ON_SHADOW    
-    //落ち影内の場合
-    {
-        baseColor.rgb = ShadowColor;
-#if ENABLE_FACE_CHEEK
-        baseColor.rgb = lerp(baseColor, ShadowColor, 0.5);
-#endif
-        ShadowColor =  lerp(ShadowColor, DarkShadowColorInput, 0.5);
-        DarkShadowColorInput = lerp(DarkShadowColorInput, DarkShadowColorInput * 0.75, 0.5);
-        RimInShadow = 0;
-        DarkRimInShadow = 0.25;
-    }
-#endif
+    // --- ToonShadowFactor
+    ToonShadowFactor mainTSF = CalculateToonShadowFactor(mainLight, inputData.baseInputData.normalWS,
+                                                         masks.lightMapMask, mainLightShadowArea * maskGI,
+                                                         inputData.baseInputData.positionWS.xyz);
+    o.RampOutline = mainTSF.rampS;
+    o.HalfLambert = mainTSF.HalfLambert;
 
-  
-#if ENABLE_ALPHA_CLIPPING
-    //clip(baseColor.a - _Cutoff);
-#endif
+    // --- Base Toon Lighting
+    half4 baseLightingColor = ToonBaseLighting(baseColor, ShadowColor, DarkShadowColorIn, mainTSF, baseColor.rgb);
+#if ENABLE_SPECULAR
+    // --- Specular
+    baseLightingColor += LLToonSpecularLighting(brdfData, inputData, masks.specularMask, masks.specularMaskHigh,
+                                                mainLight, chara, mainTSF.rampS * mainLightShadowArea,
+                                                radianceBase, uv);
+    
+#endif    
 
-    //レイヤー
-    uint meshRenderingLayers = GetMeshRenderingLayer();
-
-    //メインライトのトゥーン要素をキャッシュしておく
-    ToonShadowFactor mainLightTSF = CalculateToonShadowFactor(mainLight, inputData.baseInputData.normalWS, lightMapMask, mainLightShadowArea * maskGI, inputData.baseInputData.positionWS.xyz);
-    LLToonLightingData.RampOutline = mainLightTSF.rampS;
-    LLToonLightingData.HalfLambert = mainLightTSF.HalfLambert;
-
-    half3 DarkShadowColor = baseColor.rgb;
-
-    //基礎Toon
-    half4 baseLightingColor = float4(0,0,0,1);
-    half4 rimLightColor = float4(0,0,0,1);
-    half4 darkRimLightColor = float4(0,0,0,1);
-#ifdef _LIGHT_LAYERS
-    if (IsMatchingLightLayer(mainLight.layerMask, meshRenderingLayers))
-#endif        
-    {
-        //ライティング計算(Toon)
-        baseLightingColor = ToonBaseLighting(baseColor, ShadowColor, DarkShadowColorInput, mainLightTSF, DarkShadowColor);
-        //スぺキュラ足す
-        baseLightingColor += _EnableSpecular ? LLToonSpecularLighting(brdfData, inputData, specularMask, specularMaskHigh, mainLight, chara, mainLightTSF.rampS * mainLightShadowArea, radianceBase, uv) : 0;
-
-        //Matcap設定があれ
+    // --- MatCap
 #if ENABLE_MATCAP_SPECULAR
-        baseLightingColor += SAMPLE_TEXTURE2D(_MatCap, sampler_MatCap, inputData.matcapUV) * _MatCapIntensity;
+    baseLightingColor += SAMPLE_TEXTURE2D(_MatCap, sampler_MatCap, inputData.matcapUV) * _MatCapIntensity;
 #endif
-        
-        //全体的にライトの色を載せる
-        baseLightingColor.rgb = _WorldLightInfluence * radiance * baseLightingColor.rgb + (1 - _WorldLightInfluence) * baseLightingColor.rgb;
 
-        //リム情報
-        RimFactor rim = LLToonRimLighting(inputData.baseInputData, uv, mainLightTSF.HalfLambert, baseColor);
-        //全体的にライトの色を載せる
-        rimLightColor.rgb = (_WorldLightInfluence * radiance * rim.RimColor.rgb + (1 - _WorldLightInfluence) * rim.RimColor.rgb) * RimInShadow; //落ち影のなかでリムは生成されない
-        
-        //rimLightColor.rgb = EdgeHighlight(screenPos)* _RimColor;
-        darkRimLightColor.rgb = (_WorldLightInfluence * radiance * rim.DarkRimColor.rgb + (1 - _WorldLightInfluence) * rim.DarkRimColor.rgb) * DarkRimInShadow; //逆リムはごく薄くなる
-    }
-    LLToonLightingData.BaseToonLightingColor = baseLightingColor;
-    //LLToonLightingData.BaseToonLightingColor.rgb = meshRenderingLayers;//darkRimLightColor;
-    LLToonLightingData.RimColor = rimLightColor;
-    LLToonLightingData.DarkRimColor = darkRimLightColor;
-    
-#if defined(_ADDITIONAL_LIGHTS)
-    //追加光
-    LLToonLightingData.AdditionalLightsColor = LLToonAddLighting(brdfData, inputData,surfaceData, meshRenderingLayers);
+    // --- ライト色適用
+    baseLightingColor.rgb = lerp(baseLightingColor.rgb, radiance * baseLightingColor.rgb, _WorldLightInfluence);
+
+    o.BaseToonLightingColor = baseLightingColor;
+
+#if ENABLE_RIM
+    // --- Rim Lighting
+    RimFactor rim = LLToonRimLighting(inputData.baseInputData, uv, mainTSF.HalfLambert, baseColor);
+    o.RimColor.rgb     = rim.RimColor.rgb     * _WorldLightInfluence;
+    o.DarkRimColor.rgb = rim.DarkRimColor.rgb * _WorldLightInfluence;
+#else
+    o.RimColor.rgb     = 0;
+    o.DarkRimColor.rgb = 0;
 #endif
     
-    // Emission & Bloom
-    LLToonLightingData.EmissionColor = LLToonEmission(uv, baseLightingColor, DarkShadowColor, baseColor.a, emissionMask);
-    LLToonLightingData.SpecRimEmission = LLToonBloom(baseLightingColor.a, LLToonLightingData.RimColor.a, DarkShadowColor.rgb, emissionMask);
+    // --- Additional Lights
+    #if defined(_ADDITIONAL_LIGHTS)
+    uint meshLayers = GetMeshRenderingLayer();
+    o.AdditionalLightsColor = LLToonAddLighting(brdfData, inputData, surfaceData, meshLayers);
+    #endif
 
-    //finalColor = _WorldLightInfluence * finalColor + (1 - _WorldLightInfluence) * finalColor;
+    // --- Emission / Bloom
+    o.EmissionColor   = LLToonEmission(uv, baseLightingColor, baseColor.rgb, baseColor.a, masks.emissionMask);
+    o.SpecRimEmission = LLToonBloom(baseLightingColor.a, o.RimColor.a, baseColor.rgb, masks.emissionMask);
 }

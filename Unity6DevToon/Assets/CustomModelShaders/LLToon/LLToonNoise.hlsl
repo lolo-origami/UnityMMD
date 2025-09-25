@@ -130,21 +130,27 @@ float AnisotropicNoise(
     // dir = 0 (横筋) / 1 (縦筋)
     float2 uvTights = (dir > 0.5) ? uvTightsV : uvTightsH;
     
-    // ----------------------------
-    // テクスチャノイズ
-    // ----------------------------
-    // 行ごとに位相をずらす（オブジェクト座標を利用）
-    float row = floor(((dir > 0.5) ? posOS.y : posOS.x) * scale);
-    float phase = Hash11(row) * jitter;
+    if (useNoiseTex > 0)
+    {
+        // ----------------------------
+        // テクスチャノイズ
+        // ----------------------------
+        float row   = floor(((dir > 0.5) ? posOS.y : posOS.x) * scale);
+        float phase = Hash11(row) * jitter;
 
-    // jitterをUVにオフセット
-    float2 uvJitter = uvTights * scale + phase;
+        // jitter を UV にオフセット
+        float2 uvJitter = uvTights * scale + phase;
 
-    float texNoise = tex.SampleLevel(samp, uvJitter, 0).r;
-    //texNoise = pow(saturate(texNoise), sharpness);
+        float texNoise = tex.SampleLevel(samp, uvJitter, 0).r;
+        //texNoise = pow(saturate(texNoise), sharpness);
 
-    // 値が 0 っぽければ「手続きノイズ」にフォールバック
-    float procNoise = AnisoLineNoise_ObjectSpace(posWS, worldToObject, dir, scale, sharpness, jitter);
-
-    return lerp(procNoise, texNoise, useNoiseTex);
+        return texNoise;
+    }
+    else
+    {
+        // ----------------------------
+        // 手続きノイズ
+        // ----------------------------
+        return AnisoLineNoise_ObjectSpace(posWS, worldToObject, dir, scale, sharpness, jitter        );
+    }
 }

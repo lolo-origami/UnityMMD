@@ -39,6 +39,9 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
         protected MaterialProperty EnableDarkShadowProp { get; set; }
         protected MaterialProperty IgnoreLightYProp { get; set; }
         protected MaterialProperty FixLightYProp { get; set; }
+        protected MaterialProperty EnableFixedDirShadowProp { get; set; }
+        protected MaterialProperty FixedDirOSProp { get; set; }
+        protected MaterialProperty FixedDirShadowStrengthProp { get; set; }
 
         #endregion
         
@@ -54,7 +57,6 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
         protected MaterialProperty EnableMatCapProperty { get; set; }
         protected MaterialProperty MatCapIntensityProperty { get; set; }
         protected MaterialProperty EnableHairProperty { get; set; }
-        protected MaterialProperty EnableCharaOnShadowProperty { get; set; }
         protected MaterialProperty SharpnessProperty { get; set; }
         protected MaterialProperty DiffuseIntensityProperty { get; set; }
         protected MaterialProperty SpecularIntensityProperty { get; set; }
@@ -117,9 +119,13 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
         protected MaterialProperty TightsNoiseJitterProp { get; set; }
         protected MaterialProperty UseTightsNoiseTexProp { get; set; }
         protected MaterialProperty TightsSpecThresholdProp { get; set; }
-        protected MaterialProperty TightsSpecWidthProp { get; set; }        
+        protected MaterialProperty TightsSpecWidthProp { get; set; }  
+        protected MaterialProperty TightsThighStartProp { get; set; }
+        protected MaterialProperty TightsThighEndProp   { get; set; }
+        protected MaterialProperty TightsThighBoostProp { get; set; }
         protected MaterialProperty TightsSpecContrastProp { get; set; }        
         
+        protected MaterialProperty EnableOutlineProp { get; set; }
         protected MaterialProperty OutlineMaskProp { get; set; }
         protected MaterialProperty OutlineWidthProp { get; set; }
         protected MaterialProperty OutlineLightAffectsProp { get; set; }
@@ -261,6 +267,11 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             public static readonly GUIContent TightsSpecContrastOptions = EditorGUIUtility.TrTextContent("Spec Contrast", "Contrast boost for specular radiance on tights.");
             public static readonly GUIContent TightsSpecThresholdOptions = EditorGUIUtility.TrTextContent("Spec Threshold", "Minimum radiance before tights noise is applied.");
             public static readonly GUIContent TightsSpecWidthOptions = EditorGUIUtility.TrTextContent("Spec Width", "Smooth transition width for tights highlight mask.");            
+            public static readonly GUIContent TightsThighStartOptions = EditorGUIUtility.TrTextContent("Thigh Start", "Y position where thigh highlight begins.");
+            public static readonly GUIContent TightsThighEndOptions = EditorGUIUtility.TrTextContent("Thigh End", "Y position where thigh highlight reaches max.");
+            public static readonly GUIContent TightsThighBoostOptions = EditorGUIUtility.TrTextContent("Thigh Boost", "Multiplier for highlight strength on thighs.");
+
+
             
             //Outline
             public static readonly GUIContent OutlineWidthOptions = EditorGUIUtility.TrTextContent("OutlineWidth", "");   
@@ -389,6 +400,10 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             EnableDarkShadowProp = FindProperty("_EnableDarkShadow", properties, false);
             IgnoreLightYProp = FindProperty("_IgnoreLightY", properties, false);
             FixLightYProp = FindProperty("_FixLightY", properties, false);
+            EnableFixedDirShadowProp = FindProperty("_EnableFixedDirShadow", properties, false);
+            FixedDirOSProp = FindProperty("_FixedDirOS", properties, false);
+            FixedDirShadowStrengthProp = FindProperty("_FixedDirShadowStrength", properties, false);
+            
 
             MetallicProp = FindProperty("_Metallic", properties, false);
             SmoothnessProp = FindProperty("_Smoothness", properties, false);
@@ -399,7 +414,6 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             _LightSpecShadowColorProperty = FindProperty("_LightSpecShadowColor", properties, false);
             EnableFaceCheekProperty = FindProperty("_EnableFaceCheek", properties, false);
             EnableMatCapProperty = FindProperty("_EnableMatCapSpecular", properties, false);
-            EnableCharaOnShadowProperty = FindProperty("_EnableCharaOnShadow", properties, false);
             EnableHairProperty = FindProperty("_EnableHairSpecular", properties, false);
             EnableInverseDarkShadowProperty = FindProperty("_EnableDarkInverseShadow", properties, false);
             MatCapIntensityProperty = FindProperty("_MatCapIntensity", properties, false);
@@ -456,8 +470,12 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             UseTightsNoiseTexProp = FindProperty("_UseTightsNoiseTex", properties, false);
             TightsSpecContrastProp = FindProperty("_TightsSpecContrast", properties, false);
             TightsSpecThresholdProp = FindProperty("_TightsSpecThreshold", properties, false);
-            TightsSpecWidthProp     = FindProperty("_TightsSpecWidth", properties, false);            
+            TightsSpecWidthProp     = FindProperty("_TightsSpecWidth", properties, false);       
+            TightsThighStartProp = FindProperty("_TightsThighStart", properties, false);
+            TightsThighEndProp   = FindProperty("_TightsThighEnd", properties, false);
+            TightsThighBoostProp = FindProperty("_TightsThighBoost", properties, false); 
             
+            EnableOutlineProp = FindProperty("_EnableOutline", properties, false);
             OutlineMaskProp = FindProperty("_OutlineMask", properties, false);
             OutlineWidthProp = FindProperty("_OutlineWidth", properties, false);
             OutlineLightAffectsProp = FindProperty("_OutlineLightAffects", properties, false);
@@ -488,7 +506,7 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             if (material.HasProperty("_EnableTights"))
             {
                 bool enabled = material.GetFloat("_EnableTights") > 0.5f;
-                CoreUtils.SetKeyword(material, "_ENABLE_TIGHTS", enabled);
+                CoreUtils.SetKeyword(material, "ENABLE_TIGHTS", enabled);
             }
         }
         
@@ -557,7 +575,10 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
                 bool enableFaceCheekShade = EnableFaceCheekProperty.floatValue == 1.0f;
                 CoreUtils.SetKeyword(material, "ENABLE_FACE_CHEEK", enableFaceCheekShade);
             }
-            DrawNormalArea(materialEditor, bumpMapProp, bumpScaleProp);
+            if (bumpMapProp != null)
+            {
+                materialEditor.TexturePropertySingleLine(new GUIContent("Normal Map"), bumpMapProp);
+            }
         }
 
         /// <summary>
@@ -617,10 +638,16 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
                     DrawFloatSliderValue(CustomStyleLL.FixLightYHeightOptions, -10, 10, FixLightYProp);
                 } 
             }
-            if (EnableCharaOnShadowProperty != null )
+            if (EnableFixedDirShadowProp != null)
             {
-                DrawFloatToggleProperty(CustomStyleLL.EnableCharaShader, EnableCharaOnShadowProperty);
-                CoreUtils.SetKeyword(material, "ENABLE_CHARA_ON_SHADOW", EnableCharaOnShadowProperty.floatValue == 1.0f);
+                DrawFloatToggleProperty(new GUIContent("EnableFixedDirShadow"), EnableFixedDirShadowProp);
+                bool enableFixedShadow = EnableFixedDirShadowProp.floatValue == 1.0f;
+                if (enableFixedShadow)
+                {
+                    materialEditor.VectorProperty(FixedDirOSProp, "FixedDirOS");
+                    DrawFloatSliderValue(new GUIContent("FixedDir Shadow Strength"), 0, 1, FixedDirShadowStrengthProp);
+                }
+                CoreUtils.SetKeyword(material, "ENABLE_FIXEDDIR_SHADOW", enableFixedShadow);
             }
         }
 
@@ -639,36 +666,50 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             {
                 DrawFloatSliderValue(CustomStyleLL.SmoothnessOptions, 0, 1, SmoothnessProp);
             }
-            
+
             if (EnableSpecularProp != null)
             {
                 DrawFloatToggleProperty(CustomStyleLL.EnableSpecularOptions, EnableSpecularProp);
                 bool enableSpecular = EnableSpecularProp.floatValue == 1.0f;
-                if (enableSpecular && LightSpecColorProperty != null)
+                if (enableSpecular)
                 {
-                    materialEditor.ColorProperty(LightSpecColorProperty, "LightSpecColor");
+                    if (LightSpecColorProperty != null)
+                    {
+                        materialEditor.ColorProperty(LightSpecColorProperty, "LightSpecColor");
+                    }
+
+                    if (_LightSpecShadowColorProperty != null)
+                    {
+                        materialEditor.ColorProperty(_LightSpecShadowColorProperty, "ShadowHighlightColor");
+                    }
+
+                    DrawFloatSliderValue(CustomStyleLL.SpecularContrast, 0, 10, SpecularContrastProperty);
                 }
-                if (_LightSpecShadowColorProperty != null)
+
+                CoreUtils.SetKeyword(material, "ENABLE_SPECULAR", enableSpecular);
+
+                if (EnableHairProperty != null && SharpnessProperty != null && SpecularIntensityProperty != null &&
+                    SpecularHighIntensityProperty != null && SpecularIntensityShadowProperty != null)
                 {
-                    materialEditor.ColorProperty(_LightSpecShadowColorProperty, "ShadowHighlightColor");
+                    DrawFloatToggleProperty(CustomStyleLL.EnableHairOptions, EnableHairProperty);
+                    bool enableHairsSpecular = EnableHairProperty.floatValue == 1.0f;
+                    if (enableHairsSpecular)
+                    {
+                        materialEditor.FloatProperty(SharpnessProperty, "Sharpness");
+                        DrawFloatSliderValue(CustomStyleLL.SpecularIntensityOptions, 0, 2, SpecularIntensityProperty);
+                        DrawFloatSliderValue(CustomStyleLL.SpecularHighIntensityOptions, 0, 4,
+                            SpecularHighIntensityProperty);
+                        DrawFloatSliderValue(CustomStyleLL.SpecularIntensityShadowOptions, 0, 2,
+                            SpecularIntensityShadowProperty);
+                    }
+
+                    CoreUtils.SetKeyword(material, "ENABLE_HAIR_SPECULAR", enableHairsSpecular);
                 }
-                DrawFloatSliderValue(CustomStyleLL.SpecularContrast, 0, 10, SpecularContrastProperty);
-            }
-            if (EnableHairProperty != null && SharpnessProperty != null && SpecularIntensityProperty != null && SpecularHighIntensityProperty != null && SpecularIntensityShadowProperty != null)
-            {
-                DrawFloatToggleProperty(CustomStyleLL.EnableHairOptions, EnableHairProperty);
-                bool enableHairsSpecular = EnableHairProperty.floatValue == 1.0f;
-                if (enableHairsSpecular)
+
+                if (enableMirrorProp != null)
                 {
-                    materialEditor.FloatProperty(SharpnessProperty, "Sharpness");
-                    DrawFloatSliderValue(CustomStyleLL.SpecularIntensityOptions, 0, 2, SpecularIntensityProperty);
-                    DrawFloatSliderValue(CustomStyleLL.SpecularHighIntensityOptions, 0, 4, SpecularHighIntensityProperty);
-                    DrawFloatSliderValue(CustomStyleLL.SpecularIntensityShadowOptions, 0, 2, SpecularIntensityShadowProperty);
+                    DrawMirrorProperty(material);
                 }
-                CoreUtils.SetKeyword(material, "ENABLE_HAIR_SPECULAR", enableHairsSpecular);
-            }
-            if(enableMirrorProp != null){
-                DrawMirrorProperty(material);
             }
         }
 
@@ -779,17 +820,26 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
                     DrawFloatSliderValue(CustomStyleLL.RimSmoothOptions, 0f, 10f, RimSmoothProp);
                     DrawFloatSliderValue(CustomStyleLL.RimPowOptions, 0, 10, RimPowProp);
                 }
-                if (EnableDarkRimProp != null)
+
+                if (enableRim && EnableLambertRimProp.floatValue == 1.0f)
                 {
-                    DrawFloatToggleProperty(CustomStyleLL.EnableDarkRimOptions, EnableDarkRimProp);
-                    bool enableDarkRim = EnableDarkRimProp.floatValue == 1.0f;
-                    if (enableDarkRim && DarkRimColorProp != null && DarkRimPowProp != null && DarkRimSmoothProp != null)
+                    if (EnableDarkRimProp != null)
                     {
-                        materialEditor.ColorProperty(DarkRimColorProp, "DarkRimColor");
-                        DrawFloatSliderValue(CustomStyleLL.DarkRimSmoothOptions, 0f, 10f, DarkRimSmoothProp);
-                        DrawFloatSliderValue(CustomStyleLL.DarkRimPowOptions, 0, 10, DarkRimPowProp);
+                        DrawFloatToggleProperty(CustomStyleLL.EnableDarkRimOptions, EnableDarkRimProp);
+                        bool enableDarkRim = EnableDarkRimProp.floatValue == 1.0f;
+                        if (enableDarkRim && DarkRimColorProp != null && DarkRimPowProp != null && DarkRimSmoothProp != null)
+                        {
+                            materialEditor.ColorProperty(DarkRimColorProp, "DarkRimColor");
+                            DrawFloatSliderValue(CustomStyleLL.DarkRimSmoothOptions, 0f, 10f, DarkRimSmoothProp);
+                            DrawFloatSliderValue(CustomStyleLL.DarkRimPowOptions, 0, 10, DarkRimPowProp);
+                        }
                     }
                 }
+                else
+                {
+                    EnableDarkRimProp.floatValue = 0f;
+                }
+
                 if (EnableEdgeRimProp != null)
                 {
                     DrawFloatToggleProperty(CustomStyleLL.EnableEdgeRimOptions, EnableEdgeRimProp);
@@ -800,7 +850,9 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
                         DrawFloatSliderValue(CustomStyleLL.EdgeRimWidthOptions, 0f, 10f, RimEdgeWidthProp);
                     }
                     CoreUtils.SetKeyword(material, "ENABLE_EDGE_RIM", enableEdgeRim);
-                }                
+                }
+                
+                CoreUtils.SetKeyword(material, "ENABLE_RIM", enableRim);
             }
             
             if (AOMapProp != null)
@@ -844,9 +896,13 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
 
                 DrawFloatSliderValue(CustomStyleLL.TightsSpecThresholdOptions, 0, 1, TightsSpecThresholdProp);
                 DrawFloatSliderValue(CustomStyleLL.TightsSpecWidthOptions, 0, 1, TightsSpecWidthProp);
-                DrawFloatSliderValue(CustomStyleLL.TightsSpecContrastOptions, 0, 4, TightsSpecContrastProp);                
+                DrawFloatSliderValue(CustomStyleLL.TightsSpecContrastOptions, 0, 4, TightsSpecContrastProp);  
+                DrawFloatSliderValue(CustomStyleLL.TightsThighStartOptions, 0, 1, TightsThighStartProp);
+                DrawFloatSliderValue(CustomStyleLL.TightsThighEndOptions, 0, 1, TightsThighEndProp);
+                DrawFloatSliderValue(CustomStyleLL.TightsThighBoostOptions, 0, 30, TightsThighBoostProp);
+
             }
-            CoreUtils.SetKeyword(material, "_ENABLE_TIGHTS", enabled);
+            CoreUtils.SetKeyword(material, "ENABLE_TIGHTS", enabled);
         }
     }
 
@@ -856,58 +912,69 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
 
     protected void DrawOutlinePropertiesLL(Material material)
     {
-        if (OutlineMaskProp != null)
+        if (EnableOutlineProp != null)
         {
-            materialEditor.TextureProperty(OutlineMaskProp, "OutlineMask");
-        }
+            DrawFloatToggleProperty(new GUIContent("Enable Outline"), EnableOutlineProp);
+            bool enableOutline = EnableOutlineProp.floatValue > 0.5f;
+            if (enableOutline)
+            {
+                CoreUtils.SetKeyword(material, "ENABLE_OUTLINE", enableOutline);
 
-        if (OutlineWidthProp != null)
-        {
-            DrawFloatSliderValue(CustomStyleLL.OutlineWidthOptions, 0, 50, OutlineWidthProp);
-        }
+                if (OutlineMaskProp != null)
+                {
+                    materialEditor.TextureProperty(OutlineMaskProp, "OutlineMask");
+                }
 
-        if (OutlineLightAffectsProp != null)
-        {
-            DrawFloatSliderValue(CustomStyleLL.OutlineLightAffectsOptions, 0, 50, OutlineLightAffectsProp);
-        }
+                if (OutlineWidthProp != null)
+                {
+                    DrawFloatSliderValue(CustomStyleLL.OutlineWidthOptions, 0, 50, OutlineWidthProp);
+                }
 
-        if (OutlineSaturationProp != null)
-        {
-            DrawFloatSliderValue(CustomStyleLL.OutlineSaturationOptions, 0, 4, OutlineSaturationProp);
-        }
+                if (OutlineLightAffectsProp != null)
+                {
+                    DrawFloatSliderValue(CustomStyleLL.OutlineLightAffectsOptions, 0, 50, OutlineLightAffectsProp);
+                }
 
-        if (OutlineBrightnessProp != null)
-        {
-            DrawFloatSliderValue(CustomStyleLL.OutlineBrightnessOptions, 0, 1, OutlineBrightnessProp);
-        }
+                if (OutlineSaturationProp != null)
+                {
+                    DrawFloatSliderValue(CustomStyleLL.OutlineSaturationOptions, 0, 4, OutlineSaturationProp);
+                }
 
-        if (OutlineStrengthProp != null)
-        {
-            DrawFloatSliderValue(CustomStyleLL.OutlineStrengthOptions, 0, 1, OutlineStrengthProp);
-        }
+                if (OutlineBrightnessProp != null)
+                {
+                    DrawFloatSliderValue(CustomStyleLL.OutlineBrightnessOptions, 0, 1, OutlineBrightnessProp);
+                }
 
-        if (OutlineSmoothnessProp != null)
-        {
-            DrawFloatSliderValue(CustomStyleLL.OutlineSmoothnessptions, 0, 1, OutlineSmoothnessProp);
-        }
+                if (OutlineStrengthProp != null)
+                {
+                    DrawFloatSliderValue(CustomStyleLL.OutlineStrengthOptions, 0, 1, OutlineStrengthProp);
+                }
 
-        if (InnerWidthProp != null)
-        {
-            DrawFloatSliderValue(CustomStyleLL.InnerWidthOptions, 0, 10, InnerWidthProp);
-        }
+                if (OutlineSmoothnessProp != null)
+                {
+                    DrawFloatSliderValue(CustomStyleLL.OutlineSmoothnessptions, 0, 1, OutlineSmoothnessProp);
+                }
 
-        if (InnerStrengthProp != null){
-            DrawFloatSliderValue(CustomStyleLL.InnerStrengthOptions, 0, 5, InnerStrengthProp);
-        }
+                if (InnerWidthProp != null)
+                {
+                    DrawFloatSliderValue(CustomStyleLL.InnerWidthOptions, 0, 10, InnerWidthProp);
+                }
 
-        if (InnerThresholdProp != null)
-        {
-            DrawFloatSliderValue(CustomStyleLL.InnerThresholdOptions, 0, 1, InnerThresholdProp);
-        }
+                if (InnerStrengthProp != null)
+                {
+                    DrawFloatSliderValue(CustomStyleLL.InnerStrengthOptions, 0, 5, InnerStrengthProp);
+                }
 
-        if (InnerSmoothnessProp != null)
-        {
-            DrawFloatSliderValue(CustomStyleLL.InnerSmoothnessOptions, 0, 1, InnerSmoothnessProp);
+                if (InnerThresholdProp != null)
+                {
+                    DrawFloatSliderValue(CustomStyleLL.InnerThresholdOptions, 0, 1, InnerThresholdProp);
+                }
+
+                if (InnerSmoothnessProp != null)
+                {
+                    DrawFloatSliderValue(CustomStyleLL.InnerSmoothnessOptions, 0, 1, InnerSmoothnessProp);
+                }
+            }
         }
     }
 #endregion

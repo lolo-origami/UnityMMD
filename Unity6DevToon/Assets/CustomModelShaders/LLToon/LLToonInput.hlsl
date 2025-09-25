@@ -119,6 +119,9 @@ float _UseTightsNoiseTex;
 float _TightsSpecContrast;
 float _TightsSpecThreshold;
 float _TightsSpecWidth;
+float _TightsThighStart;
+float _TightsThighEnd;
+float _TightsThighBoost;
 
 float _OutlineWidth;
 float _OutlineLightAffects;
@@ -131,6 +134,11 @@ float _InnerStrength;
 float _InnerWidth;
 float _InnerThreshold;
 float _InnerSharpness;
+
+//影方向上書き
+float _EnableFixedDirShadow;              // 0/1 toggle
+float4 _FixedDirOS;                       // object-space direction (xyz)
+float _FixedDirShadowStrength;            // 0..1
 //float3 _ReceiveShadowMultColor;
 
 //half4 _MedColor;

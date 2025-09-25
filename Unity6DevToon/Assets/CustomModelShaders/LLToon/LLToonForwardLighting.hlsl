@@ -183,7 +183,7 @@ void InitializeLLToonInputData(Varyings input, half3 normalTS, out LLToonInputDa
 #endif
 
 #if defined(DYNAMICLIGHTMAP_ON)
-    inputData.bakedGI = SAMPLE_GI(input.staticLightmapUV, input.dynamicLightmapUV, input.vertexSH, inputData.normalWS);
+    inputData.baseInputData.bakedGI = SAMPLE_GI(input.staticLightmapUV, input.dynamicLightmapUV, input.vertexSH, inputData.normalWS);
 #else
     inputData.baseInputData.bakedGI = SAMPLE_GI(input.staticLightmapUV, input.vertexSH, inputData.baseInputData.normalWS) * _LightMapInfluence;
 #endif
@@ -294,10 +294,19 @@ half4 LLFragmentChara(Varyings input) : SV_Target
     LLToonLighting(inputData, surfaceData, input.uv, true, lllData, input.screenPos);
 
     // 計算した要素を足し合わせる
-    half4 finalColor = lllData.BaseToonLightingColor + lllData.AdditionalLightsColor * _AddLightIntensity + (lllData.RimColor + lllData.DarkRimColor) * lllData.RimColor.a + lllData.EmissionColor.a * lllData.EmissionColor + lllData.SpecRimEmission.a * lllData.SpecRimEmission + lllData.GIColor * _GIInfluence; 
-    //half4 finalColor = lllData.GIColor * _GIInfluence;
-    //half4 finalColor = lllData.RimColor; 
-    
+    half4 finalColor = 0;
+
+    finalColor.rgb += lllData.BaseToonLightingColor.rgb;
+    finalColor.rgb += lllData.AdditionalLightsColor.rgb * _AddLightIntensity;
+    finalColor.rgb += lllData.RimColor.rgb + lllData.DarkRimColor.rgb;
+
+    // Bloom α を強度係数として利用
+    finalColor.rgb += lllData.EmissionColor.rgb   * lllData.EmissionColor.a;
+    finalColor.rgb += lllData.SpecRimEmission.rgb * lllData.SpecRimEmission.a;
+
+    finalColor.rgb += lllData.GIColor.rgb * _GIInfluence;
+
+#if ENABLE_OUTLINE
     // Outline作る
     float2 screenPos = ComputeScreenPos(input.screenPos / input.screenPos.w).xy;
     half width = lerp(_OutlineWidth, _OutlineWidth * 0.5, lllData.RampOutline * _OutlineLightAffects);
@@ -317,7 +326,8 @@ half4 LLFragmentChara(Varyings input) : SV_Target
     float3 outlineColor = shift(finalColor.rgb, half3(0.0, _OutlineSaturation, lerp(_OutlineBrightness, saturate(_OutlineBrightness * 2.0), lerpValue)));
     //finalColor.rgb = float3(1,1,1);
     finalColor.rgb = lerp(finalColor.rgb, outlineColor, outlineFactor);
-
+#endif
+    
     // apply fog
     finalColor.rgb = MixFog(finalColor.rgb, inputData.baseInputData.fogCoord);
     

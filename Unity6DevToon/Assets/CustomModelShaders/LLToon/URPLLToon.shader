@@ -68,6 +68,9 @@ Shader "Universal Render Pipeline/URPLLToon"
         [Toggle(ENABLE_INVERSE_SHADOW)]_EnableDarkInverseShadow ("Enable Inverse Dark Shadow", float) = 0
         [Toggle]_IgnoreLightY ("Ignore Light y", float) = 0
         _FixLightY ("Fix Light y", range(-10.0, 10.0)) = 0.0
+        _EnableFixedDirShadow ("Enable FixedDir Shadow", Float) = 0
+        _FixedDirOS ("FixedDir (ObjectSpace)", Vector) = (0,1,0,0)
+        _FixedDirShadowStrength ("FixedDir Shadow Strength", Range(0,1)) = 0.35        
         
         [Space(5)]
         [Toggle] _CastShadows("Cast Shadows", Float) = 1.0
@@ -83,7 +86,6 @@ Shader "Universal Render Pipeline/URPLLToon"
         
         
         [Toggle(ENABLE_FACE_CHEEK)] _EnableFaceCheek ("Enable FaceCheek", float) = 0
-        [Toggle(ENABLE_CHARA_ON_SHADOW)] _EnableCharaOnShadow ("Enable On Shadow", float) = 0
         [Toggle(ENABLE_MATCAP_SPECULAR)] _EnableMatCapSpecular ("Enable MatCap Specular", float) = 0
         [Toggle(ENABLE_HAIR_SPECULAR)] _EnableHairSpecular ("Enable Hair Specular", float) = 0
         _Sharpness("Sharpness", float) = 30
@@ -130,11 +132,15 @@ Shader "Universal Render Pipeline/URPLLToon"
         _TightsSpecContrast("Tights Spec Contrast", Range(0,4)) = 1
         _TightsSpecThreshold ("Tights Spec Threshold", Range(0,1)) = 0.8
         _TightsSpecWidth     ("Tights Spec Width", Range(0,1)) = 0.2
+        _TightsThighStart  ("Tights Start", Range(0,10)) = 0.8
+        _TightsThighEnd   ("Tights end", Range(0,10)) = 0
+        _TightsThighBoost ("Tights Boost", Range(0,10)) = 1.5
         
         [Space(30)]
 
         [Header(Outline Setting)]
         [Space(5)]
+        [Toggle]_EnableOutline ("Enable Rim", float) = 1
         _OutlineMask("Outline Mask", 2D) = "white" {}
         _OutlineWidth ("_OutlineWidth (World Space)", Range(0, 50)) = 1
         _OutlineLightAffects("Outline Light Affects", Range(0.0, 50.0)) = 1.0
@@ -321,8 +327,11 @@ Shader "Universal Render Pipeline/URPLLToon"
             #pragma shader_feature_local_fragment ENABLE_MATCAP_SPECULAR
             #pragma shader_feature_local_fragment ENABLE_HAIR_SPECULAR
             #pragma shader_feature_local_fragment ENABLE_FACE_CHEEK
-            #pragma shader_feature_local_fragment ENABLE_CHARA_ON_SHADOW
             #pragma shader_feature_local_fragment ENABLE_INVERSE_SHADOW
+            #pragma shader_feature_local_fragment ENABLE_TIGHTS
+            #pragma shader_feature_local_fragment ENABLE_SPECULAR
+            #pragma shader_feature_local_fragment ENABLE_RIM
+            #pragma shader_feature_local_fragment ENABLE_OUTLINE            
             //#pragma shader_feature_local_fragment ENABLE_RAMP_SHADOW_ORIGIN
 
             // -------------------------------------
@@ -335,7 +344,6 @@ Shader "Universal Render Pipeline/URPLLToon"
             #pragma multi_compile_fragment _ _GBUFFER_NORMALS_OCT
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
             #pragma multi_compile _ _SCREEN_SPACE_OCCLUSION
-            #pragma multi_compile _ _ENABLE_TIGHTS
             
             #pragma vertex VertexBase
             #pragma fragment LLFragmentChara

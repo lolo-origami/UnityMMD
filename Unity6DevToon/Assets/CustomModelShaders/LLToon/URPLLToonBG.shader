@@ -381,6 +381,9 @@ Shader "Universal Render Pipeline/URPLLToonBG"
             #pragma shader_feature_local_fragment ENABLE_ALPHA_CLIPPING
             #pragma shader_feature_local_fragment ENABLE_BLOOM_MASK
             #pragma shader_feature_local_fragment ENABLE_FACE_SHADOW_MAP
+            #pragma shader_feature_local_fragment ENABLE_SPECULAR
+            #pragma shader_feature_local_fragment ENABLE_RIM
+            #pragma shader_feature_local_fragment ENABLE_OUTLINE             
             //#pragma shader_feature_local_fragment ENABLE_RAMP_SHADOW
             #pragma shader_feature_local_fragment ENABLE_EMISSION_ONLY
             //#pragma shader_feature_local_fragment ENABLE_RAMP_SHADOW_ORIGIN
