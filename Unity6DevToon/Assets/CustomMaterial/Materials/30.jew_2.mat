@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4380274885809947529
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 10
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 30.jew_2
+  m_Shader: {fileID: 4800000, guid: d8a2794b8f745f84f857dc87f44cb8e3, type: 3}
+  m_Parent: {fileID: 2100000, guid: 538dac3365a5325419a2c022d280dad4, type: 2}
+  m_ModifiedSerializedProperties: 16
+  m_ValidKeywords:
+  - ENABLE_ALPHA_CLIPPING
+  - _ALPHATEST_ON
+  m_InvalidKeywords:
+  - _ENABLELAMBERT_ON
+  - _ENABLERIM_ON
+  - _ENABLESPECULAR_ON
+  - _FIXDARKSHADOW_ON
+  - _RECEIVE_SHADOWS_OFF
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2450
+  stringTagMap:
+    RenderType: TransparentCutout
+  disabledShaderPasses:
+  - SHADOWCASTER
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: eaa42f1ed39c0284b8be0ad8f8a7182f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Blend: 0
+    - _DstBlend: 0
+    - _EnableDarkShadow: 0
+    - _EnableSpecular: 1
+    - _Metallic: 0.359
+    - _Smoothness: 0.414
+    - _SrcBlend: 1
+    - _Surface: 0
+    m_Colors:
+    - _BaseColor: {r: 0.9063317, g: 0.9063317, b: 0.9063317, a: 1}
+    - _Color: {r: 0.9063317, g: 0.9063317, b: 0.9063317, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
