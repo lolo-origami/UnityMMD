@@ -24,11 +24,16 @@ Material:
   m_Shader: {fileID: 4800000, guid: 28a9f503f04656c428f07c33b344e080, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - ENABLE_OUTLINE
+  - ENABLE_RIM
+  - ENABLE_SPECULAR
   m_InvalidKeywords:
   - _CASTSHADOWS_ON
   - _ENABLELAMBERT_ON
+  - _ENABLEOUTLINE_ON
   - _ENABLERIM_ON
+  - _ENABLESPECULAR_ON
   - _RECEIVESHADOWS_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -46,7 +51,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: fe0f8b18882c4f842976fa0efa67bbfa, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7126ce543ede2f74cbe297d50d1ff36e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -113,6 +118,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _TightsNoiseTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -159,17 +168,20 @@ Material:
     - _EnableDarkShadow: 0
     - _EnableEmission: 0
     - _EnableFaceCheek: 0
+    - _EnableFixedDirShadow: 0
     - _EnableHairSpecular: 0
     - _EnableLambert: 1
     - _EnableLightVectorRim: 1
     - _EnableMatCapSpecular: 0
+    - _EnableOutline: 1
     - _EnableRim: 1
     - _EnableRimDS: 0
     - _EnableSSAO: 0
-    - _EnableSpecular: 0
+    - _EnableSpecular: 1
     - _EnableTights: 0
     - _EnvironmentReflections: 1
     - _FixLightY: 0
+    - _FixedDirShadowStrength: 0.35
     - _GIInfluence: 1
     - _GlossMapScale: 1
     - _Glossiness: 0
@@ -181,7 +193,7 @@ Material:
     - _InnerWidth: 1
     - _LightMapInfluence: 1
     - _MatCapIntensity: 0.5
-    - _Metallic: 0
+    - _Metallic: 0.504
     - _Mode: 0
     - _OcclusionStrength: 1
     - _OutlineBrightness: 0.25
@@ -199,8 +211,9 @@ Material:
     - _ShadowArea: 0.5
     - _ShadowSmooth: 0.05
     - _Sharpness: 30
-    - _Smoothness: 0
+    - _Smoothness: 0.814
     - _SmoothnessTextureChannel: 0
+    - _SpecContrast: 10
     - _SpecularHighlights: 1
     - _SpecularIntensity: 0.5
     - _SpecularIntensityHigh: 0.5
@@ -216,7 +229,18 @@ Material:
     - _TightsHighlightIntensity: 0.2
     - _TightsHighlightScale: 20
     - _TightsMaxAlpha: 0.8
+    - _TightsNoiseDir: 0
+    - _TightsNoiseJitter: 1
+    - _TightsNoiseScale: 40
+    - _TightsNoiseSharpness: 4
+    - _TightsSpecContrast: 1
+    - _TightsSpecThreshold: 0.8
+    - _TightsSpecWidth: 0.2
+    - _TightsThighBoost: 1.5
+    - _TightsThighEnd: 0
+    - _TightsThighStart: 0.8
     - _UVSec: 0
+    - _UseTightsNoiseTex: 0
     - _WorkflowMode: 1
     - _WorldLightInfluence: 1
     - _ZWrite: 1
@@ -227,7 +251,8 @@ Material:
     - _DarkSideRimColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionMapChannelMask: {r: 1, g: 1, b: 1, a: 0}
-    - _LightSpecColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+    - _FixedDirOS: {r: 0, g: 1, b: 0, a: 0}
+    - _LightSpecColor: {r: 1, g: 1, b: 1, a: 1}
     - _LightSpecShadowColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _SceondMaterialDarkShadowColor: {r: 1, g: 1, b: 1, a: 1}

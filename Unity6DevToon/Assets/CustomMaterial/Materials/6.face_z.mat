@@ -149,10 +149,12 @@ Material:
     - _EnableDarkShadow: 1
     - _EnableEmission: 0
     - _EnableFaceCheek: 0
+    - _EnableFixedDirShadow: 0
     - _EnableHairSpecular: 0
     - _EnableLambert: 0
     - _EnableLightVectorRim: 1
     - _EnableMatCapSpecular: 0
+    - _EnableOutline: 0
     - _EnableRim: 0
     - _EnableRimDS: 0
     - _EnableSSAO: 0
@@ -160,6 +162,7 @@ Material:
     - _EnableTights: 0
     - _EnvironmentReflections: 1
     - _FixLightY: 0
+    - _FixedDirShadowStrength: 0.35
     - _GIInfluence: 1
     - _GlossMapScale: 1
     - _Glossiness: 0
@@ -179,7 +182,7 @@ Material:
     - _OutlineSaturation: 0.85
     - _OutlineSmoothness: 1
     - _OutlineStrength: 0.569
-    - _OutlineWidth: 1
+    - _OutlineWidth: 0
     - _OutlineZOffset: 0.0001
     - _Parallax: 0.02
     - _QueueOffset: 0
@@ -234,6 +237,7 @@ Material:
     - _DarkSideRimColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionMapChannelMask: {r: 1, g: 1, b: 1, a: 0}
+    - _FixedDirOS: {r: 0, g: 1, b: 0, a: 0}
     - _LightSpecColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
     - _LightSpecShadowColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}

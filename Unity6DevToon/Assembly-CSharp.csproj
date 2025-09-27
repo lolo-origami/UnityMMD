@@ -105,7 +105,12 @@
     <None Include="Assets\Stage\kotami stage070\kotami stage070.MMD4Mecanim.xml" />
     <None Include="Assets\CustomModelShaders\PostProcessShader\DiffusionShader.shader" />
     <None Include="Assets\CustomModelShaders\PostProcessShader\DepthLightShaftShader.shader" />
+    <None Include="Assets\CustomModelShaders\LLToon\LLToonShadow.hlsl" />
     <None Include="Assets\CustomModelShaders\LLToon\LLToonNoise.hlsl" />
+    <None Include="Assets\CustomModelShaders\LLToon\LLToonFace.hlsl" />
+    <None Include="Assets\CustomModelShaders\LLToon\LLToonEmission.hlsl" />
+    <None Include="Assets\CustomModelShaders\LLToon\LLToonSpecular.hlsl" />
+    <None Include="Assets\CustomModelShaders\LLToon\LLToonGI.hlsl" />
     <None Include="Assets\Model\Lilise\lili\彩澄りりせ_MMD利用ガイドライン.txt" />
     <None Include="Assets\Stage\kotami stage070\kotami stage070.xml" />
     <None Include="Assets\CustomModelShaders\LLToon\URPLLToon.shader" />
@@ -114,6 +119,7 @@
     <None Include="Assets\Model\Lilise\lili\彩澄りりせ.xml" />
     <None Include="Assets\CustomModelShaders\PostProcessShader\DepthColorAdjust.shader" />
     <None Include="Assets\CustomModelShaders\LLToon\LLToonOutline.hlsl" />
+    <None Include="Assets\CustomModelShaders\LLToon\LLToonRim.hlsl" />
     <None Include="Assets\Model\Lilise\lili\彩澄りりせa.xml" />
     <None Include="Assets\CustomModelShaders\LLToon\URPLLToonBG.shader" />
     <None Include="Assets\CustomModelShaders\PostProcessShader\FlareShader.shader" />

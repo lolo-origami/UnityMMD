@@ -123,8 +123,9 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
         protected MaterialProperty TightsThighStartProp { get; set; }
         protected MaterialProperty TightsThighEndProp   { get; set; }
         protected MaterialProperty TightsThighBoostProp { get; set; }
-        protected MaterialProperty TightsSpecContrastProp { get; set; }        
-        
+        protected MaterialProperty TightsSpecContrastProp { get; set; }
+        protected MaterialProperty EnableFlatGIProp { get; set; }
+        protected MaterialProperty FlatGIL0MinusProp { get; set; }
         protected MaterialProperty EnableOutlineProp { get; set; }
         protected MaterialProperty OutlineMaskProp { get; set; }
         protected MaterialProperty OutlineWidthProp { get; set; }
@@ -229,6 +230,8 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             //Emissive,Bloom,Lighting
             public static readonly GUIContent WorldLightInfluenceOptions = EditorGUIUtility.TrTextContent("WorldLightInfluence", "");
             public static readonly GUIContent GIInfluenceOptions = EditorGUIUtility.TrTextContent("GIInfluence", "");
+            public static readonly GUIContent EnableFlatGIOptions = EditorGUIUtility.TrTextContent("FlatGI", "");
+            public static readonly GUIContent FlatGIL0MinusOptions = EditorGUIUtility.TrTextContent("L0Minus", "");
             public static readonly GUIContent AddLightInfluenceOptions = EditorGUIUtility.TrTextContent("AddLightInfluence", "");  
             public static readonly GUIContent LightMapIndluenceOptions = EditorGUIUtility.TrTextContent("LightMapInfluence", "");
             public static readonly GUIContent BloomRimSpecularFactorOptions = EditorGUIUtility.TrTextContent("BloomRimSpecFactor", "");
@@ -474,6 +477,9 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             TightsThighStartProp = FindProperty("_TightsThighStart", properties, false);
             TightsThighEndProp   = FindProperty("_TightsThighEnd", properties, false);
             TightsThighBoostProp = FindProperty("_TightsThighBoost", properties, false); 
+            
+            EnableFlatGIProp = FindProperty("_EnableFlatGI", properties, false);
+            FlatGIL0MinusProp = FindProperty("_FlatGIL0Minus", properties, false);
             
             EnableOutlineProp = FindProperty("_EnableOutline", properties, false);
             OutlineMaskProp = FindProperty("_OutlineMask", properties, false);
@@ -771,6 +777,16 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             if (GIInfluenceProp != null)
             {
                 DrawFloatSliderValue(CustomStyleLL.GIInfluenceOptions, 0, 10, GIInfluenceProp);
+                if (EnableFlatGIProp != null)
+                {
+                    DrawFloatToggleProperty(CustomStyleLL.EnableFlatGIOptions, EnableFlatGIProp);
+                    bool enableFlatGI = EnableFlatGIProp.floatValue == 1.0f;
+                    if (enableFlatGI)
+                    {
+                        DrawFloatSliderValue(CustomStyleLL.FlatGIL0MinusOptions, 0f, 1f, FlatGIL0MinusProp);
+                    }
+                    CoreUtils.SetKeyword(material, "ENABLE_FLAT_GI", enableFlatGI);
+                }                
             }
             
             if (AddLightInfluenceProp != null)
@@ -916,10 +932,9 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
         {
             DrawFloatToggleProperty(new GUIContent("Enable Outline"), EnableOutlineProp);
             bool enableOutline = EnableOutlineProp.floatValue > 0.5f;
+            CoreUtils.SetKeyword(material, "ENABLE_OUTLINE", enableOutline);
             if (enableOutline)
             {
-                CoreUtils.SetKeyword(material, "ENABLE_OUTLINE", enableOutline);
-
                 if (OutlineMaskProp != null)
                 {
                     materialEditor.TextureProperty(OutlineMaskProp, "OutlineMask");

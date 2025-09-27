@@ -40,6 +40,7 @@ float _ReflectIntensity;
 half _WorldLightInfluence;
 half _LightMapInfluence;
 half _GIInfluence;
+half _FlatGIL0Minus;
 float _BloomFactor;
 float _EnableEmission;
 float _Emission;
@@ -215,9 +216,77 @@ TEXTURE2D(_CharaShadowMaskMap);  SAMPLER(sampler_CharaShadowMap);
 TEXTURE2D(_MatCap);  SAMPLER(sampler_MatCap);
 TEXTURE2D(_TightsHighlightMap); SAMPLER(sampler_TightsHighlightMap);
 TEXTURE2D(_TightsNoiseTex); SAMPLER(sampler_TightsNoiseTex);
+TEXTURE2D(_FaceMask); SAMPLER(sampler_FaceMask);
 //TEXTURE2D(_JitterMap);              SAMPLER(sampler_JitterMap);
 
 #define SAMPLE_METALLICSPECULAR(uv) SAMPLE_TEXTURE2D(_MetallicGlossMap, sampler_MetallicGlossMap, uv).g
+
+//それぞれのライティング色
+struct LLLightingData
+{
+    half4 BaseToonLightingColor; //基本のToonライティング色 + Specular
+    half4 AdditionalLightsColor; //追加光
+    half4 RimColor; //リムライト
+    half4 DarkRimColor; //暗部の反射光
+    half4 EmissionColor; //Emission
+    half4 GIColor; //GI
+    half4 SpecRimEmission; //全体的な輝きコントロール
+    half RampOutline; //2影の境界線調整値(メインで計算後アウトラインにに使いまわす)
+    half HalfLambert;
+};
+            
+//Toonに必要な要素
+struct ToonShadowFactor
+{
+    float SWeight; //影範囲
+    float SFactor; //1影の塗分け範囲
+    float SFactorD; //影の塗分け範囲
+    half rampS; //1影の境界線調整値
+    half rampDS; //2影の境界線調整値
+    float HalfLambert; //Halflambert情報
+};
+
+//Toonに必要な要素
+struct RimFactor
+{
+    half4 RimColor; //リムライト
+    half4 DarkRimColor; //暗部の反射光
+};
+
+//LLToonに必要な入力要素
+struct LLToonInputData
+{
+    InputData baseInputData;
+    float3 binormal;
+    float3 normalOS;
+    half4 color;
+    float2 matcapUV;
+};
+
+// --- マスク情報まとめ
+struct LLMaskData
+{
+    float lightMapMask;
+    float specularMask;
+    float emissionMask;
+    float GIOffMapMask;
+    float specularMaskHigh;
+};
+
+inline LLMaskData SampleLLMask(float2 uv)
+{
+    LLMaskData m;
+    float4 mask1 = SAMPLE_TEXTURE2D(_MaskMap, sampler_MaskMap, uv);
+    float4 mask2 = SAMPLE_TEXTURE2D(_MaskMap2, sampler_MaskMap2, uv);
+
+    m.lightMapMask    = mask1.r;
+    m.specularMask    = mask1.g;
+    m.emissionMask    = mask1.b;
+    m.GIOffMapMask    = mask2.g;
+    m.specularMaskHigh= mask2.b;
+    return m;
+}
+
 
 half SampleOcclusion(float2 uv)
 {

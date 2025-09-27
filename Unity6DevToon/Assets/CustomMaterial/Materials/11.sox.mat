@@ -25,12 +25,17 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _ENABLE_TIGHTS
+  - ENABLE_OUTLINE
+  - ENABLE_RIM
+  - ENABLE_SPECULAR
+  - ENABLE_TIGHTS
   m_InvalidKeywords:
   - _CASTSHADOWS_ON
   - _ENABLELAMBERT_ON
+  - _ENABLEOUTLINE_ON
   - _ENABLERIM_ON
   - _ENABLESPECULAR_ON
+  - _ENABLE_TIGHTS
   - _RECEIVESHADOWS_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -165,10 +170,12 @@ Material:
     - _EnableDarkShadow: 0
     - _EnableEmission: 0
     - _EnableFaceCheek: 0
+    - _EnableFixedDirShadow: 0
     - _EnableHairSpecular: 0
     - _EnableLambert: 1
     - _EnableLightVectorRim: 1
     - _EnableMatCapSpecular: 0
+    - _EnableOutline: 1
     - _EnableRim: 1
     - _EnableRimDS: 0
     - _EnableSSAO: 0
@@ -176,6 +183,7 @@ Material:
     - _EnableTights: 1
     - _EnvironmentReflections: 1
     - _FixLightY: 0
+    - _FixedDirShadowStrength: 0.35
     - _GIInfluence: 1
     - _GlossMapScale: 1
     - _Glossiness: 0
@@ -248,6 +256,7 @@ Material:
     - _DarkSideRimColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionMapChannelMask: {r: 1, g: 1, b: 1, a: 0}
+    - _FixedDirOS: {r: 0, g: 1, b: 0, a: 0}
     - _LightSpecColor: {r: 0.60978603, g: 0.53813636, b: 0.8207547, a: 1}
     - _LightSpecShadowColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}

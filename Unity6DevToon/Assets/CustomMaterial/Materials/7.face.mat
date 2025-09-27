@@ -11,11 +11,13 @@ Material:
   m_Shader: {fileID: 4800000, guid: 28a9f503f04656c428f07c33b344e080, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - ENABLE_FACE_CHEEK
+  - ENABLE_FLAT_GI
+  - ENABLE_OUTLINE
   m_InvalidKeywords:
   - _CASTSHADOWS_ON
-  - _ENABLELAMBERT_ON
-  - _ENABLERIM_ON
+  - _ENABLEOUTLINE_ON
   - _IGNORELIGHTY_ON
   - _RECEIVESHADOWS_ON
   m_LightmapFlags: 4
@@ -135,10 +137,10 @@ Material:
     - _Cull: 2
     - _Cutoff: 0.5
     - _DarkEmissionIntensity: 1
-    - _DarkShadowArea: 0.5
-    - _DarkShadowSmooth: 0.05
-    - _DarkSideRimPow: 1
-    - _DarkSideRimSmooth: 10
+    - _DarkShadowArea: 0.401
+    - _DarkShadowSmooth: 0.053
+    - _DarkSideRimPow: 0.66
+    - _DarkSideRimSmooth: 1
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DiffuseIntensity: 1
@@ -150,26 +152,31 @@ Material:
     - _EnableDarkInverseShadow: 0
     - _EnableDarkShadow: 0
     - _EnableEmission: 0
-    - _EnableFaceCheek: 0
+    - _EnableFaceCheek: 1
+    - _EnableFixedDirShadow: 0
+    - _EnableFlatGI: 1
     - _EnableHairSpecular: 0
-    - _EnableLambert: 1
+    - _EnableLambert: 0
     - _EnableLightVectorRim: 1
     - _EnableMatCapSpecular: 0
-    - _EnableRim: 1
+    - _EnableOutline: 1
+    - _EnableRim: 0
     - _EnableRimDS: 0
     - _EnableSSAO: 0
     - _EnableSpecular: 0
     - _EnableTights: 0
     - _EnvironmentReflections: 1
     - _FixLightY: 0
+    - _FixedDirShadowStrength: 0.35
+    - _FlatGIL0Minus: 0.234
     - _GIInfluence: 1
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
     - _IgnoreLightY: 1
     - _InnerSharpness: 5
-    - _InnerStrength: 0.39
-    - _InnerThreshold: 0.19
+    - _InnerStrength: 0.62
+    - _InnerThreshold: 0.388
     - _InnerWidth: 1
     - _LightMapInfluence: 1
     - _MatCapIntensity: 0.5
@@ -181,7 +188,7 @@ Material:
     - _OutlineSaturation: 0.85
     - _OutlineSmoothness: 1
     - _OutlineStrength: 0.569
-    - _OutlineWidth: 1
+    - _OutlineWidth: 2.3
     - _OutlineZOffset: 0.0001
     - _Parallax: 0.02
     - _QueueOffset: 0
@@ -236,6 +243,7 @@ Material:
     - _DarkSideRimColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionMapChannelMask: {r: 1, g: 1, b: 1, a: 0}
+    - _FixedDirOS: {r: 0, g: 1, b: 0, a: 0}
     - _LightSpecColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
     - _LightSpecShadowColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}

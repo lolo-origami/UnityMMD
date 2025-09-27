@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-9041274714314378703
+--- !u!114 &-4306873619614896244
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,15 +20,18 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: 17.clo2
+  m_Name: 14.clo_mizu
   m_Shader: {fileID: 4800000, guid: 28a9f503f04656c428f07c33b344e080, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - ENABLE_OUTLINE
+  - ENABLE_RIM
+  - _SCREEN_SPACE_OCCLUSION
   m_InvalidKeywords:
   - _CASTSHADOWS_ON
-  - _ENABLEDARKSHADOW_ON
   - _ENABLELAMBERT_ON
+  - _ENABLEOUTLINE_ON
   - _ENABLERIM_ON
   - _RECEIVESHADOWS_ON
   m_LightmapFlags: 4
@@ -47,7 +50,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: fe0f8b18882c4f842976fa0efa67bbfa, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7126ce543ede2f74cbe297d50d1ff36e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -114,6 +117,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _TightsNoiseTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -128,7 +135,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AOStrength: 0
+    - _AOStrength: 1
     - _AddLightIntensity: 1
     - _AddPrecomputedVelocity: 0
     - _AlphaClip: 0
@@ -157,20 +164,23 @@ Material:
     - _EmissionBloomFactor: 1
     - _EnableCharaOnShadow: 0
     - _EnableDarkInverseShadow: 0
-    - _EnableDarkShadow: 1
+    - _EnableDarkShadow: 0
     - _EnableEmission: 0
     - _EnableFaceCheek: 0
+    - _EnableFixedDirShadow: 0
     - _EnableHairSpecular: 0
     - _EnableLambert: 1
     - _EnableLightVectorRim: 1
     - _EnableMatCapSpecular: 0
+    - _EnableOutline: 1
     - _EnableRim: 1
     - _EnableRimDS: 0
-    - _EnableSSAO: 0
+    - _EnableSSAO: 1
     - _EnableSpecular: 0
     - _EnableTights: 0
     - _EnvironmentReflections: 1
     - _FixLightY: 0
+    - _FixedDirShadowStrength: 0.35
     - _GIInfluence: 1
     - _GlossMapScale: 1
     - _Glossiness: 0
@@ -202,6 +212,7 @@ Material:
     - _Sharpness: 30
     - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
+    - _SpecContrast: 1
     - _SpecularHighlights: 1
     - _SpecularIntensity: 0.5
     - _SpecularIntensityHigh: 0.5
@@ -217,23 +228,35 @@ Material:
     - _TightsHighlightIntensity: 0.2
     - _TightsHighlightScale: 20
     - _TightsMaxAlpha: 0.8
+    - _TightsNoiseDir: 0
+    - _TightsNoiseJitter: 1
+    - _TightsNoiseScale: 40
+    - _TightsNoiseSharpness: 4
+    - _TightsSpecContrast: 1
+    - _TightsSpecThreshold: 0.8
+    - _TightsSpecWidth: 0.2
+    - _TightsThighBoost: 1.5
+    - _TightsThighEnd: 0
+    - _TightsThighStart: 0.8
     - _UVSec: 0
+    - _UseTightsNoiseTex: 0
     - _WorkflowMode: 1
     - _WorldLightInfluence: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.9063317, g: 0.9063317, b: 0.9063317, a: 1}
-    - _DarkShadowMultColor: {r: 0.6320754, g: 0.5754272, b: 0.5754272, a: 1}
+    - _DarkShadowMultColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _DarkSideRimColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionMapChannelMask: {r: 1, g: 1, b: 1, a: 0}
+    - _FixedDirOS: {r: 0, g: 1, b: 0, a: 0}
     - _LightSpecColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
     - _LightSpecShadowColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _SceondMaterialDarkShadowColor: {r: 1, g: 1, b: 1, a: 1}
     - _SceondMaterialShadowColor: {r: 1, g: 1, b: 1, a: 1}
-    - _ShadowMultColor: {r: 0.9294118, g: 0.8588236, b: 0.85098046, a: 1}
+    - _ShadowMultColor: {r: 0.763172, g: 0.890835, b: 0.9245283, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _TightsColor: {r: 0.09999997, g: 0.09999997, b: 0.09999997, a: 1}
   m_BuildTextureStacks: []

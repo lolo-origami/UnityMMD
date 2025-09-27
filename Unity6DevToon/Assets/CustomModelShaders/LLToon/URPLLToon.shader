@@ -11,6 +11,8 @@ Shader "Universal Render Pipeline/URPLLToon"
         _BaseColor("Color", Color) = (1,1,1,1)
         _WorldLightInfluence ("World Light Influence", range(0.0, 1.0)) = 1.0
         _GIInfluence ("GI Influence", range(0.0, 10.0)) = 0.1
+        [Toggle]_EnableFlatGI ("Enable FlatGI", Float) = 0
+        _FlatGIL0Minus ("_FlatGIL0 Minus", Float) = 0
         _AddLightIntensity ("Add Influence", range(0.0, 1.0)) = 1.0
         [HideInInspector]_LightMapInfluence ("LightMap Influence", range(0.0, 30.0)) = 1.0
         _MaskMap ("LSEMask Texture", 2D) = "white" { } //r.lightMap g.specularMap r.emission a.secondMaterialMap
@@ -330,6 +332,7 @@ Shader "Universal Render Pipeline/URPLLToon"
             #pragma shader_feature_local_fragment ENABLE_INVERSE_SHADOW
             #pragma shader_feature_local_fragment ENABLE_TIGHTS
             #pragma shader_feature_local_fragment ENABLE_SPECULAR
+            #pragma shader_feature_local_fragment ENABLE_FLAT_GI
             #pragma shader_feature_local_fragment ENABLE_RIM
             #pragma shader_feature_local_fragment ENABLE_OUTLINE            
             //#pragma shader_feature_local_fragment ENABLE_RAMP_SHADOW_ORIGIN
