@@ -62,17 +62,23 @@ ForwardLightingをベースに、追加光やUnityのLightProbeにも対応し�
 ## 輝き制御機能(BloomInputs)
 Emissionや、リムライト等を制御するための機能です。Specularやベースの色の強さもまとめて制御できます。
 ### Emission
-- **EnableEmission**: エミッションを有効にするか設定します。
-- **EmissionColor**: エミッションの色を調整します。
-- **EmissionIntensity**: エミッションの強度を調整します。
-- **EmissionBloomFactor**: エミッションのブルーム係数を調整します。
-- **DarkEmissionIntensity**: 暗部のエミッション強度を調整します。
-
+- **EnableEmission**: エミッションを有効にします。  
+- **EmissionColor**: エミッションの色を調整します。  
+- **Emission**: エミッションの強度を調整します。  
+- **EmissionBloomFactor**: ブルーム計算への寄与率を調整します。  
+- **DarkEmissionIntensity**: 影中のエミッション強度を調整します。  
+- **EnableEmissionOnly**: 発光のみを描画するか設定します。
+- 
 ### リムライト
 - **EnableRim**: リムライトを有効にするか設定します。
 - **RimColor**: リムライトの色を調整します。
 - **Rim Smooth**: リムライトの境界線の滑らかさを調整します。
-- **Rim Pow**: リムライトの広がりを調整します。 
+- **Rim Pow**: リムライトの広がりを調整します。
+
+### GI
+- **FlatGI**: SH関数のサンプリングに「ワールド座標ベクトルの向き」を使います。位置に応じた環境光の変化だけを平面的に足すことができます。
+  - **L0 Minus**: 全体的に光が強くなってしまうので、L0の定数項を除算して調整します。
+ <img width="503" height="881" alt="image" src="https://github.com/user-attachments/assets/31729a66-42f6-4e91-9bf4-27217e7d4587" />　<img width="509" height="874" alt="image" src="https://github.com/user-attachments/assets/c5c8e746-ded2-4cbb-bb4f-094289b1ad1d" />
 
 #### 追加機能 
 - **BlendRimWithBaseColor**: リムライトの色をベースカラーと馴染ませるかどうかの切り替えを設定します。
@@ -81,6 +87,33 @@ Emissionや、リムライト等を制御するための機能です。Specular�
   - **DarkRimColor**: 暗い部分のリムライトの色を調整します。
   - **Dark Rim Smooth**: 暗い部分のリムライトの強度を調整します。
   - **Rim Pow**: 暗い部分のリムライトの広がりを調整します。
+
+### 固有表現(Unique Input)
+
+#### Tights
+- **EnableTights**: タイツ専用ライティングを有効にします。  
+- **TightsColor**: タイツの基本色を設定します。  
+- **TightsBaseAlpha**: タイツの最低不透明度を調整します。  
+- **TightsMaxAlpha**: タイツの最大不透明度（明部の上限）を調整します。  
+- **TightsFresnelPow**: フレネルの鋭さを調整します。  
+- **TightsFresnelStrength**: フレネルの寄与量を調整します。  
+- **TightsBlendStrength**: ベース色とハイライトのブレンド量を調整します。  
+- **TightsHighlightMap**: ハイライトマップを設定します。  
+- **TightsHighlightScale**: ハイライトマップのスケールを調整します。  
+- **TightsHighlightIntensity**: ハイライトの強度を調整します。  
+- **UseTightsNoiseTex**: タイツのノイズをテクスチャから使用するか切り替えます。  
+- **TightsNoiseTex**: タイツのノイズテクスチャを指定します。  
+- **TightsNoiseDir**: ノイズの方向を設定します（0=横筋、1=縦筋）。  
+- **TightsNoiseScale**: ノイズの密度を調整します。  
+- **TightsNoiseSharpness**: ノイズラインのシャープさを調整します。  
+- **TightsNoiseJitter**: ノイズラインの揺らぎを調整します。  
+- **TightsSpecThreshold**: スペキュラが発生するしきい値を調整します。  
+- **TightsSpecWidth**: スペキュラの遷移幅を調整します。  
+- **TightsSpecContrast**: スペキュラのコントラストを調整します。  
+- **TightsThighStart**: 腿のハイライトが始まる位置を調整します。  
+- **TightsThighEnd**: 腿のハイライトが最大になる位置を調整します。  
+- **TightsThighBoost**: 腿部分のハイライト強調度を調整します。  
+
 
 ### 全体調整
 - **DiffuseIntensity**: ディフューズの強度を調整します。
@@ -93,13 +126,18 @@ Emissionや、リムライト等を制御するための機能です。Specular�
 
 
 ### Outline
-UniToonをベースにしたアウトライン制御です。
-
-- **OutlineMask**: アウトラインの表示/非表示を制御するマスクテクスチャです。
-- **OutlineWidth**: アウトラインの太さを調整します。
-- **OutlineLightAffects**: アウトラインのライティング影響度を調整します。
-- **OutlineSaturation**: アウトラインの彩度を調整します。
-- **OutlineBrightness**: アウトラインの明るさを調整します。
+SobelFilterを利用したアウトライン制御です。外側はdepth、内側は法線を元に判定しています。
+- **OutlineMask**: アウトラインの表示/非表示を制御します。  
+- **OutlineWidth**: アウトラインの太さを調整します。  
+- **OutlineLightAffects**: アウトラインのライティング影響度を調整します。  
+- **OutlineSaturation**: アウトラインの彩度を調整します。  
+- **OutlineBrightness**: アウトラインの明るさを調整します。  
+- **OutlineStrength**: 内側アウトラインの強度を調整します。  
+- **OutlineSmoothness**: 内側アウトラインの滑らかさを調整します。  
+- **InnerWidth**: 内側線の太さを調整します。  
+- **InnerStrength**: 内側線の強度を調整します。  
+- **InnerThreshold**: 内側線を出すためのしきい値を調整します。  
+- **InnerSmoothness**: 内側線のフェードを調整します。 
 
 # LLPostProcess概要
 
