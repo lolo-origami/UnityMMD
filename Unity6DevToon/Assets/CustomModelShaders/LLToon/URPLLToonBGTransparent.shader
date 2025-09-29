@@ -8,6 +8,10 @@ Shader "Universal Render Pipeline/URPLLToonBGTransparent"
         _BaseColor("Color", Color) = (1,1,1,1)
         _WorldLightInfluence ("World Light Influence", range(0.0, 1.0)) = 1.0
         _GIInfluence ("GI Influence", range(0.0, 3.0)) = 1.0
+        [Toggle]_EnableFlatGI ("Enable FlatGI", Float) = 0
+        _FlatGIL0Minus ("_FlatGIL0 Minus", Float) = 0
+        [Toggle]_EnableStylizeGI ("Enable StylizeGI", Float) = 0
+        _GIRampTex ("Texture", 2D) = "white" {}        
         _LightMapInfluence ("LightMap Influence", range(0.0, 30.0)) = 1.0
         _MaskMap ("Mask Texture", 2D) = "white" { } //r.Rim g.specularMap r.emission a.secondMaterialMap
         _CharaShadowMaskMap ("CharaShadowMask Texture", 2D) = "white" { }
@@ -341,6 +345,8 @@ Shader "Universal Render Pipeline/URPLLToonBGTransparent"
             #pragma shader_feature_local_fragment ENABLE_FACE_SHADOW_MAP
             //#pragma shader_feature_local_fragment ENABLE_RAMP_SHADOW
             #pragma shader_feature_local_fragment ENABLE_MIRROR
+            #pragma shader_feature_local_fragment ENABLE_FLAT_GI
+            #pragma shader_feature_local_fragment ENABLE_STYLIZE_GI            
             //#pragma shader_feature_local_fragment ENABLE_RAMP_SHADOW_ORIGIN
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
             

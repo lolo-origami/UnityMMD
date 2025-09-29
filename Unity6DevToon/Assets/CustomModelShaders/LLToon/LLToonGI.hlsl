@@ -27,6 +27,19 @@ inline float3 CalculateLLGI(LLToonInputData inputData, BRDFData brdfData, BRDFDa
     return env * aoFactor.indirectAmbientOcclusion * maskGI;
 #endif
 
+#if ENABLE_STYLIZE_GI    
+    //位置だけで評価する
+    half3 gi = SampleSH(inputData.baseInputData.normalWS);
+    
+    // 輝度をインデックスに
+    float lum = dot(gi, float3(0.299, 0.587, 0.114));
+    // Ramp から「階調係数」だけを取得
+    float tone = SAMPLE_TEXTURE2D(_GIRampTex, sampler_GIRampTex, float2(lum, 0)).r;
+
+    // 元の GI 色にトーン係数を掛ける
+    return gi * tone;
+#endif    
+
     
     MixRealtimeAndBakedGI(mainLight, inputData.baseInputData.normalWS, inputData.baseInputData.bakedGI);
 

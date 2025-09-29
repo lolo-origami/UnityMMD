@@ -110,8 +110,8 @@ void LLToonLighting(
     baseLightingColor += SAMPLE_TEXTURE2D(_MatCap, sampler_MatCap, inputData.matcapUV) * _MatCapIntensity;
 #endif
 
-#if ENABLE_FACE_CHEEK    
-    baseLightingColor.rgb += ApplyFaceDetail(baseColor, uv);
+#if ENABLE_FACE_CHEEK
+    baseLightingColor.rgb = ApplyFaceDetail(baseLightingColor.rgb, uv);
 #endif    
     // --- ライト色適用
     baseLightingColor.rgb = lerp(baseLightingColor.rgb, radiance * baseLightingColor.rgb, _WorldLightInfluence);

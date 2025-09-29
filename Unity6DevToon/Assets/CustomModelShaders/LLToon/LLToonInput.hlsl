@@ -140,6 +140,14 @@ float _InnerSharpness;
 float _EnableFixedDirShadow;              // 0/1 toggle
 float4 _FixedDirOS;                       // object-space direction (xyz)
 float _FixedDirShadowStrength;            // 0..1
+
+// チーク
+float4 _CheekColor;
+float  _CheekAdd;
+float  _CheekMul;
+float  _CheekSoft;
+float  _CheekPow;
+
 //float3 _ReceiveShadowMultColor;
 
 //half4 _MedColor;
@@ -217,6 +225,7 @@ TEXTURE2D(_MatCap);  SAMPLER(sampler_MatCap);
 TEXTURE2D(_TightsHighlightMap); SAMPLER(sampler_TightsHighlightMap);
 TEXTURE2D(_TightsNoiseTex); SAMPLER(sampler_TightsNoiseTex);
 TEXTURE2D(_FaceMask); SAMPLER(sampler_FaceMask);
+TEXTURE2D(_GIRampTex); SAMPLER(sampler_GIRampTex);
 //TEXTURE2D(_JitterMap);              SAMPLER(sampler_JitterMap);
 
 #define SAMPLE_METALLICSPECULAR(uv) SAMPLE_TEXTURE2D(_MetallicGlossMap, sampler_MetallicGlossMap, uv).g

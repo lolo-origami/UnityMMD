@@ -8,6 +8,10 @@ Shader "Universal Render Pipeline/URPLLToonBG"
         _BaseColor("Color", Color) = (1,1,1,1)
         _WorldLightInfluence ("World Light Influence", range(0.0, 1.0)) = 1.0
         _GIInfluence ("GI Influence", range(0.0, 3.0)) = 1.0
+        [Toggle]_EnableFlatGI ("Enable FlatGI", Float) = 0
+        _FlatGIL0Minus ("_FlatGIL0 Minus", Float) = 0
+        [Toggle]_EnableStylizeGI ("Enable StylizeGI", Float) = 0
+        _GIRampTex ("Texture", 2D) = "white" {}        
         _AddLightIntensity ("Add Influence", range(0.0, 1.0)) = 1.0
         _LightMapInfluence ("LightMap Influence", range(0.0, 30.0)) = 1.0
         _MaskMap ("Mask Texture", 2D) = "white" { } //r.Rim g.specularMap r.emission a.secondMaterialMap
@@ -383,7 +387,9 @@ Shader "Universal Render Pipeline/URPLLToonBG"
             #pragma shader_feature_local_fragment ENABLE_FACE_SHADOW_MAP
             #pragma shader_feature_local_fragment ENABLE_SPECULAR
             #pragma shader_feature_local_fragment ENABLE_RIM
-            #pragma shader_feature_local_fragment ENABLE_OUTLINE             
+            #pragma shader_feature_local_fragment ENABLE_OUTLINE
+            #pragma shader_feature_local_fragment ENABLE_FLAT_GI
+            #pragma shader_feature_local_fragment ENABLE_STYLIZE_GI
             //#pragma shader_feature_local_fragment ENABLE_RAMP_SHADOW
             #pragma shader_feature_local_fragment ENABLE_EMISSION_ONLY
             //#pragma shader_feature_local_fragment ENABLE_RAMP_SHADOW_ORIGIN

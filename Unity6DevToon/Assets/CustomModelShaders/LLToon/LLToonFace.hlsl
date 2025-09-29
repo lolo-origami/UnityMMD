@@ -1,4 +1,5 @@
 ﻿#include "LLToonInput.hlsl"
+#include "../PostProcessShader/LLToonBlend.hlsl"
 
 // =====================
 // 顔ディテール合成
@@ -16,7 +17,7 @@ float SoftMask(float m, float soft, float powK)
 {
     m = saturate(m);
     float sm = smoothstep(0.0, max(1e-3, soft), m);
-    return pow(sm, powK);
+    return pow(sm, powK) * 0.5;
 }
 
 float MaskToLine(float m, float widthPow, float soft)
@@ -28,12 +29,6 @@ float NoseHighlightFromMask(float m, float width)
 {
     float t = saturate((m - (1.0 - 1.0/width)) * width);
     return pow(saturate(t), 4.0);
-}
-
-float3 ScreenBlend(float3 baseCol, float3 addCol, float m)
-{
-    float3 b = lerp(0, addCol, m);
-    return 1.0 - (1.0 - baseCol) * (1.0 - saturate(b));
 }
 
 float3 MultiplyShadow(float3 baseCol, float3 shadowCol, float m)
@@ -52,16 +47,15 @@ FaceDetailMasks SampleFaceMasks(float2 uv)
     return r;
 }
 
-half3 ApplyFaceDetail(float3 baseColor, float2 uv)
+half3 ApplyFaceDetail(half3 baseColor, float2 uv)
 {
-/*#ifdef ENABLE_FACE_CHEEK
     FaceDetailMasks M = SampleFaceMasks(uv);
 
     // --- Cheek ---
     float mCheek = SoftMask(M.cheek, _CheekSoft, _CheekPow);
-    baseColor = ScreenBlend(baseColor, _CheekColor.rgb, mCheek * _CheekAdd);
-    baseColor = MultiplyShadow(baseColor, _CheekColor.rgb * 0.85 + 0.15, mCheek * _CheekMul);
+    half3 faceColor = lerp(baseColor, _CheekColor.rgb, mCheek * _CheekColor.a);
 
+    /*
     // --- Brow Shadow ---
     float mBrow = SoftMask(M.brow, _BrowSoft, _BrowPow);
     baseColor = MultiplyShadow(baseColor, _BrowColor.rgb, mBrow * _BrowStrength);
@@ -81,7 +75,6 @@ half3 ApplyFaceDetail(float3 baseColor, float2 uv)
     // --- Lower Lid ---
     float mLid = MaskToLine(M.lid, _LidPow, _LidSoft);
     baseColor = MultiplyShadow(baseColor, _LidColor.rgb, mLid * _LidStrength);
-#endif
-*/
-    return half3(0,0,0);
+    */
+    return faceColor;
 }

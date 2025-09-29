@@ -13,6 +13,8 @@ Shader "Universal Render Pipeline/URPLLToon"
         _GIInfluence ("GI Influence", range(0.0, 10.0)) = 0.1
         [Toggle]_EnableFlatGI ("Enable FlatGI", Float) = 0
         _FlatGIL0Minus ("_FlatGIL0 Minus", Float) = 0
+        [Toggle]_EnableStylizeGI ("Enable StylizeGI", Float) = 0
+        _GIRampTex ("Texture", 2D) = "white" {}
         _AddLightIntensity ("Add Influence", range(0.0, 1.0)) = 1.0
         [HideInInspector]_LightMapInfluence ("LightMap Influence", range(0.0, 30.0)) = 1.0
         _MaskMap ("LSEMask Texture", 2D) = "white" { } //r.lightMap g.specularMap r.emission a.secondMaterialMap
@@ -88,6 +90,13 @@ Shader "Universal Render Pipeline/URPLLToon"
         
         
         [Toggle(ENABLE_FACE_CHEEK)] _EnableFaceCheek ("Enable FaceCheek", float) = 0
+        _FaceMask("Face Mask", 2D) = "white" {}
+
+        _CheekColor("Cheek Color", Color) = (1,0.6,0.6,1)
+        _CheekAdd("Cheek Add", Range(0,1)) = 0.5
+        _CheekMul("Cheek Mul", Range(0,1)) = 0.2
+        _CheekSoft("Cheek Soft", Range(0,1)) = 0.5
+        _CheekPow("Cheek Pow", Range(0,5)) = 1.0        
         [Toggle(ENABLE_MATCAP_SPECULAR)] _EnableMatCapSpecular ("Enable MatCap Specular", float) = 0
         [Toggle(ENABLE_HAIR_SPECULAR)] _EnableHairSpecular ("Enable Hair Specular", float) = 0
         _Sharpness("Sharpness", float) = 30
@@ -333,6 +342,7 @@ Shader "Universal Render Pipeline/URPLLToon"
             #pragma shader_feature_local_fragment ENABLE_TIGHTS
             #pragma shader_feature_local_fragment ENABLE_SPECULAR
             #pragma shader_feature_local_fragment ENABLE_FLAT_GI
+            #pragma shader_feature_local_fragment ENABLE_STYLIZE_GI
             #pragma shader_feature_local_fragment ENABLE_RIM
             #pragma shader_feature_local_fragment ENABLE_OUTLINE            
             //#pragma shader_feature_local_fragment ENABLE_RAMP_SHADOW_ORIGIN

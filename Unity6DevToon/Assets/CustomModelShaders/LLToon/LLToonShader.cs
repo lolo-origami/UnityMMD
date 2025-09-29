@@ -54,6 +54,12 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
         protected MaterialProperty LightSpecColorProperty { get; set; }
         protected MaterialProperty _LightSpecShadowColorProperty { get; set; }
         protected MaterialProperty EnableFaceCheekProperty { get; set; }
+        protected MaterialProperty FaceMaskProperty { get; set; }
+        protected MaterialProperty CheekColorProperty { get; set; }
+        protected MaterialProperty CheekAddProperty { get; set; }
+        protected MaterialProperty CheekMulProperty { get; set; }
+        protected MaterialProperty CheekSoftProperty { get; set; }
+        protected MaterialProperty CheekPowProperty { get; set; }
         protected MaterialProperty EnableMatCapProperty { get; set; }
         protected MaterialProperty MatCapIntensityProperty { get; set; }
         protected MaterialProperty EnableHairProperty { get; set; }
@@ -126,6 +132,8 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
         protected MaterialProperty TightsSpecContrastProp { get; set; }
         protected MaterialProperty EnableFlatGIProp { get; set; }
         protected MaterialProperty FlatGIL0MinusProp { get; set; }
+        protected MaterialProperty EnableStylizeGIProp { get; set; }
+        protected MaterialProperty GIRampProp { get; set; }
         protected MaterialProperty EnableOutlineProp { get; set; }
         protected MaterialProperty OutlineMaskProp { get; set; }
         protected MaterialProperty OutlineWidthProp { get; set; }
@@ -208,6 +216,13 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
                 EditorGUIUtility.TrTextContent("Fix Divide Value", ".");
             public static readonly GUIContent EnableFaceCheekOptions = EditorGUIUtility.TrTextContent("EnableFaceCheekShade", "");
             
+            public static GUIContent FaceMaskOptions     = new GUIContent("Face Mask", "RGBA: Cheek/Nose/Brow/Lid");
+            public static GUIContent CheekColorOptions   = new GUIContent("Cheek Color");
+            public static GUIContent CheekAddOptions     = new GUIContent("Cheek Add");
+            public static GUIContent CheekMulOptions     = new GUIContent("Cheek Mul");
+            public static GUIContent CheekSoftOptions    = new GUIContent("Cheek Soft");
+            public static GUIContent CheekPowOptions     = new GUIContent("Cheek Pow");
+            
             //BRDF
             public static readonly GUIContent MetallicOptions = EditorGUIUtility.TrTextContent("Metallic", "");
             public static readonly GUIContent SmoothnessOptions = EditorGUIUtility.TrTextContent("Smoothness", "");
@@ -232,6 +247,8 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             public static readonly GUIContent GIInfluenceOptions = EditorGUIUtility.TrTextContent("GIInfluence", "");
             public static readonly GUIContent EnableFlatGIOptions = EditorGUIUtility.TrTextContent("FlatGI", "");
             public static readonly GUIContent FlatGIL0MinusOptions = EditorGUIUtility.TrTextContent("L0Minus", "");
+            public static readonly GUIContent EnableStylizeGIOptions = EditorGUIUtility.TrTextContent("Stylize GI", "");
+            public static readonly GUIContent GIRampOptions          = EditorGUIUtility.TrTextContent("GI Ramp", "GI color remap ramp.");
             public static readonly GUIContent AddLightInfluenceOptions = EditorGUIUtility.TrTextContent("AddLightInfluence", "");  
             public static readonly GUIContent LightMapIndluenceOptions = EditorGUIUtility.TrTextContent("LightMapInfluence", "");
             public static readonly GUIContent BloomRimSpecularFactorOptions = EditorGUIUtility.TrTextContent("BloomRimSpecFactor", "");
@@ -416,6 +433,12 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             LightSpecColorProperty = FindProperty("_LightSpecColor", properties, false);
             _LightSpecShadowColorProperty = FindProperty("_LightSpecShadowColor", properties, false);
             EnableFaceCheekProperty = FindProperty("_EnableFaceCheek", properties, false);
+            FaceMaskProperty = FindProperty("_FaceMask", properties, false);
+            CheekColorProperty = FindProperty("_CheekColor", properties, false);
+            CheekAddProperty   = FindProperty("_CheekAdd", properties, false);
+            CheekMulProperty   = FindProperty("_CheekMul", properties, false);
+            CheekSoftProperty  = FindProperty("_CheekSoft", properties, false);
+            CheekPowProperty   = FindProperty("_CheekPow", properties, false);
             EnableMatCapProperty = FindProperty("_EnableMatCapSpecular", properties, false);
             EnableHairProperty = FindProperty("_EnableHairSpecular", properties, false);
             EnableInverseDarkShadowProperty = FindProperty("_EnableDarkInverseShadow", properties, false);
@@ -480,6 +503,9 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             
             EnableFlatGIProp = FindProperty("_EnableFlatGI", properties, false);
             FlatGIL0MinusProp = FindProperty("_FlatGIL0Minus", properties, false);
+            EnableStylizeGIProp = FindProperty("_EnableStylizeGI", properties, false);
+            GIRampProp          = FindProperty("_GIRampTex",      properties, false);
+            
             
             EnableOutlineProp = FindProperty("_EnableOutline", properties, false);
             OutlineMaskProp = FindProperty("_OutlineMask", properties, false);
@@ -580,6 +606,20 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
                 DrawFloatToggleProperty(CustomStyleLL.EnableFaceCheekOptions, EnableFaceCheekProperty);
                 bool enableFaceCheekShade = EnableFaceCheekProperty.floatValue == 1.0f;
                 CoreUtils.SetKeyword(material, "ENABLE_FACE_CHEEK", enableFaceCheekShade);
+                if (enableFaceCheekShade)
+                {
+                    EditorGUILayout.LabelField("Face Detail", EditorStyles.boldLabel);
+
+                    // マスク
+                    materialEditor.TexturePropertySingleLine(CustomStyleLL.FaceMaskOptions, FaceMaskProperty);
+
+                    // --- Cheek ---
+                    materialEditor.ColorProperty(CheekColorProperty, "Cheek Color");
+                    DrawFloatToggleProperty(CustomStyleLL.CheekAddOptions, CheekAddProperty);
+                    DrawFloatToggleProperty(CustomStyleLL.CheekMulOptions, CheekMulProperty);
+                    DrawFloatToggleProperty(CustomStyleLL.CheekSoftOptions, CheekSoftProperty);
+                    DrawFloatSliderValue(CustomStyleLL.CheekPowOptions, 0.01f,5,  CheekPowProperty);
+                }
             }
             if (bumpMapProp != null)
             {
@@ -781,12 +821,41 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
                 {
                     DrawFloatToggleProperty(CustomStyleLL.EnableFlatGIOptions, EnableFlatGIProp);
                     bool enableFlatGI = EnableFlatGIProp.floatValue == 1.0f;
+                    if (EnableStylizeGIProp != null)
+                    {
+                        if (EnableStylizeGIProp.floatValue == 1.0f)
+                        {
+                            enableFlatGI = false;
+                        }
+                    }                    
                     if (enableFlatGI)
                     {
                         DrawFloatSliderValue(CustomStyleLL.FlatGIL0MinusOptions, 0f, 1f, FlatGIL0MinusProp);
                     }
+                    CoreUtils.SetKeyword(material, "ENABLE_STYLIZE_GI", false);
                     CoreUtils.SetKeyword(material, "ENABLE_FLAT_GI", enableFlatGI);
                 }                
+                
+                if (EnableStylizeGIProp != null)
+                {
+                    DrawFloatToggleProperty(CustomStyleLL.EnableStylizeGIOptions, EnableStylizeGIProp);
+                    bool enableStylizeGI = EnableStylizeGIProp.floatValue == 1.0f;
+                    if (EnableFlatGIProp != null)
+                    {
+                        if (EnableFlatGIProp.floatValue == 1.0f)
+                        {
+                            enableStylizeGI = false;
+                        }
+                    }
+
+                    if (enableStylizeGI && GIRampProp != null)
+                    {
+                        materialEditor.TexturePropertySingleLine(CustomStyleLL.GIRampOptions, GIRampProp);
+                    }
+                    CoreUtils.SetKeyword(material, "ENABLE_FLAT_GI", false);
+                    CoreUtils.SetKeyword(material, "ENABLE_STYLIZE_GI", enableStylizeGI);
+                }
+
             }
             
             if (AddLightInfluenceProp != null)

@@ -102,6 +102,7 @@
     <None Include="Assets\CustomModelShaders\PostProcessShader\AnimeToneMap.shader" />
     <None Include="Assets\CustomModelShaders\LLToon\LLToonInput.hlsl" />
     <None Include="Assets\CustomModelShaders\PostProcessShader\DepthFogShader.shader" />
+    <None Include="Assets\CustomModelShaders\LLToon\LLToonUnique.hlsl" />
     <None Include="Assets\Stage\kotami stage070\kotami stage070.MMD4Mecanim.xml" />
     <None Include="Assets\CustomModelShaders\PostProcessShader\DiffusionShader.shader" />
     <None Include="Assets\CustomModelShaders\PostProcessShader\DepthLightShaftShader.shader" />
@@ -125,7 +126,7 @@
     <None Include="Assets\CustomModelShaders\PostProcessShader\FlareShader.shader" />
     <None Include="Assets\Model\Lilise\lili\彩澄りりせ.MMD4Mecanim.xml" />
     <None Include="Assets\CustomModelShaders\PostProcessShader\SSRaymarchLightShaftShader.shader" />
-    <None Include="Assets\CustomModelShaders\PostProcessShader\LLPostEffectBlend.hlsl" />
+    <None Include="Assets\CustomModelShaders\PostProcessShader\LLToonBlend.hlsl" />
     <None Include="Assets\Stage\kotami stage070\りどみ.txt" />
     <None Include="Assets\CustomModelShaders\PostProcessShader\SSRaymarchFogShader.shader" />
     <None Include="Assets\CustomModelShaders\LLToon\LLToonForwardLighting.hlsl" />

@@ -12,6 +12,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - ENABLE_MATCAP_SPECULAR
   - ENABLE_OUTLINE
   - ENABLE_SPECULAR
   m_InvalidKeywords:
@@ -63,6 +64,14 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _FaceMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _GIRampTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -76,7 +85,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MatCap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 68fdabb632cdf5e4ea5c42d065b70f64, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -132,6 +141,10 @@ Material:
     - _BloomFactor: 0
     - _BumpScale: 1
     - _CastShadows: 1
+    - _CheekAdd: 0.5
+    - _CheekMul: 0.2
+    - _CheekPow: 1
+    - _CheekSoft: 0.5
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -154,19 +167,22 @@ Material:
     - _EnableEmission: 0
     - _EnableFaceCheek: 0
     - _EnableFixedDirShadow: 0
+    - _EnableFlatGI: 0
     - _EnableHairSpecular: 0
     - _EnableLambert: 1
     - _EnableLightVectorRim: 1
-    - _EnableMatCapSpecular: 0
+    - _EnableMatCapSpecular: 1
     - _EnableOutline: 1
     - _EnableRim: 0
     - _EnableRimDS: 0
     - _EnableSSAO: 0
     - _EnableSpecular: 1
+    - _EnableStylizeGI: 0
     - _EnableTights: 0
     - _EnvironmentReflections: 1
     - _FixLightY: 0
     - _FixedDirShadowStrength: 0.35
+    - _FlatGIL0Minus: 0
     - _GIInfluence: 1
     - _GlossMapScale: 1
     - _Glossiness: 0
@@ -177,7 +193,7 @@ Material:
     - _InnerThreshold: 0.19
     - _InnerWidth: 1
     - _LightMapInfluence: 1
-    - _MatCapIntensity: 0.5
+    - _MatCapIntensity: 0
     - _Metallic: 0.771
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -200,7 +216,7 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecContrast: 1
     - _SpecularHighlights: 1
-    - _SpecularIntensity: 0.2
+    - _SpecularIntensity: 0.3
     - _SpecularIntensityHigh: 0.5
     - _SpecularIntensityShadow: 0.5
     - _SrcBlend: 1
@@ -231,6 +247,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _CheekColor: {r: 1, g: 0.6, b: 0.6, a: 1}
     - _Color: {r: 0.9063317, g: 0.9063317, b: 0.9063317, a: 1}
     - _DarkShadowMultColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _DarkSideRimColor: {r: 1, g: 1, b: 1, a: 1}
