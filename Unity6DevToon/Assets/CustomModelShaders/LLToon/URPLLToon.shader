@@ -12,7 +12,6 @@ Shader "Universal Render Pipeline/URPLLToon"
         _WorldLightInfluence ("World Light Influence", range(0.0, 1.0)) = 1.0
         _GIInfluence ("GI Influence", range(0.0, 10.0)) = 0.1
         [Toggle]_EnableFlatGI ("Enable FlatGI", Float) = 0
-        _FlatGIL0Minus ("_FlatGIL0 Minus", Float) = 0
         [Toggle]_EnableStylizeGI ("Enable StylizeGI", Float) = 0
         _GIRampTex ("Texture", 2D) = "white" {}
         _AddLightIntensity ("Add Influence", range(0.0, 1.0)) = 1.0
@@ -89,14 +88,25 @@ Shader "Universal Render Pipeline/URPLLToon"
         _SpecContrast("Contrast", float) = 1
         
         
-        [Toggle(ENABLE_FACE_CHEEK)] _EnableFaceCheek ("Enable FaceCheek", float) = 0
+        [Toggle] _EnableFaceCheek ("Enable FaceCheek", float) = 0
         _FaceMask("Face Mask", 2D) = "white" {}
 
+        _UseCheek ("Enable Cheek", float) = 0
         _CheekColor("Cheek Color", Color) = (1,0.6,0.6,1)
-        _CheekAdd("Cheek Add", Range(0,1)) = 0.5
-        _CheekMul("Cheek Mul", Range(0,1)) = 0.2
         _CheekSoft("Cheek Soft", Range(0,1)) = 0.5
-        _CheekPow("Cheek Pow", Range(0,5)) = 1.0        
+        _CheekPow("Cheek Pow", Range(0,5)) = 1.0
+        
+        [Toggle]_UseNose ("Enable Nose", float) = 0
+        _NoseColor("Nose Color", Color) = (1,0.6,0.6,1)
+        _NoseHLColor("NoseHL Color", Color) = (1,0.6,0.6,1)
+        _NoseSoft("Nose Soft", Range(0,1)) = 0.5
+        _NosePow("Nose Pow", Range(0,5)) = 1.0        
+        
+        [Toggle] _UseLip ("Enable Lip", Float) = 0
+        _LipColor ("Lip Color", Color) = (1.0, 0.6, 0.7, 0.3)
+        _LipSoft  ("Lip Soft", Range(0,1)) = 0.4
+        _LipPow   ("Lip Pow",  Range(0,5)) = 1.5
+        
         [Toggle(ENABLE_MATCAP_SPECULAR)] _EnableMatCapSpecular ("Enable MatCap Specular", float) = 0
         [Toggle(ENABLE_HAIR_SPECULAR)] _EnableHairSpecular ("Enable Hair Specular", float) = 0
         _Sharpness("Sharpness", float) = 30

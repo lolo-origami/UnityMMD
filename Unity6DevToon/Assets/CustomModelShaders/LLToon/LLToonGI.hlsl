@@ -15,27 +15,34 @@ inline float3 CalculateLLGI(LLToonInputData inputData, BRDFData brdfData, BRDFDa
     AmbientOcclusionFactor aoFactor = CreateAmbientOcclusionFactor(inputData.baseInputData, surfaceData);
     aoFactor.indirectAmbientOcclusion = lerp(1.0h, aoFactor.indirectAmbientOcclusion, _AOStrength);
 
-#if ENABLE_FLAT_GI    
-    //位置だけで評価する
-    half3 probe = SampleSH(normalize(inputData.baseInputData.positionWS));
+#if ENABLE_FLAT_GI
+    half3 gi = SampleSH(normalize(inputData.baseInputData.positionWS));
 
-    half3 l0 = half3(unity_SHAr.w, unity_SHAg.w, unity_SHAb.w);
+    MixRealtimeAndBakedGI(mainLight, inputData.baseInputData.normalWS, gi);
     
-    // 平均成分を弱める
-    half3 env = probe - l0 * _FlatGIL0Minus;
-    env = max(0, env);             // マイナスは切る
-    return env * aoFactor.indirectAmbientOcclusion * maskGI;
+    half3 reflectVector = reflect(-inputData.baseInputData.viewDirectionWS, inputData.baseInputData.normalWS);
+    half NoV = saturate(dot(inputData.baseInputData.normalWS, inputData.baseInputData.viewDirectionWS));
+    half fresnelTerm = Pow4(1.0 - NoV);
+    
+    half3 indirectSpecular = GlossyEnvironmentReflection(reflectVector, inputData.baseInputData.positionWS, brdfData.perceptualRoughness, 1.0h, float2(0,0));
+
+    return EnvironmentBRDF(brdfData, gi, indirectSpecular, fresnelTerm);
 #endif
 
 #if ENABLE_STYLIZE_GI    
-    //位置だけで評価する
-    half3 gi = SampleSH(inputData.baseInputData.normalWS);
-    
+    MixRealtimeAndBakedGI(mainLight, inputData.baseInputData.normalWS, inputData.baseInputData.bakedGI);
+
+    float3 gi = GlobalIllumination(brdfData, brdfDataClearCoat, surfaceData.clearCoatMask,
+                              inputData.baseInputData.bakedGI, aoFactor.indirectAmbientOcclusion,
+                              inputData.baseInputData.positionWS,
+                              inputData.baseInputData.normalWS,
+                              inputData.baseInputData.viewDirectionWS) * maskGI;
+
     // 輝度をインデックスに
     float lum = dot(gi, float3(0.299, 0.587, 0.114));
     // Ramp から「階調係数」だけを取得
     float tone = SAMPLE_TEXTURE2D(_GIRampTex, sampler_GIRampTex, float2(lum, 0)).r;
-
+    
     // 元の GI 色にトーン係数を掛ける
     return gi * tone;
 #endif    

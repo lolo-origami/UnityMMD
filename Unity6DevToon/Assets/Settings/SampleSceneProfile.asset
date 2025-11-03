@@ -233,22 +233,22 @@ MonoBehaviour:
   active: 0
   flareColor:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 0.3537736, b: 0.3537736, a: 1}
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
   flarePosition:
     m_OverrideState: 1
-    m_Value: {x: 0.72, y: 0.73}
+    m_Value: {x: 1.14, y: 1.22}
   flareSize:
     m_OverrideState: 1
-    m_Value: 0.45
+    m_Value: 1.35
   paraColor:
     m_OverrideState: 1
-    m_Value: {r: 0.23113208, g: 0.26003605, b: 0.9245283, a: 1}
+    m_Value: {r: 0.26415092, g: 0.08657623, b: 0.043609817, a: 1}
   paraPosition:
     m_OverrideState: 1
-    m_Value: {x: 0.52, y: 0}
+    m_Value: {x: -1.1, y: -1.11}
   paraSize:
     m_OverrideState: 1
-    m_Value: 0.72
+    m_Value: 1.68
 --- !u!114 &-1769508700694413535
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -341,7 +341,7 @@ MonoBehaviour:
   active: 0
   FogIntensity:
     m_OverrideState: 1
-    m_Value: 7.3
+    m_Value: 28.9
   FogColor:
     m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
@@ -459,7 +459,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee747d883bc857445962aceb09885737, type: 3}
   m_Name: Diffusion
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   Contrast:
     m_OverrideState: 1
     m_Value: 0.46

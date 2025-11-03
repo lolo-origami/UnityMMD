@@ -68,7 +68,9 @@ void LLToonLighting(
     Light mainLight = GetMainLight(inputData.baseInputData, shadowMask, aoFactor);
 
     float mainLightShadowArea = _ReceiveShadows ? mainLight.shadowAttenuation : 1;
-    half NdotL = saturate(dot(inputData.baseInputData.normalWS, mainLight.direction));
+    float3 nWS = inputData.baseInputData.normalWS;
+    
+    half NdotL = saturate(dot(nWS, mainLight.direction));
     half radianceBase = mainLightShadowArea * masks.lightMapMask * NdotL;
     half3 radiance = chara ? mainLight.color : radianceBase * mainLight.color;
 
@@ -111,7 +113,23 @@ void LLToonLighting(
 #endif
 
 #if ENABLE_FACE_CHEEK
-    baseLightingColor.rgb = ApplyFaceDetail(baseLightingColor.rgb, uv);
+    // 代表法線（鼻はほぼ正面でOK）
+    const float3 noseNWS = float3(0, 0, 1);
+
+    // メインライト当たり（0=逆光, 1=正面）
+    float ndl_pivot = saturate(dot(noseNWS, -mainLight.direction));
+    float halfLambert_pivot = 0.5 * ndl_pivot + 0.5;
+
+    // Toon の 1影しきい値（あなたの既存値に置換）
+    // 例：_ToonStep1 を使用（CalculateToonShadowFactor と同じ基準）
+    float lambertShadow01 = (halfLambert_pivot < _ShadowArea) ? 1.0 : 0.0;
+
+    // （任意）ドロップシャドウも覆いとみなす場合。外すなら 0.0 に固定でOK
+    float dropShadow01 = (_ReceiveShadows && mainLight.shadowAttenuation < 0.5) ? 1.0 : 0.0;
+
+    // 鼻の「被覆」0/1：どちらかが影なら 1
+    float noseCovered01 = max(lambertShadow01, dropShadow01);
+    baseLightingColor.rgb = ApplyFaceDetail(baseLightingColor.rgb, uv, noseCovered01);
 #endif    
     // --- ライト色適用
     baseLightingColor.rgb = lerp(baseLightingColor.rgb, radiance * baseLightingColor.rgb, _WorldLightInfluence);

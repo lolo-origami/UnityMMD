@@ -9,8 +9,7 @@ struct FaceDetailMasks
 {
     float cheek;  // R
     float noseS;  // G
-    float brow;   // B
-    float lid;    // A
+    float lip;   // B
 };
 
 float SoftMask(float m, float soft, float powK)
@@ -31,50 +30,38 @@ float NoseHighlightFromMask(float m, float width)
     return pow(saturate(t), 4.0);
 }
 
-float3 MultiplyShadow(float3 baseCol, float3 shadowCol, float m)
-{
-    return lerp(baseCol, baseCol * shadowCol, m);
-}
-
 FaceDetailMasks SampleFaceMasks(float2 uv)
 {
     float4 m = SAMPLE_TEXTURE2D(_FaceMask, sampler_FaceMask, uv);
     FaceDetailMasks r;
     r.cheek = m.r;
     r.noseS = m.g;
-    r.brow  = m.b;
-    r.lid   = m.a;
+    r.lip   = m.b;
     return r;
 }
 
-half3 ApplyFaceDetail(half3 baseColor, float2 uv)
+half3 ApplyFaceDetail(half3 baseColor, float2 uv, float halfLambert)
 {
     FaceDetailMasks M = SampleFaceMasks(uv);
+    half3 faceColor = baseColor;
 
     // --- Cheek ---
     float mCheek = SoftMask(M.cheek, _CheekSoft, _CheekPow);
-    half3 faceColor = lerp(baseColor, _CheekColor.rgb, mCheek * _CheekColor.a);
-
-    /*
-    // --- Brow Shadow ---
-    float mBrow = SoftMask(M.brow, _BrowSoft, _BrowPow);
-    baseColor = MultiplyShadow(baseColor, _BrowColor.rgb, mBrow * _BrowStrength);
-
+    half3 cheekCol = lerp(baseColor, _CheekColor.rgb, mCheek * _CheekColor.a);
+    faceColor = lerp(faceColor, cheekCol, _UseCheek);
+    
     // --- Nose Shadow ---
-    float mNoseS = SoftMask(M.noseS, _NoseShadowSoft, _NoseShadowPow);
-    baseColor = MultiplyShadow(baseColor, _NoseShadowColor.rgb, mNoseS * _NoseShadowStrength);
-
-    // --- Nose Highlight ---
-    float mNoseHL = NoseHighlightFromMask(M.noseS, _NoseHLWidth);
-    baseColor += _NoseHLColor.rgb * (mNoseHL * _NoseHLStrength);
-
-    // --- Philtrum Dot ---
-    float phil = saturate(pow(mNoseS, 6.0)) * _PhiltrumStrength;
-    baseColor = MultiplyShadow(baseColor, float3(0.9,0.9,0.9), phil);
-
-    // --- Lower Lid ---
-    float mLid = MaskToLine(M.lid, _LidPow, _LidSoft);
-    baseColor = MultiplyShadow(baseColor, _LidColor.rgb, mLid * _LidStrength);
-    */
+    float mNose = SoftMask(M.noseS, _NoseSoft, _NosePow);
+    bool useHL   = halfLambert < 0.25h;
+    half4 nose   = useHL ? _NoseHLColor : _NoseColor; // 色も強度も切替
+    half3 noseCol = lerp(faceColor, nose.rgb, mNose * nose.a);
+    faceColor = lerp(faceColor, noseCol, _UseNose);
+    
+    
+    // --- Lower Lip ---
+    float mLip = SoftMask(M.lip, _LipSoft, _LipPow);
+    half3 lipCol = lerp(faceColor, _LipColor.rgb, mLip * _LipColor.a);
+    faceColor = lerp(faceColor, lipCol, _UseLip);
+    
     return faceColor;
 }

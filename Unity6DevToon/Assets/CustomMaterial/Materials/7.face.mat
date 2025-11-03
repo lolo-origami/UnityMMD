@@ -13,9 +13,11 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - ENABLE_FACE_CHEEK
+  - ENABLE_FLAT_GI
   - ENABLE_OUTLINE
   m_InvalidKeywords:
   - _CASTSHADOWS_ON
+  - _ENABLEFLATGI_ON
   - _ENABLEOUTLINE_ON
   - _IGNORELIGHTY_ON
   - _RECEIVESHADOWS_ON

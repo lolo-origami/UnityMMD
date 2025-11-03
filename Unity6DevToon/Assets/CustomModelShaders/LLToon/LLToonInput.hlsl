@@ -64,6 +64,10 @@ float _EnableInverseDarkShadow;
 float3 _BOXCenter;
 float3 _BOXSize;
 
+half _UseCheek;   // 0=off, 1=on
+half _UseNose;    // 0=off, 1=on
+half _UseLid;     // 0=off, 1=on
+
 float _IgnoreLightY;
 float _FixLightY;
 
@@ -143,10 +147,22 @@ float _FixedDirShadowStrength;            // 0..1
 
 // チーク
 float4 _CheekColor;
-float  _CheekAdd;
-float  _CheekMul;
 float  _CheekSoft;
 float  _CheekPow;
+
+//鼻
+float4 _NoseColor;
+float4 _NoseHLColor;
+float  _NoseSoft;
+float  _NosePow;
+
+// リップ
+half4 _LipColor;
+half  _LipSoft;
+half  _LipPow;
+half  _UseLip;   // 0=off, 1=on
+
+
 
 //float3 _ReceiveShadowMultColor;
 
