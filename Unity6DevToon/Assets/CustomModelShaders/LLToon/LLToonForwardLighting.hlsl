@@ -249,6 +249,25 @@ Varyings VertexBase(Attributes input)
     output.normalWS = NormalizeNormalPerVertex(normalInput.normalWS);
 #endif
     
+#if ENABLE_FACE_CHEEK
+    {
+        // 頂点の位置
+        float3 posWS = vertexInput.positionWS;
+
+        // 頂点から中心軸方向へのベクトル
+        float3 toPos = posWS - _FaceCylinderCenterWS.xyz;
+
+        // 軸方向成分を除去して半径方向を取り出す
+        float3 radial = toPos - _FaceCylinderAxisWS * dot(toPos, _FaceCylinderAxisWS);
+
+        // 円柱の法線
+        float3 nCylinderWS = normalize(radial);
+
+        // ★ 最終法線
+        output.normalWS = lerp(normalInput.normalWS, nCylinderWS, _FaceCylinderBlend);
+    }
+#endif    
+    
     output.binormal = normalize(cross(output.normalWS.xyz, input.tangentOS.xyz) * input.tangentOS.w * unity_WorldTransformParams.w);
     output.binormal = mul(unity_ObjectToWorld, output.binormal);
     output.normalOS = input.normalOS;
@@ -257,8 +276,9 @@ Varyings VertexBase(Attributes input)
 #ifdef DYNAMICLIGHTMAP_ON
     output.dynamicLightmapUV = input.dynamicLightmapUV.xy * unity_DynamicLightmapST.xy + unity_DynamicLightmapST.zw;
 #endif
-    OUTPUT_SH(output.normalWS.xyz, output.vertexSH);
 
+    OUTPUT_SH(output.normalWS.xyz, output.vertexSH);
+    
     #ifdef _ADDITIONAL_LIGHTS_VERTEX
         half3 vertexLight = VertexLighting(vertexInput.positionWS, normalInput.normalWS);
         output.fogFactorAndVertexLight = half4(fogFactor, vertexLight);

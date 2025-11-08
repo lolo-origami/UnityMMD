@@ -53,6 +53,8 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
         protected MaterialProperty EnableSpecularProp { get; set; }
         protected MaterialProperty LightSpecColorProperty { get; set; }
         protected MaterialProperty _LightSpecShadowColorProperty { get; set; }
+        
+        protected MaterialProperty FaceCylinderBlendProperty { get; set; }
         protected MaterialProperty EnableFaceCheekProperty { get; set; }
         protected MaterialProperty FaceMaskProperty { get; set; }
         protected MaterialProperty CheekColorProperty { get; set; }
@@ -449,6 +451,7 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             LightSpecColorProperty = FindProperty("_LightSpecColor", properties, false);
             _LightSpecShadowColorProperty = FindProperty("_LightSpecShadowColor", properties, false);
             EnableFaceCheekProperty = FindProperty("_EnableFaceCheek", properties, false);
+            FaceCylinderBlendProperty = FindProperty("_FaceCylinderBlend", properties, false);
             FaceMaskProperty = FindProperty("_FaceMask", properties, false);
             CheekColorProperty = FindProperty("_CheekColor", properties, false);
             CheekSoftProperty  = FindProperty("_CheekSoft", properties, false);
@@ -663,6 +666,16 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
                         materialEditor.ColorProperty(LipColorProperty, CustomStyleLL.LipColorOptions.text);
                         DrawFloatToggleProperty(CustomStyleLL.LipSoftOptions, LipSoftProperty);
                         DrawFloatSliderValue(CustomStyleLL.LipPowOptions, 0.01f, 5f, LipPowProperty);
+                    }
+                }
+                else
+                {
+                    if (FaceCylinderBlendProperty != null)
+                    {
+                        if (!enableFaceCheekShade)
+                            FaceCylinderBlendProperty.floatValue = 0.0f; // トグルOFFなら強制0
+                            material.SetFloat("_FaceCylinderBlend", 0f);
+
                     }
                 }
             }

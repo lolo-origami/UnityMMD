@@ -106,6 +106,9 @@ Shader "Universal Render Pipeline/URPLLToon"
         _LipColor ("Lip Color", Color) = (1.0, 0.6, 0.7, 0.3)
         _LipSoft  ("Lip Soft", Range(0,1)) = 0.4
         _LipPow   ("Lip Pow",  Range(0,5)) = 1.5
+        [HideInInspector]_FaceCylinderCenterWS("Face Cylinder Center", Vector) = (0,0,0,0)
+        [HideInInspector]_FaceCylinderAxisWS("Face Cylinder Axis", Vector) = (0,1,0,0)
+        [HideInInspector]_FaceCylinderBlend("Face Cylinder Blend", Float) = 0
         
         [Toggle(ENABLE_MATCAP_SPECULAR)] _EnableMatCapSpecular ("Enable MatCap Specular", float) = 0
         [Toggle(ENABLE_HAIR_SPECULAR)] _EnableHairSpecular ("Enable Hair Specular", float) = 0
@@ -331,8 +334,6 @@ Shader "Universal Render Pipeline/URPLLToon"
             Blend[_SrcBlend][_DstBlend]
             
             HLSLPROGRAM
-            
-            #include "LLToonForwardLighting.hlsl"
 
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
@@ -347,7 +348,7 @@ Shader "Universal Render Pipeline/URPLLToon"
             //#pragma shader_feature_local_fragment ENABLE_RAMP_SHADOW
             #pragma shader_feature_local_fragment ENABLE_MATCAP_SPECULAR
             #pragma shader_feature_local_fragment ENABLE_HAIR_SPECULAR
-            #pragma shader_feature_local ENABLE_FACE_CHEEK
+            #pragma shader_feature_local  ENABLE_FACE_CHEEK
             #pragma shader_feature_local_fragment ENABLE_INVERSE_SHADOW
             #pragma shader_feature_local_fragment ENABLE_TIGHTS
             #pragma shader_feature_local_fragment ENABLE_SPECULAR
@@ -367,6 +368,8 @@ Shader "Universal Render Pipeline/URPLLToon"
             #pragma multi_compile_fragment _ _GBUFFER_NORMALS_OCT
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
             #pragma multi_compile _ _SCREEN_SPACE_OCCLUSION
+
+            #include "LLToonForwardLighting.hlsl"
             
             #pragma vertex VertexBase
             #pragma fragment LLFragmentChara
