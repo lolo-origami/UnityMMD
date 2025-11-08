@@ -51,6 +51,7 @@
     <Compile Include="Assets\URPPipeline\PostProcessCustom\DepthFog\DepthFogPass.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\LLPostProcessRFManager.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\DepthLightShaft\DepthLightShaftPass.cs" />
+    <Compile Include="Assets\LLToonFaceCyllinder.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\GuidedFilter\GuidedFilterRenderFeature.cs" />
     <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimIKTarget.cs" />
     <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimBone.cs" />

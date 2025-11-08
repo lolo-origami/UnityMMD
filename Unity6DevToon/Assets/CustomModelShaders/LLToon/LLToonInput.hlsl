@@ -162,7 +162,9 @@ half  _LipSoft;
 half  _LipPow;
 half  _UseLip;   // 0=off, 1=on
 
-
+float3 _FaceCylinderCenterWS;
+float3 _FaceCylinderAxisWS;
+float _FaceCylinderBlend;
 
 //float3 _ReceiveShadowMultColor;
 
