@@ -347,7 +347,7 @@ Shader "Universal Render Pipeline/URPLLToon"
             //#pragma shader_feature_local_fragment ENABLE_RAMP_SHADOW
             #pragma shader_feature_local_fragment ENABLE_MATCAP_SPECULAR
             #pragma shader_feature_local_fragment ENABLE_HAIR_SPECULAR
-            #pragma shader_feature_local ENABLE_FACE_CHEEK
+            #pragma shader_feature_local_fragment ENABLE_FACE_CHEEK
             #pragma shader_feature_local_fragment ENABLE_INVERSE_SHADOW
             #pragma shader_feature_local_fragment ENABLE_TIGHTS
             #pragma shader_feature_local_fragment ENABLE_SPECULAR
