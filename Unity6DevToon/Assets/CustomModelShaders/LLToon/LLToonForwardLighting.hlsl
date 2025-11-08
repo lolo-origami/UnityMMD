@@ -248,6 +248,29 @@ Varyings VertexBase(Attributes input)
 #else
     output.normalWS = NormalizeNormalPerVertex(normalInput.normalWS);
 #endif
+
+#if ENABLE_FACE_CHEEK
+    {
+        // ★ 顔の軸の中心（ワールド座標固定）
+        float3 centerWS = _FaceCylinderCenterWS.xyz;
+        float3 axisWS   = normalize(_FaceCylinderAxisWS.xyz);
+
+        // 頂点の位置
+        float3 posWS = vertexInput.positionWS;
+
+        // 頂点から中心軸方向へのベクトル
+        float3 toPos = posWS - centerWS;
+
+        // 軸方向成分を除去して半径方向を取り出す
+        float3 radial = toPos - axisWS * dot(toPos, axisWS);
+
+        // 円柱の法線
+        float3 nCylinderWS = normalize(radial);
+
+        // ★ 最終法線
+        output.normalWS = normalize(lerp(normalInput.normalWS, nCylinderWS, _FaceCylinderBlend));
+    }
+#endif    
     
     output.binormal = normalize(cross(output.normalWS.xyz, input.tangentOS.xyz) * input.tangentOS.w * unity_WorldTransformParams.w);
     output.binormal = mul(unity_ObjectToWorld, output.binormal);

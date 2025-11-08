@@ -564,6 +564,12 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
                 bool enabled = material.GetFloat("_EnableTights") > 0.5f;
                 CoreUtils.SetKeyword(material, "ENABLE_TIGHTS", enabled);
             }
+            
+            if (material.HasProperty("_EnableFaceCheek"))
+            {
+                bool enableFaceCheek = material.GetFloat("_EnableFaceCheek") > 0.5f;
+                CoreUtils.SetKeyword(material, "ENABLE_FACE_CHEEK", enableFaceCheek);
+            }
         }
         
 #region Surface

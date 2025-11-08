@@ -133,7 +133,7 @@ void LLToonLighting(
 #endif    
     // --- ライト色適用
     baseLightingColor.rgb = lerp(baseLightingColor.rgb, radiance * baseLightingColor.rgb, _WorldLightInfluence);
-
+    
     o.BaseToonLightingColor = baseLightingColor;
 
 #if ENABLE_RIM
