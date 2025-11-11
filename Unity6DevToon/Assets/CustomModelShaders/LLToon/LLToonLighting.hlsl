@@ -100,10 +100,17 @@ void LLToonLighting(
     // --- Base Toon Lighting
     half4 baseLightingColor = ToonBaseLighting(baseColor, ShadowColor, DarkShadowColorIn, mainTSF, baseColor.rgb);
 #if ENABLE_SPECULAR
+#if ENABLE_HAIR_SPECULAR
+    // High層：光として加算
+    baseLightingColor.rgb += LLToonSpecularLightingHair(inputData, mainLight,
+                               masks.specularMask, mainTSF.rampS * mainLightShadowArea, radianceBase);
+
+#else
     // --- Specular
     baseLightingColor += LLToonSpecularLighting(brdfData, inputData, masks.specularMask, masks.specularMaskHigh,
                                                 mainLight, chara, mainTSF.rampS * mainLightShadowArea,
                                                 radianceBase, uv);
+#endif
     
 #endif    
 

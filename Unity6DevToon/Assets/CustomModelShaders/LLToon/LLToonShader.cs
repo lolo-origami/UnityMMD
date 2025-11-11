@@ -74,6 +74,7 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
         protected MaterialProperty EnableMatCapProperty { get; set; }
         protected MaterialProperty MatCapIntensityProperty { get; set; }
         protected MaterialProperty EnableHairProperty { get; set; }
+        protected MaterialProperty HairHighlightTiltProperty { get; set; }        
         protected MaterialProperty SharpnessProperty { get; set; }
         protected MaterialProperty DiffuseIntensityProperty { get; set; }
         protected MaterialProperty SpecularIntensityProperty { get; set; }
@@ -250,6 +251,7 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             public static readonly GUIContent AOStrengthOptions = EditorGUIUtility.TrTextContent("AOStrength", "");   
             public static readonly GUIContent EnableSpecularOptions = EditorGUIUtility.TrTextContent("EnableSpecular", "");
             public static readonly GUIContent DiffuseIntensityOptions = EditorGUIUtility.TrTextContent("DiffuseIntensity", "");
+            public static readonly GUIContent HairHighlightTiltOptions = new GUIContent("Hair Highlight Tilt (deg)");
             public static readonly GUIContent SpecularIntensityOptions = EditorGUIUtility.TrTextContent("SpeclarIntensity", "");
             public static readonly GUIContent SpecularHighIntensityOptions = EditorGUIUtility.TrTextContent("SpeclarHighIntensity", "");
             public static readonly GUIContent SpecularIntensityShadowOptions = EditorGUIUtility.TrTextContent("SpeclarIntensityShadow", "");
@@ -471,6 +473,7 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             EnableHairProperty = FindProperty("_EnableHairSpecular", properties, false);
             EnableInverseDarkShadowProperty = FindProperty("_EnableDarkInverseShadow", properties, false);
             MatCapIntensityProperty = FindProperty("_MatCapIntensity", properties, false);
+            HairHighlightTiltProperty = FindProperty("_HairHighlightTilt", properties, false);
             SharpnessProperty = FindProperty("_Sharpness", properties, false);
             DiffuseIntensityProperty = FindProperty("_DiffuseIntensity", properties, false);
             SpecularIntensityProperty = FindProperty("_SpecularIntensity", properties, false);
@@ -800,6 +803,7 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
                     if (enableHairsSpecular)
                     {
                         materialEditor.FloatProperty(SharpnessProperty, "Sharpness");
+                        DrawFloatSliderValue(CustomStyleLL.HairHighlightTiltOptions, -90, 90, HairHighlightTiltProperty);
                         DrawFloatSliderValue(CustomStyleLL.SpecularIntensityOptions, 0, 2, SpecularIntensityProperty);
                         DrawFloatSliderValue(CustomStyleLL.SpecularHighIntensityOptions, 0, 4,
                             SpecularHighIntensityProperty);

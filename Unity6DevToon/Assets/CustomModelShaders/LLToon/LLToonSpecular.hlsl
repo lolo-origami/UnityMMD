@@ -9,6 +9,76 @@
 #include "LLToonInput.hlsl"
 #include "LLToonUnique.hlsl"
 
+half3 LLToonSpecularLightingHair(
+    LLToonInputData inputData,
+    Light light,
+    float specularMask,
+    float rampS,
+    half specularRadiance)
+{
+    //------------------------------------------------------
+    // Radiance処理
+    //------------------------------------------------------
+    half calRadianceHair = (specularRadiance * 1.75) * (specularRadiance * 1.75);
+    half finalSpecularHairRadiance = calRadianceHair <= 0.4 ? 0.4 : calRadianceHair;
+
+    //------------------------------------------------------
+    // ベクトル計算（共通Tilt）
+    //------------------------------------------------------
+    float3 N = normalize(inputData.baseInputData.normalWS);
+    float3 V = normalize(inputData.baseInputData.viewDirectionWS);
+    float3 shiftAxis = normalize(cross(V, N));
+    float shiftAngle = radians(_HairHighlightTilt);
+    float3x3 tiltMat = float3x3(
+        cos(shiftAngle) + (1 - cos(shiftAngle)) * shiftAxis.x * shiftAxis.x,
+        (1 - cos(shiftAngle)) * shiftAxis.x * shiftAxis.y - sin(shiftAngle) * shiftAxis.z,
+        (1 - cos(shiftAngle)) * shiftAxis.x * shiftAxis.z + sin(shiftAngle) * shiftAxis.y,
+
+        (1 - cos(shiftAngle)) * shiftAxis.y * shiftAxis.x + sin(shiftAngle) * shiftAxis.z,
+        cos(shiftAngle) + (1 - cos(shiftAngle)) * shiftAxis.y * shiftAxis.y,
+        (1 - cos(shiftAngle)) * shiftAxis.y * shiftAxis.z - sin(shiftAngle) * shiftAxis.x,
+
+        (1 - cos(shiftAngle)) * shiftAxis.z * shiftAxis.x - sin(shiftAngle) * shiftAxis.y,
+        (1 - cos(shiftAngle)) * shiftAxis.z * shiftAxis.y + sin(shiftAngle) * shiftAxis.x,
+        cos(shiftAngle) + (1 - cos(shiftAngle)) * shiftAxis.z * shiftAxis.z
+    );
+    
+    float3 L_cam = mul((float3x3)UNITY_MATRIX_V, light.direction);
+    L_cam.z = abs(L_cam.z);
+    float3 L_fixed = normalize(mul((float3x3)UNITY_MATRIX_I_V, L_cam));
+    float3 shiftedLightDir = mul(tiltMat, L_fixed);
+    float3 halfDir = normalize(shiftedLightDir + V);
+    float3 tmpBinormal = normalize(inputData.binormal);
+
+    float dotTH = dot(tmpBinormal, halfDir);
+    float sintTH = sqrt(saturate(1.0 - dotTH * dotTH));    
+    float dirAtten = smoothstep(-1.0, 0.0, dotTH);
+    
+    //------------------------------------------------------
+    // 元要素完全維持
+    //------------------------------------------------------
+    /*half  specular = dirAtten * pow(sintTH, _Sharpness) * specularMask;
+    float softMask = lerp(0.3, 1.0, specularMask);
+    float specularCombined = softMask * _SpecularIntensity;
+
+    //------------------------------------------------------
+    // Low層：塗り替え（lerp）
+    //------------------------------------------------------
+    float3 baseCol = baseColor.rgb;
+    float3 tinted = lerp(baseCol, _LightSpecColor.rgb, saturate(specularCombined));
+    o.lowColor = lerp(baseCol, tinted, saturate(specularCombined));
+    */
+
+    //------------------------------------------------------
+    // High層：加算（影寄与保持）
+    //------------------------------------------------------);
+    float3 maskAdd = _LightSpecColor.rgb * specularMask * 0.25;
+    half specularHigh = dirAtten * pow(sintTH, _Sharpness) * specularMask  * finalSpecularHairRadiance;
+
+    return (_LightSpecColor.rgb * specularHigh * rampS * _SpecularIntensity + (1 - rampS) * _LightSpecShadowColor.rgb * specularHigh * _SpecularIntensityShadow) + maskAdd;
+}
+    
+
 //Specular計算
 half4 LLToonSpecularLighting(
     BRDFData brdfData,
@@ -23,28 +93,49 @@ half4 LLToonSpecularLighting(
     )
 {
     half finalSpecularRadiance = specularRadiance <= 0.5 ? 0.5 : specularRadiance; //影でも0.1以下にはしない
-
-    half calRadianceHair = (specularRadiance * 1.75) * (specularRadiance * 1.75);
-    half finalSpecularHairRadiance = calRadianceHair <= 0.4 ? 0.4 : calRadianceHair; //影でも0.1以下にはしない
     half4 finalspecularColor = half4(0,0,0,0);
     //SpecDiffuse.rgb *= _BaseColor.rgb;
     
-#if ENABLE_HAIR_SPECULAR    
-    float3 halfDir = normalize(light.direction + llToonInputData.baseInputData.viewDirectionWS);
-    float3 tmpBinormal = normalize(llToonInputData.binormal - llToonInputData.baseInputData.normalWS * llToonInputData.baseInputData.positionWS);
+/*#if ENABLE_HAIR_SPECULAR
+    float3 lightDir = light.direction;
+
+    float3 N = normalize(llToonInputData.baseInputData.normalWS);
+    float3 V = normalize(llToonInputData.baseInputData.viewDirectionWS);
+    float3 shiftAxis = normalize(cross(V, N));
+
+    //float3 shiftAxis = normalize(llToonInputData.binormal);
+    float shiftAngle = radians(_HairHighlightTilt);   // -45〜+45 くらい
+    float3x3 tiltMat = float3x3(
+        cos(shiftAngle) + (1 - cos(shiftAngle)) * shiftAxis.x * shiftAxis.x,
+        (1 - cos(shiftAngle)) * shiftAxis.x * shiftAxis.y - sin(shiftAngle) * shiftAxis.z,
+        (1 - cos(shiftAngle)) * shiftAxis.x * shiftAxis.z + sin(shiftAngle) * shiftAxis.y,
+
+        (1 - cos(shiftAngle)) * shiftAxis.y * shiftAxis.x + sin(shiftAngle) * shiftAxis.z,
+        cos(shiftAngle) + (1 - cos(shiftAngle)) * shiftAxis.y * shiftAxis.y,
+        (1 - cos(shiftAngle)) * shiftAxis.y * shiftAxis.z - sin(shiftAngle) * shiftAxis.x,
+
+        (1 - cos(shiftAngle)) * shiftAxis.z * shiftAxis.x - sin(shiftAngle) * shiftAxis.y,
+        (1 - cos(shiftAngle)) * shiftAxis.z * shiftAxis.y + sin(shiftAngle) * shiftAxis.x,
+        cos(shiftAngle) + (1 - cos(shiftAngle)) * shiftAxis.z * shiftAxis.z
+    );
+    float3 shiftedLightDir = mul(tiltMat, lightDir);
+    
+    float3 halfDir = normalize(shiftedLightDir+ llToonInputData.baseInputData.viewDirectionWS);
+    float3 tmpBinormal = normalize(llToonInputData.binormal);
+    
     float dotTH = dot(tmpBinormal, halfDir);
     float sintTH = sqrt(1.0 - dotTH * dotTH);
     float dirAtten = smoothstep(-1.0, 0.0, dotTH);
-    half specular = dirAtten * pow(sintTH, _Sharpness) * specularMask;
-    finalspecularColor = (_LightSpecColor * specular * rampS * _SpecularIntensity + (1 - rampS) * _LightSpecShadowColor * specular * _SpecularIntensityShadow) * finalSpecularHairRadiance;
     
-    /*float3 dotTH = dot(normalize(llToonInputData.baseInputData.normalWS), normalize(llToonInputData.baseInputData.viewDirectionWS));
-    float anisoHairFrenel = pow((1.0 - saturate(dotTH)), _Sharpness) * _SpecularIntensity;
-    float anisoHair = saturate(1.0 - anisoHairFrenel) * specularMask * dot(light.direction, llToonInputData.baseInputData.normalWS);
-    finalspecularColor = _LightSpecColor * anisoHair;
-    */
+    half specularLow = dirAtten * pow(sintTH, _Sharpness) * specularMask;
+    float softMask = lerp(0.3, 1.0, specularMask);
+    float specularCombined = specular + specularMask * 0.5;
+    
+    
+    finalspecularColor = (_LightSpecColor * specularCombined * rampS * _SpecularIntensity + (1 - rampS) * _LightSpecShadowColor * specularCombined * _SpecularIntensityShadow) * finalSpecularHairRadiance;
     
 #else
+*/
     half directSpecular = DirectBRDFSpecular(brdfData, llToonInputData.baseInputData.normalWS, light.direction, llToonInputData.baseInputData.viewDirectionWS);
     half surfaceSpecular = chara ? 1 : brdfData.specular; //キャラのマテリアルは少し強めにspecular出したい(マスクはここでやってるし)
     half specular = surfaceSpecular * directSpecular  * specularMask * _SpecularIntensity;
@@ -65,7 +156,7 @@ half4 LLToonSpecularLighting(
     finalspecularColor.rgb = specColor * specularHigh;
 #endif
     
-#endif
+//#endif
     finalspecularColor.a = finalspecularColor.a * _BloomFactor;
     
     return finalspecularColor;

@@ -166,6 +166,9 @@ float3 _FaceCylinderCenterWS;
 float3 _FaceCylinderAxisWS;
 float _FaceCylinderBlend;
 
+// ハイライト
+float _HairHighlightTilt;
+
 //float3 _ReceiveShadowMultColor;
 
 //half4 _MedColor;

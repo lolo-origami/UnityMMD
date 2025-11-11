@@ -112,11 +112,13 @@ Shader "Universal Render Pipeline/URPLLToon"
         
         [Toggle(ENABLE_MATCAP_SPECULAR)] _EnableMatCapSpecular ("Enable MatCap Specular", float) = 0
         [Toggle(ENABLE_HAIR_SPECULAR)] _EnableHairSpecular ("Enable Hair Specular", float) = 0
+        _HairHighlightTilt("Hair Highlight Tilt (deg)", Range(-90,90)) = 0
         _Sharpness("Sharpness", float) = 30
         _DiffuseIntensity("DiffuseIntensity", Range(0.0, 10.0)) = 1.0
         _SpecularIntensity("SpecularIntensity", Range(0.0, 10.0)) = 0.5
         _SpecularIntensityHigh("Specular IntensityHigh", Range(0.0, 20.0)) = 0.5
         _SpecularIntensityShadow("SpecularShadowIntensity", Range(0.0, 2.0)) = 0.5
+        
         
         [Header(RimLight Setting)]
         [Space(5)]
