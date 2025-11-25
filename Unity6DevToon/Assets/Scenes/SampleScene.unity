@@ -3454,7 +3454,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!108 &410087040
 Light:
   m_ObjectHideFlags: 0
@@ -6914,6 +6914,10 @@ PrefabInstance:
       value: -6.007918
       objectReference: {fileID: 0}
     - target: {fileID: 7026134587718898032, guid: cf2d461c3d1fa99498c804068305c40c, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7026134587718898032, guid: cf2d461c3d1fa99498c804068305c40c, type: 3}
       propertyPath: m_RenderingLayerMask
       value: 1
       objectReference: {fileID: 0}
@@ -6996,6 +7000,10 @@ PrefabInstance:
     - target: {fileID: 7892617536608720533, guid: cf2d461c3d1fa99498c804068305c40c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0.002825777
+      objectReference: {fileID: 0}
+    - target: {fileID: 7943319854582600354, guid: cf2d461c3d1fa99498c804068305c40c, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7943319854582600354, guid: cf2d461c3d1fa99498c804068305c40c, type: 3}
       propertyPath: m_UpdateWhenOffscreen
@@ -7112,6 +7120,10 @@ PrefabInstance:
     - target: {fileID: 9128207215404129817, guid: cf2d461c3d1fa99498c804068305c40c, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9128207215404129817, guid: cf2d461c3d1fa99498c804068305c40c, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9128207215404129817, guid: cf2d461c3d1fa99498c804068305c40c, type: 3}
       propertyPath: m_UpdateWhenOffscreen
@@ -9056,7 +9068,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1058348782
 MonoBehaviour:
   m_ObjectHideFlags: 0
