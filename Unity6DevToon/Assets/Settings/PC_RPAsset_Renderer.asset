@@ -69,6 +69,24 @@ MonoBehaviour:
     SaveName: 
     IsRestore: 0
     RestoreName: 
+--- !u!114 &-4920735035637859108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27db3dfdbe1e71048a585473ed263e04, type: 3}
+  m_Name: LLShadowStencilFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  StencilSettings:
+    ReceiveLayer:
+      serializedVersion: 2
+      m_Bits: 0
+    PassEvent: 250
 --- !u!114 &-4013711050292897865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,7 +163,8 @@ MonoBehaviour:
   - {fileID: -2314287699636913027}
   - {fileID: -5949474987496826535}
   - {fileID: 6618716962357745617}
-  m_RendererFeatureMap: 379cba7f0d0f5794821de6ad56659eafc6f1cfdf6711f72655c0977c35fa600f6138c3f131547884b7573bb8106f4cc8b2aa45b9ee0f8b14333426f22d6ab0287dfc154b99ffe1df59192e4205386fadd1972f820268da5b
+  - {fileID: -4920735035637859108}
+  m_RendererFeatureMap: 379cba7f0d0f5794821de6ad56659eafc6f1cfdf6711f72655c0977c35fa600f6138c3f131547884b7573bb8106f4cc8b2aa45b9ee0f8b14333426f22d6ab0287dfc154b99ffe1df59192e4205386fadd1972f820268da5bdc7cfc668e09b6bb
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}

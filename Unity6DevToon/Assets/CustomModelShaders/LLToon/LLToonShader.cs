@@ -84,6 +84,15 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
         
         protected MaterialProperty EnableInverseDarkShadowProperty { get; set; }
         
+        protected MaterialProperty EnableStencilShadowReceiver { get; set; }
+        protected MaterialProperty EnableStencilShadowProjector { get; set; }        
+        
+        protected MaterialProperty StencilBaseRefValueProperty { get; set; }
+        protected MaterialProperty StencilOverrideValueProperty { get; set; }          
+        protected MaterialProperty StencilShadowColorProperty { get; set; }
+        protected MaterialProperty StencilShadowIntensityProperty { get; set; }
+        protected MaterialProperty StencilShadowOffsetProperty { get; set; }
+        
         #endregion
         
         #region Mirror
@@ -311,6 +320,19 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             public static readonly GUIContent TightsThighEndOptions = EditorGUIUtility.TrTextContent("Thigh End", "Y position where thigh highlight reaches max.");
             public static readonly GUIContent TightsThighBoostOptions = EditorGUIUtility.TrTextContent("Thigh Boost", "Multiplier for highlight strength on thighs.");
 
+            // StencilShadow
+            public static readonly GUIContent StencilShadowReceiver = EditorGUIUtility.TrTextContent("Stencil Shadow Receiver", "Write stencil for receiving hair shadow.");
+            public static readonly GUIContent StencilShadowProjector = EditorGUIUtility.TrTextContent("Stencil Shadow Projector", "Project hair shadow only where stencil is written.");
+            // --- Stencil Shadow Extended Params ---
+            public static readonly GUIContent StencilBaseRefOptions = EditorGUIUtility.TrTextContent("Stencil Base Ref", "Base stencil reference value.");
+
+            public static readonly GUIContent StencilOverrideRefOptions = EditorGUIUtility.TrTextContent("Stencil Override Ref", "Override stencil reference value used by projector.");
+
+            public static readonly GUIContent StencilShadowColorOptions = EditorGUIUtility.TrTextContent("Stencil Shadow Color", "Color used for projected shadow.");
+
+            public static readonly GUIContent StencilShadowIntensityOptions = EditorGUIUtility.TrTextContent("Stencil Shadow Intensity", "Intensity multiplier for shadow blend.");
+
+            public static readonly GUIContent StencilShadowOffsetOptions = EditorGUIUtility.TrTextContent("Stencil Shadow Offset", "Offset applied during projector pass.");
 
             
             //Outline
@@ -550,6 +572,14 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             InnerThresholdProp = FindProperty("_InnerThreshold", properties, false);
             InnerSmoothnessProp= FindProperty("_InnerSmoothness", properties, false);
 
+            EnableStencilShadowReceiver  = FindProperty("_EnableStencilShadowReceiver", properties, false);
+            EnableStencilShadowProjector = FindProperty("_EnableStencilShadowProjector", properties, false);
+            
+            StencilBaseRefValueProperty      = FindProperty("_StencilBaseRef", properties, false);
+            StencilOverrideValueProperty  = FindProperty("_StencilOverrideRef", properties, false);
+            StencilShadowColorProperty      = FindProperty("_StencilShadowColor", properties, false);
+            StencilShadowIntensityProperty  = FindProperty("_StencilShadowIntensity", properties, false);
+            StencilShadowOffsetProperty     = FindProperty("_StencilShadowOffset", properties, false);
         }
 
         // material changed check
@@ -694,6 +724,79 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
         /// <param name="material"></param>
         public void DrawShaderPropertiesLL(Material material)
         {
+            EditorGUILayout.LabelField("Stencil Shadow", EditorStyles.boldLabel);
+            
+            // --- Stencil Shadow Receiver ---
+            if (EnableStencilShadowReceiver != null)
+            {
+                DrawFloatToggleProperty(CustomStyleLL.StencilShadowReceiver, EnableStencilShadowReceiver);
+                bool enabledReceiver = EnableStencilShadowReceiver.floatValue > 0.5f;
+                CoreUtils.SetKeyword(material, "ENABLE_STENCILSHADOW_RECEIVER", enabledReceiver);
+                if (!enabledReceiver)
+                {
+                    StencilBaseRefValueProperty.intValue = 0;
+                    material.SetInt("_StencilBaseRef", 0);
+                }
+                else
+                {
+                    if (StencilBaseRefValueProperty != null)
+                    {
+                        materialEditor.ShaderProperty(StencilBaseRefValueProperty, CustomStyleLL.StencilBaseRefOptions);
+                    }
+                    if (StencilShadowColorProperty != null)
+                    {
+                        materialEditor.ColorProperty(StencilShadowColorProperty, CustomStyleLL.StencilShadowColorOptions.text);
+                    }
+
+                    if (StencilShadowIntensityProperty != null)
+                    {
+                        DrawFloatSliderValue(CustomStyleLL.StencilShadowIntensityOptions, 0f, 1f, StencilShadowIntensityProperty);
+                    }
+                }
+            }
+
+            // --- Stencil Shadow Projector ---
+            if (EnableStencilShadowProjector != null)
+            {
+                DrawFloatToggleProperty(CustomStyleLL.StencilShadowProjector, EnableStencilShadowProjector);
+                bool enabledProjector = EnableStencilShadowProjector.floatValue > 0.5f;
+                CoreUtils.SetKeyword(material, "ENABLE_STENCILSHADOW_PROJECTOR", enabledProjector);          
+                if (!enabledProjector)
+                {
+                    StencilOverrideValueProperty.intValue = 0;
+                    material.SetInt("_StencilBaseRef", 0);
+                }
+                else
+                {
+                    if (StencilOverrideValueProperty != null)
+                    {
+                        materialEditor.ShaderProperty(StencilOverrideValueProperty, CustomStyleLL.StencilOverrideRefOptions);
+                    }
+                    if (StencilShadowOffsetProperty != null)
+                    {
+                        DrawFloatSliderValue(CustomStyleLL.StencilShadowOffsetOptions, -1f, 1f, StencilShadowOffsetProperty);
+                    }                    
+                }
+            }
+
+            // セーフティ
+            foreach (var obj in materialEditor.targets)
+            {
+                var mat = obj as Material;
+                if (mat == null) continue;
+
+                bool recv = mat.GetFloat("_EnableStencilShadowReceiver")  > 0.5f;
+                bool proj = mat.GetFloat("_EnableStencilShadowProjector") > 0.5f;
+
+                // 両方 ON の矛盾は禁止。Projector を優先
+                if (recv && proj)
+                {
+                    mat.SetFloat("_EnableStencilShadowReceiver", 0f);
+                }
+            }
+            
+            EditorGUILayout.Space();
+            
             if (ShadowMultColorProp != null)
             {
                 materialEditor.ColorProperty(ShadowMultColorProp, "ShadowMultColor");

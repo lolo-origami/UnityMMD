@@ -59,6 +59,14 @@ Shader "Universal Render Pipeline/URPLLToon"
 
         [Header(Shadow Setting)]
         [Space(5)]
+        [Toggle(ENABLE_STENCILSHADOW_RECEIVER)] _EnableStencilShadowReceiver  ("StencilShadow Receiver", Float) = 0
+        [Toggle(ENABLE_STENCILSHADOW_PROJECTOR)] _EnableStencilShadowProjector ("StencilShadow Projector", Float) = 0
+        _StencilBaseRef  ("Stencil Ref" , Range(0,255)) = 100
+        _StencilOverrideRef  ("Stencil Over Ref" , Range(0,255)) = 110
+        _StencilShadowColor       ("Shadow Color", Color) = (0,0,0,1)
+        _StencilShadowIntencity   ("Shadow Intencity", Range(0,1)) = 1
+        _ProjectorOffset ("Projector Offset", Float) = 0.02
+        
         _ShadowMultColor ("Shadow Color", color) = (1.0, 1.0, 1.0, 1.0)
         _SceondMaterialShadowColor("SecondMaterialShadowColor", Color) = (1,1,1,1)
         _SceondMaterialDarkShadowColor("SecondMaterialDarkShadowColor", Color) = (1,1,1,1)
@@ -73,7 +81,7 @@ Shader "Universal Render Pipeline/URPLLToon"
         _FixLightY ("Fix Light y", range(-10.0, 10.0)) = 0.0
         _EnableFixedDirShadow ("Enable FixedDir Shadow", Float) = 0
         _FixedDirOS ("FixedDir (ObjectSpace)", Vector) = (0,1,0,0)
-        _FixedDirShadowStrength ("FixedDir Shadow Strength", Range(0,1)) = 0.35        
+        _FixedDirShadowStrength ("FixedDir Shadow Strength", Range(0,1)) = 0.35
         
         [Space(5)]
         [Toggle] _CastShadows("Cast Shadows", Float) = 1.0
@@ -118,7 +126,6 @@ Shader "Universal Render Pipeline/URPLLToon"
         _SpecularIntensity("SpecularIntensity", Range(0.0, 10.0)) = 0.5
         _SpecularIntensityHigh("Specular IntensityHigh", Range(0.0, 20.0)) = 0.5
         _SpecularIntensityShadow("SpecularShadowIntensity", Range(0.0, 2.0)) = 0.5
-        
         
         [Header(RimLight Setting)]
         [Space(5)]
@@ -329,6 +336,13 @@ Shader "Universal Render Pipeline/URPLLToon"
             NAME "CHARACTER_BASE"
             
             Tags { "LightMode" = "UniversalForward" }
+            
+            Stencil
+            {
+                Ref  [_StencilBaseRef]
+                Comp Always
+                Pass Replace
+            }
 
             Cull[_Cull]
             ZTest LEqual
@@ -357,7 +371,8 @@ Shader "Universal Render Pipeline/URPLLToon"
             #pragma shader_feature_local_fragment ENABLE_FLAT_GI
             #pragma shader_feature_local_fragment ENABLE_STYLIZE_GI
             #pragma shader_feature_local_fragment ENABLE_RIM
-            #pragma shader_feature_local_fragment ENABLE_OUTLINE            
+            #pragma shader_feature_local_fragment ENABLE_OUTLINE
+            #pragma shader_feature_local ENABLE_STENCILSHADOW_RECEIVER
             //#pragma shader_feature_local_fragment ENABLE_RAMP_SHADOW_ORIGIN
 
             // -------------------------------------
@@ -377,6 +392,131 @@ Shader "Universal Render Pipeline/URPLLToon"
             #pragma fragment LLFragmentChara
             // make fog work
             #pragma multi_compile_fog
+            ENDHLSL
+        }
+        // ステンシル利用の落ち影(落とす側)
+        Pass
+        {
+            Name "_StencilProjector"
+            Tags { "LightMode" = "_StencilProjector" }
+
+           Stencil
+            {
+                Ref [_StencilOverrideRef]
+                Comp Equal       // Pass1 で書いた 128 の部分だけ通る
+                Pass Replace
+            }
+
+            ColorMask 0
+            ZWrite Off
+            ZTest LEqual
+
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+
+            CBUFFER_START(UnityPerMaterial)
+                float  _ProjectorOffset;
+            CBUFFER_END
+
+            struct Attributes {
+                float4 positionOS : POSITION;
+            };
+
+            struct Varyings {
+                float4 positionCS : SV_POSITION;
+            };
+
+            Varyings vert(Attributes v)
+            {
+                Varyings o;
+                float4 posCS = TransformObjectToHClip(v.positionOS.xyz);
+
+                Light mainLight = GetMainLight();
+                float3 lightDirWS = normalize(mainLight.direction);
+
+                // --- Clip → ScreenSpace にブレンドできるように調整 ---
+                // mainLight.direction は「光の来る方向」＝影は逆方向へずらす
+                float3 shadowVecWS = -lightDirWS;
+
+                // NDC方向ベクトルを作る（ClipSpaceで加算するため）
+                float2 shadowDirCS = normalize(shadowVecWS.xy);
+
+                // オフセット適用
+                float2 ofs = shadowDirCS * _ProjectorOffset;
+                ofs.y *= _ProjectionParams.x;
+
+                posCS.xy += ofs;
+                o.positionCS = posCS;
+                return o;
+            }
+
+            half4 frag(Varyings i) : SV_Target { return 0; }
+
+            ENDHLSL
+        }
+
+        // ステンシル利用の落ち影(受ける側)
+        Pass
+        {
+            Name "_StencilReceiver"
+            Tags { "LightMode" = "_StencilReceiver" }
+
+            Stencil
+            {
+                Ref [_StencilOverrideRef]
+                Comp Always
+                Pass Replace
+            }
+
+            ZWrite On
+            ZTest Always
+            Cull[_Cull]
+
+            HLSLPROGRAM
+            #pragma vertex Vert
+            #pragma fragment Frag
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
+            TEXTURE2D(_CameraOpaqueTexture);
+            SAMPLER(sampler_CameraOpaqueTexture);
+
+            CBUFFER_START(UnityPerMaterial)
+                float4 _StencilShadowColor;
+                float  _StencilShadowIntencity;   // ← Q1 の通り命名
+            CBUFFER_END
+
+            struct Attributes {
+                float4 positionOS : POSITION;
+                float2 uv         : TEXCOORD0;
+            };
+
+            struct Varyings {
+                float4 positionCS : SV_POSITION;
+                float2 uv          : TEXCOORD0;
+            };
+
+            Varyings Vert (Attributes v)
+            {
+                Varyings o;
+                o.positionCS = TransformObjectToHClip(v.positionOS.xyz);
+                o.uv = v.uv;
+                return o;
+            }
+
+            half4 Frag(Varyings i) : SV_Target
+            {
+                half3 sceneCol  = SAMPLE_TEXTURE2D(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, i.uv).rgb;
+                half3 shadowCol = _StencilShadowColor.rgb;
+
+                // ---- Q3：Lerp 適用（Multiply 禁止）----
+                half3 finalCol = lerp(sceneCol, shadowCol, _StencilShadowIntencity);
+
+                return half4(finalCol, 1);
+            }
+
             ENDHLSL
         }
     }
