@@ -29,6 +29,7 @@ Material:
   - ENABLE_OUTLINE
   - ENABLE_RIM
   - ENABLE_SPECULAR
+  - ENABLE_STENCILSHADOW_PROJECTOR
   m_InvalidKeywords:
   - _CASTSHADOWS_ON
   - _ENABLEDARKSHADOW_ON
@@ -36,7 +37,7 @@ Material:
   - _ENABLEOUTLINE_ON
   - _ENABLERIM_ON
   - _ENABLESPECULAR_ON
-  - _RECEIVE_SHADOWS_OFF
+  - _RECEIVESHADOWS_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -188,6 +189,8 @@ Material:
     - _EnableFaceCheek: 0
     - _EnableFixedDirShadow: 0
     - _EnableFlatGI: 0
+    - _EnableHairShadowProjector: 0
+    - _EnableHairShadowReceiver: 0
     - _EnableHairSpecular: 1
     - _EnableLambert: 1
     - _EnableLightVectorRim: 1
@@ -197,6 +200,8 @@ Material:
     - _EnableRimDS: 0
     - _EnableSSAO: 0
     - _EnableSpecular: 1
+    - _EnableStencilShadowProjector: 1
+    - _EnableStencilShadowReceiver: 0
     - _EnableStylizeGI: 0
     - _EnableTights: 0
     - _EnvironmentReflections: 1
@@ -232,7 +237,7 @@ Material:
     - _OutlineZOffset: 0.0001
     - _Parallax: 0.02
     - _QueueOffset: 0
-    - _ReceiveShadows: 0
+    - _ReceiveShadows: 1
     - _RimPow: 1.2
     - _RimSmooth: 10
     - _ShadowArea: 0.5

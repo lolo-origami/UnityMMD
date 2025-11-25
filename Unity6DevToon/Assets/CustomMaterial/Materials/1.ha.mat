@@ -50,6 +50,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _CastShadows: 1
     - _EnableDarkShadow: 0
     m_Colors:
     - _ShadowMultColor: {r: 0.8018868, g: 0.7602795, b: 0.7602795, a: 1}
