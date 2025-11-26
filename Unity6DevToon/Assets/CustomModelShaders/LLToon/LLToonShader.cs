@@ -88,7 +88,6 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
         protected MaterialProperty EnableStencilShadowProjector { get; set; }        
         
         protected MaterialProperty StencilBaseRefValueProperty { get; set; }
-        protected MaterialProperty StencilOverrideValueProperty { get; set; }          
         protected MaterialProperty StencilShadowIntensityProperty { get; set; }
         protected MaterialProperty StencilShadowOffsetProperty { get; set; }
         
@@ -589,7 +588,6 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             EnableStencilShadowProjector = FindProperty("_EnableStencilShadowProjector", properties, false);
             
             StencilBaseRefValueProperty      = FindProperty("_StencilBaseRef", properties, false);
-            StencilOverrideValueProperty  = FindProperty("_StencilOverrideRef", properties, false);
             StencilShadowIntensityProperty  = FindProperty("_StencilShadowIntencity", properties, false);
             StencilShadowOffsetProperty     = FindProperty("_StencilShadowOffset", properties, false);
         }
@@ -771,17 +769,10 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
                 CoreUtils.SetKeyword(material, "ENABLE_STENCILSHADOW_PROJECTOR", enabledProjector);          
                 if (enabledProjector)
                 {
-                    StencilOverrideValueProperty.intValue = 110;
-                    material.SetInt("_StencilOverrideRef", 110);
                     if (StencilShadowOffsetProperty != null)
                     { 
                         materialEditor.VectorProperty(StencilShadowOffsetProperty, "StencilShadowOffset");
                     }                    
-                }
-                else
-                {
-                    StencilOverrideValueProperty.intValue = 0;
-                    material.SetInt("_StencilOverrideRef", 0);
                 }
             }
 

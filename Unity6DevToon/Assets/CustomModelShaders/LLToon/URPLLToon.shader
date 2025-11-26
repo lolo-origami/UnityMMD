@@ -62,7 +62,6 @@ Shader "Universal Render Pipeline/URPLLToon"
         [Toggle(ENABLE_STENCILSHADOW_RECEIVER)] _EnableStencilShadowReceiver  ("StencilShadow Receiver", Float) = 0
         [Toggle(ENABLE_STENCILSHADOW_PROJECTOR)] _EnableStencilShadowProjector ("StencilShadow Projector", Float) = 0
         _StencilBaseRef  ("Stencil Ref" , Range(0,255)) = 0
-        _StencilOverrideRef  ("Stencil Over Ref" , Range(0,255)) = 110
         _StencilShadowIntencity   ("Shadow Intencity", Range(0,1)) = 1
         _StencilShadowOffset ("Projector Offset", Vector) = (0,0,0,0)
         
@@ -481,7 +480,7 @@ Shader "Universal Render Pipeline/URPLLToon"
 
             Stencil
             {
-                Ref [_StencilOverrideRef]
+                Ref 110
                 Comp Equal
                 Pass Replace
             }
