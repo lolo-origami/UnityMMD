@@ -169,6 +169,10 @@ float _FaceCylinderBlend;
 // ハイライト
 float _HairHighlightTilt;
 
+// ステンシル影
+float2  _StencilShadowOffset;
+float  _StencilShadowIntencity;
+
 //float3 _ReceiveShadowMultColor;
 
 //half4 _MedColor;

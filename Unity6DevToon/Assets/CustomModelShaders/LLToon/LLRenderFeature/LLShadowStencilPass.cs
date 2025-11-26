@@ -21,8 +21,6 @@ class LLShadowStencilPass : ScriptableRenderPass
 
     class PassDataStencil
     {
-        public TextureHandle StencilRT;
-        public TextureHandle ColorRT;
         public RendererListHandle RendererList;
     }
 
@@ -61,7 +59,7 @@ class LLShadowStencilPass : ScriptableRenderPass
             passData.RendererList = renderGraph.CreateRendererList(projListDesc);
             builder.UseRendererList(passData.RendererList);
             
-            //builder.SetRenderAttachment(resourceData.activeColorTexture, 0, AccessFlags.Write);
+            builder.SetRenderAttachment(resourceData.activeColorTexture, 0, AccessFlags.Write);
             builder.SetRenderAttachmentDepth(resourceData.activeDepthTexture, AccessFlags.Read);
 
             // Stencil影を落とす部分を描く

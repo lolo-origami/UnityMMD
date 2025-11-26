@@ -61,11 +61,10 @@ Shader "Universal Render Pipeline/URPLLToon"
         [Space(5)]
         [Toggle(ENABLE_STENCILSHADOW_RECEIVER)] _EnableStencilShadowReceiver  ("StencilShadow Receiver", Float) = 0
         [Toggle(ENABLE_STENCILSHADOW_PROJECTOR)] _EnableStencilShadowProjector ("StencilShadow Projector", Float) = 0
-        _StencilBaseRef  ("Stencil Ref" , Range(0,255)) = 100
+        _StencilBaseRef  ("Stencil Ref" , Range(0,255)) = 0
         _StencilOverrideRef  ("Stencil Over Ref" , Range(0,255)) = 110
-        _StencilShadowColor       ("Shadow Color", Color) = (0,0,0,1)
         _StencilShadowIntencity   ("Shadow Intencity", Range(0,1)) = 1
-        _ProjectorOffset ("Projector Offset", Float) = 0.02
+        _StencilShadowOffset ("Projector Offset", Vector) = (0,0,0,0)
         
         _ShadowMultColor ("Shadow Color", color) = (1.0, 1.0, 1.0, 1.0)
         _SceondMaterialShadowColor("SecondMaterialShadowColor", Color) = (1,1,1,1)
@@ -372,7 +371,6 @@ Shader "Universal Render Pipeline/URPLLToon"
             #pragma shader_feature_local_fragment ENABLE_STYLIZE_GI
             #pragma shader_feature_local_fragment ENABLE_RIM
             #pragma shader_feature_local_fragment ENABLE_OUTLINE
-            #pragma shader_feature_local ENABLE_STENCILSHADOW_RECEIVER
             //#pragma shader_feature_local_fragment ENABLE_RAMP_SHADOW_ORIGIN
 
             // -------------------------------------
@@ -394,6 +392,8 @@ Shader "Universal Render Pipeline/URPLLToon"
             #pragma multi_compile_fog
             ENDHLSL
         }
+
+        
         // ステンシル利用の落ち影(落とす側)
         Pass
         {
@@ -402,9 +402,10 @@ Shader "Universal Render Pipeline/URPLLToon"
 
            Stencil
             {
-                Ref [_StencilOverrideRef]
-                Comp Equal       // Pass1 で書いた 128 の部分だけ通る
-                Pass Replace
+                Ref 110   // ← 上書きしたい値
+                Comp Equal                  // ← BaseRef と比較
+                ReadMask 100  // ← BaseRef の箇所だけ比較に通る
+                Pass Replace                // ← Pass時、OverrideRef が書かれる
             }
 
             ColorMask 0
@@ -412,14 +413,14 @@ Shader "Universal Render Pipeline/URPLLToon"
             ZTest LEqual
 
             HLSLPROGRAM
+
+            #pragma shader_feature_local ENABLE_STENCILSHADOW_PROJECTOR
+            
             #pragma vertex vert
             #pragma fragment frag
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
-
-            CBUFFER_START(UnityPerMaterial)
-                float  _ProjectorOffset;
-            CBUFFER_END
+            #include "LLToonInput.hlsl"
 
             struct Attributes {
                 float4 positionOS : POSITION;
@@ -432,6 +433,11 @@ Shader "Universal Render Pipeline/URPLLToon"
             Varyings vert(Attributes v)
             {
                 Varyings o;
+#ifndef ENABLE_STENCILSHADOW_PROJECTOR
+                o.positionCS = float4(0,0,0,0);
+                return o;
+#endif
+                
                 float4 posCS = TransformObjectToHClip(v.positionOS.xyz);
 
                 Light mainLight = GetMainLight();
@@ -445,7 +451,8 @@ Shader "Universal Render Pipeline/URPLLToon"
                 float2 shadowDirCS = normalize(shadowVecWS.xy);
 
                 // オフセット適用
-                float2 ofs = shadowDirCS * _ProjectorOffset;
+                float2 ofs = shadowDirCS * _StencilShadowOffset;
+                ofs.y += _StencilShadowOffset.y;
                 ofs.y *= _ProjectionParams.x;
 
                 posCS.xy += ofs;
@@ -453,10 +460,18 @@ Shader "Universal Render Pipeline/URPLLToon"
                 return o;
             }
 
-            half4 frag(Varyings i) : SV_Target { return 0; }
+            half4 frag(Varyings i) : SV_Target {
+                return 0;
+/*#ifndef ENABLE_STENCILSHADOW_PROJECTOR
+                discard;
+#endif                
+                return half4(1,0,0,1);
+                */
+            }
 
             ENDHLSL
         }
+
 
         // ステンシル利用の落ち影(受ける側)
         Pass
@@ -467,58 +482,81 @@ Shader "Universal Render Pipeline/URPLLToon"
             Stencil
             {
                 Ref [_StencilOverrideRef]
-                Comp Always
+                Comp Equal
                 Pass Replace
             }
 
-            ZWrite On
-            ZTest Always
+            ZWrite Off
+            ZTest LEqual
             Cull[_Cull]
 
             HLSLPROGRAM
             #pragma vertex Vert
             #pragma fragment Frag
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+            #include "LLToonInput.hlsl"
 
-            TEXTURE2D(_CameraOpaqueTexture);
-            SAMPLER(sampler_CameraOpaqueTexture);
-
-            CBUFFER_START(UnityPerMaterial)
-                float4 _StencilShadowColor;
-                float  _StencilShadowIntencity;   // ← Q1 の通り命名
-            CBUFFER_END
-
-            struct Attributes {
+            struct Attributes
+            {
                 float4 positionOS : POSITION;
+                float3 normalOS   : NORMAL;   // ← 追加
                 float2 uv         : TEXCOORD0;
             };
 
-            struct Varyings {
+            struct Varyings
+            {
                 float4 positionCS : SV_POSITION;
-                float2 uv          : TEXCOORD0;
+                float3 normalWS   : TEXCOORD1;  // ← 追加
+                float2 uv         : TEXCOORD0;
             };
 
             Varyings Vert (Attributes v)
             {
                 Varyings o;
                 o.positionCS = TransformObjectToHClip(v.positionOS.xyz);
-                o.uv = v.uv;
+                o.normalWS   = TransformObjectToWorldNormal(v.normalOS); // ← これだけで OK
+                o.uv         = v.uv;
                 return o;
             }
 
             half4 Frag(Varyings i) : SV_Target
             {
-                half3 sceneCol  = SAMPLE_TEXTURE2D(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, i.uv).rgb;
-                half3 shadowCol = _StencilShadowColor.rgb;
+                
+                // ===== 1. 法線 & ライト方向（ToonShadowFactor 最小計算）=====
+                Light mainLight = GetMainLight();
+                float ndotl = dot(normalize(i.normalWS), normalize(mainLight.direction));
 
-                // ---- Q3：Lerp 適用（Multiply 禁止）----
-                half3 finalCol = lerp(sceneCol, shadowCol, _StencilShadowIntencity);
+                //-----------------------------------------------------
+                // 2) 1影：
+                //-----------------------------------------------------
+                float4 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, i.uv) * _BaseColor;
+                float s1 = smoothstep(_ShadowArea - _ShadowSmooth,
+                                      _ShadowArea + _ShadowSmooth,
+                                      ndotl);
+
+                float3 col1 = lerp(_ShadowMultColor.rgb, baseColor, s1 * (1.0 - _StencilShadowIntencity));
+
+
+                //-----------------------------------------------------
+                // 3) 2影：_EnableDarkShadow によって Lerp で切り替え
+                //-----------------------------------------------------
+                float s2 = smoothstep(_DarkShadowArea - _DarkShadowSmooth,
+                                      _DarkShadowArea + _DarkShadowSmooth,
+                                      ndotl);
+
+                // 暗影色（2影側）
+                float3 col2 = lerp(_DarkShadowMultColor.rgb, col1, s2 * (1.0 - _StencilShadowIntencity));
+
+                // 最終色
+                float3 finalCol = lerp(col1, col2, _EnableDarkShadow);
 
                 return half4(finalCol, 1);
             }
 
             ENDHLSL
         }
+
     }
     CustomEditor "UnityEditor.Rendering.Universal.ShaderGUI.LLToonShader"
 }

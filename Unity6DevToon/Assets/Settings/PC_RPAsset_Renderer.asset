@@ -85,8 +85,8 @@ MonoBehaviour:
   StencilSettings:
     ReceiveLayer:
       serializedVersion: 2
-      m_Bits: 0
-    PassEvent: 250
+      m_Bits: 64
+    PassEvent: 300
 --- !u!114 &-4013711050292897865
 MonoBehaviour:
   m_ObjectHideFlags: 0
