@@ -29,7 +29,7 @@ inline float4 SampleLLBaseColor(float2 uv, float3 normalWS, float3 viewDirWS)
 {
     float4 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, uv) * _BaseColor;
     #if defined(ENABLE_TIGHTS)
-    baseColor.rgb = ApplyTightsBase(baseColor, normalWS, viewDirWS);
+    //baseColor.rgb = ApplyTightsBase(baseColor, normalWS, viewDirWS);
     #endif
     return baseColor;
 }
@@ -99,17 +99,41 @@ void LLToonLighting(
 
     // --- Base Toon Lighting
     half4 baseLightingColor = ToonBaseLighting(baseColor, ShadowColor, DarkShadowColorIn, mainTSF, baseColor.rgb);
+/*
+#if ENABLE_EYEBROW_FLOATING
+    // --- 2. 横顔フェード（cosベース） ---
+    float3 camDir = normalize(_WorldSpaceCameraPos - inputData.baseInputData.positionWS);
+    float facing  = dot(camDir, _CharacterForward);     // 正面1 → 横0
+
+    float angleFade = saturate(lerp(facing, 1.0, _EyebrowFadePower));
+    angleFade = pow(angleFade, 4.0); // 自然な減衰（適度に強調）
+
+    // --- 眉の落とす色 ---
+    float4 browCol = baseLightingColor * 0.6;
+        
+    // アルファはマスク＋角度フェードで制御
+    float browAlpha = browCol.a * 1;
+
+    // --- 4. 眉の透明合成 (普通のAlphaBlend) ---
+    //     baseColor = LLToon の完成カラー
+    baseLightingColor.rgb = lerp(baseLightingColor.rgb, browCol.rgb, browAlpha);
+    baseLightingColor.a   = saturate(browCol.a + browAlpha);
+#endif
+*/
+    
 #if ENABLE_SPECULAR
 #if ENABLE_HAIR_SPECULAR
     // High層：光として加算
     baseLightingColor.rgb += LLToonSpecularLightingHair(inputData, mainLight,
                                masks.specularMask, mainTSF.rampS * mainLightShadowArea, radianceBase);
+                               
 
 #else
     // --- Specular
-    baseLightingColor += LLToonSpecularLighting(brdfData, inputData, masks.specularMask, masks.specularMaskHigh,
+    /*baseLightingColor += LLToonSpecularLighting(brdfData, inputData, masks.specularMask, masks.specularMaskHigh,
                                                 mainLight, chara, mainTSF.rampS * mainLightShadowArea,
                                                 radianceBase, uv);
+                                                */
 #endif
     
 #endif    
@@ -123,19 +147,18 @@ void LLToonLighting(
     // 代表法線（鼻はほぼ正面でOK）
     const float3 noseNWS = float3(0, 0, 1);
 
-    // メインライト当たり（0=逆光, 1=正面）
-    float ndl_pivot = saturate(dot(noseNWS, -mainLight.direction));
-    float halfLambert_pivot = 0.5 * ndl_pivot + 0.5;
+    // view と light の向きだけで 0/1 を決定
+    float VdotL = dot(normalize(inputData.baseInputData.viewDirectionWS),
+                      -normalize(mainLight.direction));
 
-    // Toon の 1影しきい値（あなたの既存値に置換）
-    // 例：_ToonStep1 を使用（CalculateToonShadowFactor と同じ基準）
-    float lambertShadow01 = (halfLambert_pivot < _ShadowArea) ? 1.0 : 0.0;
+    // ライトがカメラ側にある → ハイライト
+    float noseHighlight01 = (VdotL > 0.0) ? 0.0 : 1.0;
 
     // （任意）ドロップシャドウも覆いとみなす場合。外すなら 0.0 に固定でOK
     float dropShadow01 = (_ReceiveShadows && mainLight.shadowAttenuation < 0.5) ? 1.0 : 0.0;
 
     // 鼻の「被覆」0/1：どちらかが影なら 1
-    float noseCovered01 = max(lambertShadow01, dropShadow01);
+    float noseCovered01 = max(noseHighlight01, dropShadow01);
     baseLightingColor.rgb = ApplyFaceDetail(baseLightingColor.rgb, uv, noseCovered01);
 #endif    
     // --- ライト色適用

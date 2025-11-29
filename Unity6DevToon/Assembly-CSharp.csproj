@@ -55,6 +55,7 @@
     <Compile Include="Assets\LLToonFaceCyllinder.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\GuidedFilter\GuidedFilterRenderFeature.cs" />
     <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimIKTarget.cs" />
+    <Compile Include="Assets\LLToonForwardBinder.cs" />
     <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimBone.cs" />
     <Compile Include="Assets\MMD4Mecanim\Scripts\MMD4MecanimMorphHelper.cs" />
     <Compile Include="Assets\URPPipeline\PostProcessCustom\DepthColorAdjust\DepthColorAdjustRenderFeature.cs" />
@@ -133,6 +134,7 @@
     <None Include="Assets\Stage\kotami stage070\りどみ.txt" />
     <None Include="Assets\CustomModelShaders\PostProcessShader\SSRaymarchFogShader.shader" />
     <None Include="Assets\CustomModelShaders\LLToon\LLToonForwardLighting.hlsl" />
+    <None Include="Assets\CustomModelShaders\LLToon\URPLLToonMayu.shader" />
     <None Include="Assets\CustomModelShaders\LLToon\LLToonLighting.hlsl" />
     <Reference Include="UnityEngine">
       <HintPath>C:\Program Files\Unity\6000.0.53f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
@@ -893,6 +895,9 @@
     <Reference Include="Unity.AI.Navigation">
       <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.AI.Navigation.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Recorder">
+      <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.Recorder.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
       <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
     </Reference>
@@ -938,11 +943,17 @@
     <Reference Include="Unity.RenderPipelines.GPUDriven.Runtime">
       <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.RenderPipelines.GPUDriven.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Bindings.OpenImageIO.Editor">
+      <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.Bindings.OpenImageIO.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Collections">
       <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.Collections.dll</HintPath>
     </Reference>
     <Reference Include="PPv2URPConverters">
       <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\PPv2URPConverters.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Recorder.Base">
+      <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.Recorder.Base.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rendering.LightTransport.Editor">
       <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.Rendering.LightTransport.Editor.dll</HintPath>
@@ -1018,6 +1029,9 @@
     </Reference>
     <Reference Include="Unity.Burst.Editor">
       <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.Burst.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Recorder.Editor">
+      <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.Recorder.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst">
       <HintPath>C:\Users\syaku\URPTestNew\Unity6DevToon\Library\ScriptAssemblies\Unity.Burst.dll</HintPath>

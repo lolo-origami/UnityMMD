@@ -1,4 +1,4 @@
-Shader "Universal Render Pipeline/URPLLToon"
+Shader "Universal Render Pipeline/URPLLToonMayu"
 {
     /*
     // Toon優先+Specularの入り方だけLitShaderを足すようなシェーダー
@@ -338,13 +338,6 @@ Shader "Universal Render Pipeline/URPLLToon"
             NAME "CHARACTER_BASE"
             
             Tags { "LightMode" = "UniversalForward" }
-            
-            Stencil
-            {
-                Ref  [_StencilBaseRef]
-                Comp Always
-                Pass Replace
-            }
 
             Cull[_Cull]
             ZTest LEqual
@@ -397,7 +390,82 @@ Shader "Universal Render Pipeline/URPLLToon"
             ENDHLSL
         }
 
-        
+        // 再描画
+        Pass
+        {
+            Name "_FloatMayu"
+            Tags { "LightMode" = "_FloatMayu" "Queue"="Transparent"        "RenderType"="Transparent"}
+/*
+            Stencil
+            {
+                Ref 50
+                Comp Equal
+                Pass Replace
+            }
+*/            
+
+            ZWrite Off
+            ZTest LEqual
+            Cull[_Cull]
+            Blend SrcAlpha OneMinusSrcAlpha
+
+            HLSLPROGRAM
+            #pragma vertex Vert
+            #pragma fragment Frag
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+            #include "LLToonInput.hlsl"
+
+            struct Attributes
+            {
+                float4 positionOS : POSITION;
+                float3 normalOS   : NORMAL;   // ← 追加
+                float2 uv         : TEXCOORD0;
+            };
+
+            struct Varyings
+            {
+                float4 positionCS : SV_POSITION;
+                float3 normalWS   : TEXCOORD1;  // ← 追加
+                float2 uv         : TEXCOORD0;
+                float  fade       : TEXCOORD2;    // ← 追加
+            };
+
+            Varyings Vert (Attributes v)
+            {
+                Varyings o;
+                float3 posWS = TransformObjectToWorld(v.positionOS.xyz);
+                VertexPositionInputs positionInputs = GetVertexPositionInputs(v.positionOS.xyz);
+                o.positionCS = positionInputs.positionCS;
+                   
+                float3 positionVS = positionInputs.positionVS;
+                positionVS.z += _EyebrowOffsetZ;
+                float4 positionCS = TransformWViewToHClip(positionVS);
+                float depth = positionCS.z / positionCS.w;
+                o.positionCS.z = depth * o.positionCS.w;
+                
+                // ---------- 横向きフェード ----------
+                float cos = dot(_WorldSpaceCameraPos - positionInputs.positionWS, _CharacterForward);
+                o.fade = saturate(lerp(cos, 1, _EyebrowFadePower));
+                
+                o.uv         = v.uv;
+                
+                return o;
+            }
+
+            half4 Frag(Varyings i) : SV_Target
+            {
+                float4 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, i.uv) * _BaseColor;
+
+                 //-----------------------------------------------------
+                // 5) α：正面度で制御（横向き＝0）
+                //-----------------------------------------------------
+                return half4(baseColor.rgb, i.fade);
+            }
+
+            ENDHLSL
+        }
+
         // ステンシル利用の落ち影(落とす側)
         Pass
         {

@@ -266,7 +266,28 @@ Varyings VertexBase(Attributes input)
         // ★ 最終法線
         output.normalWS = lerp(normalInput.normalWS, nCylinderWS, _FaceCylinderBlend);
     }
-#endif    
+#endif
+
+    // =====================
+    // 眉毛用処理
+    // =====================
+/*#if ENABLE_EYEBROW_FLOATING
+    
+    // カメラ Space 取得
+    float3 posVS = vertexInput.positionVS;
+
+    // Z を手前に押し出す
+    posVS.z = posVS.z + _EyebrowOffsetZ;
+
+    // 再投影して ClipSpace に戻す
+    float4 tmpCS = TransformWViewToHClip(posVS);
+
+    // 深度成分だけ差し替え
+    float depth = tmpCS.z / tmpCS.w;
+    output.positionCS.z = depth * output.positionCS.w;
+    
+#endif
+*/
     
     output.binormal = normalize(cross(output.normalWS.xyz, input.tangentOS.xyz) * input.tangentOS.w * unity_WorldTransformParams.w);
     output.binormal = mul(unity_ObjectToWorld, output.binormal);
@@ -317,6 +338,7 @@ half4 LLFragmentChara(Varyings input) : SV_Target
     half4 finalColor = 0;
 
     finalColor.rgb += lllData.BaseToonLightingColor.rgb;
+/*
     finalColor.rgb += lllData.AdditionalLightsColor.rgb * _AddLightIntensity;
     finalColor.rgb += lllData.RimColor.rgb + lllData.DarkRimColor.rgb;
 
@@ -347,6 +369,7 @@ half4 LLFragmentChara(Varyings input) : SV_Target
     //finalColor.rgb = float3(1,1,1);
     finalColor.rgb = lerp(finalColor.rgb, outlineColor, outlineFactor);
 #endif
+*/
     
     // apply fog
     finalColor.rgb = MixFog(finalColor.rgb, inputData.baseInputData.fogCoord);

@@ -144,6 +144,7 @@ float _InnerSharpness;
 float _EnableFixedDirShadow;              // 0/1 toggle
 float4 _FixedDirOS;                       // object-space direction (xyz)
 float _FixedDirShadowStrength;            // 0..1
+float _CharacterForward;
 
 // チーク
 float4 _CheekColor;
@@ -165,6 +166,9 @@ half  _UseLip;   // 0=off, 1=on
 float3 _FaceCylinderCenterWS;
 float3 _FaceCylinderAxisWS;
 float _FaceCylinderBlend;
+
+float _EyebrowOffsetZ;
+float _EyebrowFadePower;
 
 // ハイライト
 float _HairHighlightTilt;

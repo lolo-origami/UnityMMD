@@ -12,6 +12,7 @@ class LLShadowStencilPass : ScriptableRenderPass
     
     static readonly ShaderTagId _tagReceive   = new ShaderTagId("_StencilReceiver");
     static readonly ShaderTagId _tagProjector = new ShaderTagId("_StencilProjector");
+    static readonly ShaderTagId _tagMayu = new ShaderTagId("_FloatMayu");
     
     public LLShadowStencilPass(LLShadowStencilFeature.Settings settings)
     {
@@ -51,8 +52,34 @@ class LLShadowStencilPass : ScriptableRenderPass
             renderQueueRange = RenderQueueRange.opaque,
             layerMask = _settings.ReceiveLayer
         };
+        
+        var projListAlpha = new RendererListDesc(
+            _tagMayu,
+            renderData.cullResults,
+            cameraData.camera)
+        {
+            sortingCriteria = SortingCriteria.CommonOpaque,
+            renderQueueRange = RenderQueueRange.opaque,
+            layerMask = _settings.ReceiveLayer
+        };        
 
         // ============ パス登録 ===============
+        using (var builder = renderGraph.AddRasterRenderPass("MayuPass", out PassDataStencil passData))
+        {
+            passData.RendererList = renderGraph.CreateRendererList(projListAlpha);
+            builder.UseRendererList(passData.RendererList);
+            
+            builder.SetRenderAttachment(resourceData.activeColorTexture, 0, AccessFlags.Write);
+            builder.SetRenderAttachmentDepth(resourceData.activeDepthTexture, AccessFlags.Read);
+
+            // Stencil影を落とす部分を描く
+            builder.SetRenderFunc((PassDataStencil data, RasterGraphContext ctx) =>
+            {
+                // ステンシルだけを描いて範囲を確定
+                ctx.cmd.DrawRendererList(data.RendererList);
+            });
+        }
+        
         // ステンシルが書き込まれた部分だけ描く
         using (var builder = renderGraph.AddRasterRenderPass("StencilProjector", out PassDataStencil passData))
         {

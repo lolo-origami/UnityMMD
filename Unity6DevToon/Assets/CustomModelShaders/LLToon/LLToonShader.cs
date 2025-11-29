@@ -81,6 +81,9 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
         protected MaterialProperty SpecularHighIntensityProperty { get; set; }
         protected MaterialProperty SpecularIntensityShadowProperty { get; set; }
         protected MaterialProperty SpecularContrastProperty { get; set; }
+        protected MaterialProperty EnableEyebrowFloatingProp { get; set; }
+        protected MaterialProperty EyebrowOffsetZProp        { get; set; }
+        protected MaterialProperty EyebrowFadePowerProp      { get; set; }
         
         protected MaterialProperty EnableInverseDarkShadowProperty { get; set; }
         
@@ -266,6 +269,12 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             public static readonly GUIContent MatCapIntensityOptions = EditorGUIUtility.TrTextContent("MatCapIntensity", "");
             public static readonly GUIContent EnableMirrorOptions = EditorGUIUtility.TrTextContent("EnableMirror", "MirrorObject for Transparent.");
             public static readonly GUIContent EnableHairOptions = EditorGUIUtility.TrTextContent("EnableHair", ".");
+            public static readonly GUIContent EnableEyebrowFloatingOptions = EditorGUIUtility.TrTextContent("Enable Floating Eyebrow", "Use Depth Offset to make brows visible over hair.");
+
+            public static readonly GUIContent EyebrowOffsetZOptions = EditorGUIUtility.TrTextContent("Eyebrow Depth Offset", "Offset eyebrows forward in View space.");
+
+            public static readonly GUIContent EyebrowFadePowerOptions = EditorGUIUtility.TrTextContent("Eyebrow Angle Fade", "Fade eyebrows when character faces sideways.");
+            
             public static readonly GUIContent EnableCharaShader = EditorGUIUtility.TrTextContent("OnShadowForChara", ".");
             public static readonly GUIContent MirrorIntensityOptions = EditorGUIUtility.TrTextContent("MirrorIntensity", "Mirror Intensity.");
             public static readonly GUIContent IsBGOptions = EditorGUIUtility.TrTextContent("IsBG", "BG or Others.");
@@ -516,6 +525,10 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             SpecularContrastProperty = FindProperty("_SpecContrast", properties, false);
             enableMirrorProp = FindProperty("_EnableMirror", properties, false);
             reflectIntensityProp = FindProperty("_ReflectIntensity", properties, false);
+            
+            EnableEyebrowFloatingProp = FindProperty("_EnableEyebrowFloating", properties, false);
+            EyebrowOffsetZProp        = FindProperty("_EyebrowOffsetZ", properties, false);
+            EyebrowFadePowerProp      = FindProperty("_EyebrowFadePower", properties, false);
         
             WorldLightInfluenceProp = FindProperty("_WorldLightInfluence", properties, false);
             GIInfluenceProp = FindProperty("_GIInfluence", properties, false);
@@ -609,6 +622,12 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             {
                 bool enabled = material.GetFloat("_EnableTights") > 0.5f;
                 CoreUtils.SetKeyword(material, "ENABLE_TIGHTS", enabled);
+            }
+            
+            if (material.HasProperty("_EnableEyebrowFloating"))
+            {
+                bool enabled = material.GetFloat("_EnableEyebrowFloating") > 0.5f;
+                    CoreUtils.SetKeyword(material, "ENABLE_EYEBROW_FLOATING", enabled);
             }
         }
         
@@ -722,6 +741,27 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
                     }
                 }
             }
+
+            if (EnableEyebrowFloatingProp != null)
+            {
+                DrawFloatToggleProperty(CustomStyleLL.EnableEyebrowFloatingOptions, EnableEyebrowFloatingProp);
+                bool enableFloating = EnableEyebrowFloatingProp.floatValue > 0.5f;
+                if (enableFloating)
+                {
+                    CoreUtils.SetKeyword(material, "ENABLE_EYEBROW_FLOATING", enableFloating);
+                }
+                else
+                {
+                    CoreUtils.SetKeyword(material, "ENABLE_EYEBROW_FLOATING", false);
+                }
+
+            if (enableFloating)
+                {
+                    DrawFloatSliderValue(CustomStyleLL.EyebrowOffsetZOptions, -1.0f, 1.0f, EyebrowOffsetZProp);
+                    DrawFloatSliderValue(CustomStyleLL.EyebrowFadePowerOptions, 0f, 3f, EyebrowFadePowerProp);
+                }
+            }            
+            
             if (bumpMapProp != null)
             {
                 materialEditor.TexturePropertySingleLine(new GUIContent("Normal Map"), bumpMapProp);
@@ -898,6 +938,16 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
                 if (EnableHairProperty != null && SharpnessProperty != null && SpecularIntensityProperty != null &&
                     SpecularHighIntensityProperty != null && SpecularIntensityShadowProperty != null)
                 {
+                    if (StencilBaseRefValueProperty != null)
+                    {
+                        var stencil = material.GetInt("_StencilBaseRef");
+                        if (stencil <= 0)
+                        {
+                            StencilBaseRefValueProperty.intValue = 50;
+                            material.SetInt("_StencilBaseRef", 50);
+                        }
+                    }
+
                     DrawFloatToggleProperty(CustomStyleLL.EnableHairOptions, EnableHairProperty);
                     bool enableHairsSpecular = EnableHairProperty.floatValue == 1.0f;
                     if (enableHairsSpecular)

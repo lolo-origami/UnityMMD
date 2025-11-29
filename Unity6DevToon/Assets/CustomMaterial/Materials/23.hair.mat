@@ -186,6 +186,7 @@ Material:
     - _EnableDarkInverseShadow: 0
     - _EnableDarkShadow: 1
     - _EnableEmission: 0
+    - _EnableEyebrowFloating: 0
     - _EnableFaceCheek: 0
     - _EnableFixedDirShadow: 0
     - _EnableFlatGI: 0
@@ -205,6 +206,8 @@ Material:
     - _EnableStylizeGI: 0
     - _EnableTights: 0
     - _EnvironmentReflections: 1
+    - _EyebrowFadePower: 1
+    - _EyebrowOffsetZ: 0.01
     - _FaceCylinderBlend: 0
     - _FixLightY: 0
     - _FixedDirShadowStrength: 0.35
@@ -247,12 +250,12 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecContrast: 2.46
     - _SpecularHighlights: 1
-    - _SpecularIntensity: 0.5
+    - _SpecularIntensity: 1.155
     - _SpecularIntensityHigh: 0
     - _SpecularIntensityShadow: 2
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
-    - _StencilBaseRef: 0
+    - _StencilBaseRef: 50
     - _StencilOverrideRef: 110
     - _StencilShadowIntencity: 1
     - _Surface: 0
@@ -294,7 +297,7 @@ Material:
     - _FaceCylinderCenterWS: {r: 0, g: 0, b: 0, a: 0}
     - _FixedDirOS: {r: 0, g: 1, b: 0, a: 0}
     - _LightSpecColor: {r: 0.24154504, g: 0.47643733, b: 0.8679245, a: 1}
-    - _LightSpecShadowColor: {r: 0.24313726, g: 0.4745098, b: 0.8666667, a: 1}
+    - _LightSpecShadowColor: {r: 0.4615012, g: 0.24313724, b: 0.8666667, a: 1}
     - _LipColor: {r: 1, g: 0.6, b: 0.7, a: 0.3}
     - _NoseColor: {r: 1, g: 0.6, b: 0.6, a: 1}
     - _NoseHLColor: {r: 1, g: 0.6, b: 0.6, a: 1}

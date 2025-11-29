@@ -52,7 +52,7 @@ half3 ApplyFaceDetail(half3 baseColor, float2 uv, float halfLambert)
     
     // --- Nose Shadow ---
     float mNose = SoftMask(M.noseS, _NoseSoft, _NosePow);
-    bool useHL   = halfLambert < 0.25h;
+    bool useHL   = halfLambert == 0;
     half4 nose   = useHL ? _NoseHLColor : _NoseColor; // 色も強度も切替
     half3 noseCol = lerp(faceColor, nose.rgb, mNose * nose.a);
     faceColor = lerp(faceColor, noseCol, _UseNose);
