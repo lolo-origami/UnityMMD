@@ -99,30 +99,12 @@ void LLToonLighting(
 
     // --- Base Toon Lighting
     half4 baseLightingColor = ToonBaseLighting(baseColor, ShadowColor, DarkShadowColorIn, mainTSF, baseColor.rgb);
-/*
-#if ENABLE_EYEBROW_FLOATING
-    // --- 2. 横顔フェード（cosベース） ---
-    float3 camDir = normalize(_WorldSpaceCameraPos - inputData.baseInputData.positionWS);
-    float facing  = dot(camDir, _CharacterForward);     // 正面1 → 横0
-
-    float angleFade = saturate(lerp(facing, 1.0, _EyebrowFadePower));
-    angleFade = pow(angleFade, 4.0); // 自然な減衰（適度に強調）
-
-    // --- 眉の落とす色 ---
-    float4 browCol = baseLightingColor * 0.6;
-        
-    // アルファはマスク＋角度フェードで制御
-    float browAlpha = browCol.a * 1;
-
-    // --- 4. 眉の透明合成 (普通のAlphaBlend) ---
-    //     baseColor = LLToon の完成カラー
-    baseLightingColor.rgb = lerp(baseLightingColor.rgb, browCol.rgb, browAlpha);
-    baseLightingColor.a   = saturate(browCol.a + browAlpha);
-#endif
-*/
     
 #if ENABLE_SPECULAR
 #if ENABLE_HAIR_SPECULAR
+    // 肌の色と混ぜる
+    baseLightingColor.rgb = lerp(_HairSkinColor.rgb, baseLightingColor.rgb, baseColor.a * baseColor.a);
+    
     // High層：光として加算
     baseLightingColor.rgb += LLToonSpecularLightingHair(inputData, mainLight,
                                masks.specularMask, mainTSF.rampS * mainLightShadowArea, radianceBase);

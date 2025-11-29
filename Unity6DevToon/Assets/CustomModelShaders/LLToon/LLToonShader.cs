@@ -93,6 +93,7 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
         protected MaterialProperty StencilBaseRefValueProperty { get; set; }
         protected MaterialProperty StencilShadowIntensityProperty { get; set; }
         protected MaterialProperty StencilShadowOffsetProperty { get; set; }
+        protected MaterialProperty HairSkinColoProperty { get; set; }
         
         #endregion
         
@@ -603,6 +604,7 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             StencilBaseRefValueProperty      = FindProperty("_StencilBaseRef", properties, false);
             StencilShadowIntensityProperty  = FindProperty("_StencilShadowIntencity", properties, false);
             StencilShadowOffsetProperty     = FindProperty("_StencilShadowOffset", properties, false);
+            HairSkinColoProperty            = FindProperty("_HairSkinColor", properties, false);
         }
 
         // material changed check
@@ -938,20 +940,11 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
                 if (EnableHairProperty != null && SharpnessProperty != null && SpecularIntensityProperty != null &&
                     SpecularHighIntensityProperty != null && SpecularIntensityShadowProperty != null)
                 {
-                    if (StencilBaseRefValueProperty != null)
-                    {
-                        var stencil = material.GetInt("_StencilBaseRef");
-                        if (stencil <= 0)
-                        {
-                            StencilBaseRefValueProperty.intValue = 50;
-                            material.SetInt("_StencilBaseRef", 50);
-                        }
-                    }
-
                     DrawFloatToggleProperty(CustomStyleLL.EnableHairOptions, EnableHairProperty);
                     bool enableHairsSpecular = EnableHairProperty.floatValue == 1.0f;
                     if (enableHairsSpecular)
                     {
+                        materialEditor.ColorProperty(HairSkinColoProperty, "HairSkin Color");
                         materialEditor.FloatProperty(SharpnessProperty, "Sharpness");
                         DrawFloatSliderValue(CustomStyleLL.HairHighlightTiltOptions, -90, 90, HairHighlightTiltProperty);
                         DrawFloatSliderValue(CustomStyleLL.SpecularIntensityOptions, 0, 2, SpecularIntensityProperty);

@@ -91,6 +91,7 @@ float _DiffuseIntensity;
 float _SpecularIntensity;
 float _SpecularIntensityHigh;
 float _SpecularIntensityShadow;
+float3 _HairSkinColor;
 float _SpecContrast;
 float _MatCapIntensity;
 half _AddLightIntensity;

@@ -128,6 +128,7 @@ Shader "Universal Render Pipeline/URPLLToon"
         _SpecularIntensity("SpecularIntensity", Range(0.0, 10.0)) = 0.5
         _SpecularIntensityHigh("Specular IntensityHigh", Range(0.0, 20.0)) = 0.5
         _SpecularIntensityShadow("SpecularShadowIntensity", Range(0.0, 2.0)) = 0.5
+        _HairSkinColor ("HairSkin Color", color) = (1.0, 1.0, 1.0, 1.0)
         
         [Header(RimLight Setting)]
         [Space(5)]
