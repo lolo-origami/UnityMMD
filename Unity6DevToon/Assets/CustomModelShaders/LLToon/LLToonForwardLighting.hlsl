@@ -267,27 +267,6 @@ Varyings VertexBase(Attributes input)
         output.normalWS = lerp(normalInput.normalWS, nCylinderWS, _FaceCylinderBlend);
     }
 #endif
-
-    // =====================
-    // 眉毛用処理
-    // =====================
-/*#if ENABLE_EYEBROW_FLOATING
-    
-    // カメラ Space 取得
-    float3 posVS = vertexInput.positionVS;
-
-    // Z を手前に押し出す
-    posVS.z = posVS.z + _EyebrowOffsetZ;
-
-    // 再投影して ClipSpace に戻す
-    float4 tmpCS = TransformWViewToHClip(posVS);
-
-    // 深度成分だけ差し替え
-    float depth = tmpCS.z / tmpCS.w;
-    output.positionCS.z = depth * output.positionCS.w;
-    
-#endif
-*/
     
     output.binormal = normalize(cross(output.normalWS.xyz, input.tangentOS.xyz) * input.tangentOS.w * unity_WorldTransformParams.w);
     output.binormal = mul(unity_ObjectToWorld, output.binormal);
@@ -338,7 +317,7 @@ half4 LLFragmentChara(Varyings input) : SV_Target
     half4 finalColor = 0;
 
     finalColor.rgb += lllData.BaseToonLightingColor.rgb;
-/*
+
     finalColor.rgb += lllData.AdditionalLightsColor.rgb * _AddLightIntensity;
     finalColor.rgb += lllData.RimColor.rgb + lllData.DarkRimColor.rgb;
 
@@ -346,18 +325,20 @@ half4 LLFragmentChara(Varyings input) : SV_Target
     finalColor.rgb += lllData.EmissionColor.rgb   * lllData.EmissionColor.a;
     finalColor.rgb += lllData.SpecRimEmission.rgb * lllData.SpecRimEmission.a;
 
-    finalColor.rgb += lllData.GIColor.rgb * _GIInfluence;
+    finalColor.rgb += lllData.GIColor.rgb * _GIInfluence;    
 
-#if ENABLE_OUTLINE
-    // Outline作る
+    #if ENABLE_OUTLINE
+    // Outline作る    
     float2 screenPos = ComputeScreenPos(input.screenPos / input.screenPos.w).xy;
-    half width = lerp(_OutlineWidth, _OutlineWidth * 0.5, lllData.RampOutline * _OutlineLightAffects);
-    //width *= SAMPLE_TEXTURE2D(_OutlineMask, sampler_OutlineMask, input.uv).r;
+    half baseWidth = lerp(_OutlineWidth, _OutlineWidth * 0.5, lllData.RampOutline * _OutlineLightAffects);
+    float maskValue = SAMPLE_TEXTURE2D(_OutlineMask, sampler_OutlineMask, input.uv).r;
+    half width = lerp(_OutlineMinWidth * baseWidth, baseWidth, maskValue);
     half outlineOuter  = SoftOutline(screenPos, width, _OutlineStrength, _OutlineSmoothness);
     half lerpValue = lllData.HalfLambert > 1.0 ? lllData.HalfLambert * _OutlineLightAffects : lllData.RampOutline * _OutlineLightAffects;
 
     // 内側（Sobel）
-    half outlineInner = SobelInnerEdge(screenPos, _InnerWidth, _InnerStrength, _InnerSharpness, _InnerThreshold);
+    half innerWidth = lerp(_OutlineMinWidth * _InnerWidth, _InnerWidth, maskValue);
+    half outlineInner = SobelInnerEdge(screenPos, innerWidth, _InnerStrength, _InnerSharpness, saturate(_InnerThreshold + 1.0 - maskValue));
 
     // 外側が検出された部分はSobelを抑制（マスク）
     outlineInner *= (1 - outlineOuter);
@@ -368,8 +349,7 @@ half4 LLFragmentChara(Varyings input) : SV_Target
     float3 outlineColor = shift(finalColor.rgb, half3(0.0, _OutlineSaturation, lerp(_OutlineBrightness, saturate(_OutlineBrightness * 2.0), lerpValue)));
     //finalColor.rgb = float3(1,1,1);
     finalColor.rgb = lerp(finalColor.rgb, outlineColor, outlineFactor);
-#endif
-*/
+    #endif    
     
     // apply fog
     finalColor.rgb = MixFog(finalColor.rgb, inputData.baseInputData.fogCoord);

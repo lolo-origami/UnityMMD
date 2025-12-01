@@ -178,6 +178,7 @@ Shader "Universal Render Pipeline/URPLLToon"
         [Space(5)]
         [Toggle]_EnableOutline ("Enable Rim", float) = 1
         _OutlineMask("Outline Mask", 2D) = "white" {}
+        _OutlineMinWidth ("_OutlineWidth (World Space)", Range(0, 1)) = 1
         _OutlineWidth ("_OutlineWidth (World Space)", Range(0, 50)) = 1
         _OutlineLightAffects("Outline Light Affects", Range(0.0, 50.0)) = 1.0
         _OutlineSaturation("Outline Saturation", Range(0.0, 4.0)) = 3.0

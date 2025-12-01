@@ -208,8 +208,8 @@ Material:
     - _EnableStylizeGI: 0
     - _EnableTights: 0
     - _EnvironmentReflections: 1
-    - _EyebrowFadePower: 1.587
-    - _EyebrowOffsetZ: 0
+    - _EyebrowFadePower: 0.146
+    - _EyebrowOffsetZ: 0.067
     - _FaceCylinderBlend: 0
     - _FaceShadowMapPow: 0.2
     - _FaceShadowOffset: 0
@@ -264,7 +264,7 @@ Material:
     - _SpecularIntensityShadow: 0.5
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
-    - _StencilBaseRef: 50
+    - _StencilBaseRef: 0
     - _StencilOverrideRef: 110
     - _StencilShadowIntencity: 1
     - _Surface: 0

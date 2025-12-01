@@ -129,6 +129,7 @@ float _TightsThighStart;
 float _TightsThighEnd;
 float _TightsThighBoost;
 
+float _OutlineMinWidth;
 float _OutlineWidth;
 float _OutlineLightAffects;
 //half4 _OutlineColor;

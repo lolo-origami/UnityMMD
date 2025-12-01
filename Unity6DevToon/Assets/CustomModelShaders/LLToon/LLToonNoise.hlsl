@@ -52,7 +52,7 @@ float AnisoLineNoise_ObjectSpace(
     float s2 = abs(sin(coordParallel * (scale * 1.7) + phase*1.3));
     s2 = pow(s2, sharpness * 0.7);
 
-    return saturate(max(s, s2));
+    return saturate(max(s, s2)) * 5;
 }
 
 // -----------------------------

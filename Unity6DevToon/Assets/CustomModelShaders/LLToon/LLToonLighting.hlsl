@@ -28,9 +28,9 @@
 inline float4 SampleLLBaseColor(float2 uv, float3 normalWS, float3 viewDirWS)
 {
     float4 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, uv) * _BaseColor;
-    #if defined(ENABLE_TIGHTS)
-    //baseColor.rgb = ApplyTightsBase(baseColor, normalWS, viewDirWS);
-    #endif
+#if defined(ENABLE_TIGHTS)
+    baseColor.rgb = ApplyTightsBase(baseColor, normalWS, viewDirWS);
+#endif
     return baseColor;
 }
 
@@ -112,10 +112,10 @@ void LLToonLighting(
 
 #else
     // --- Specular
-    /*baseLightingColor += LLToonSpecularLighting(brdfData, inputData, masks.specularMask, masks.specularMaskHigh,
+    baseLightingColor += LLToonSpecularLighting(brdfData, inputData, masks.specularMask, masks.specularMaskHigh,
                                                 mainLight, chara, mainTSF.rampS * mainLightShadowArea,
                                                 radianceBase, uv);
-                                                */
+                                                
 #endif
     
 #endif    

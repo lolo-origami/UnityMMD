@@ -158,6 +158,7 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
         protected MaterialProperty GIRampProp { get; set; }
         protected MaterialProperty EnableOutlineProp { get; set; }
         protected MaterialProperty OutlineMaskProp { get; set; }
+        protected MaterialProperty OutlineMinWidthProp { get; set; }
         protected MaterialProperty OutlineWidthProp { get; set; }
         protected MaterialProperty OutlineLightAffectsProp { get; set; }
         protected MaterialProperty OutlineSaturationProp { get; set; }
@@ -169,6 +170,8 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
         protected MaterialProperty InnerStrengthProp { get; set; }
         protected MaterialProperty InnerThresholdProp { get; set; }
         protected MaterialProperty InnerSmoothnessProp { get; set; }
+        
+        protected MaterialProperty InnerSharpnessProp { get; set; }
 
         #endregion
         
@@ -313,7 +316,7 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             public static readonly GUIContent TightsFresnelPowOptions = EditorGUIUtility.TrTextContent("Fresnel Pow", "");
             public static readonly GUIContent TightsFresnelStrengthOptions = EditorGUIUtility.TrTextContent("Fresnel Strength", "");
             public static readonly GUIContent TightsBlendStrengthOptions = EditorGUIUtility.TrTextContent("Blend Strength", "");
-            public static readonly GUIContent TightsHighlightMapOptions = EditorGUIUtility.TrTextContent("Highlight Map", "");
+            public static readonly GUIContent TightsHighlightMapOptions = EditorGUIUtility.TrTextContent("Tights Noise Map", "");
             public static readonly GUIContent TightsHighlightScaleOptions = EditorGUIUtility.TrTextContent("Highlight Scale", "");
             public static readonly GUIContent TightsHighlightIntensityOptions = EditorGUIUtility.TrTextContent("Highlight Intensity", "");     
             public static readonly GUIContent UseTightsNoiseTexOptions = EditorGUIUtility.TrTextContent("Use Tights NoiseTex", "Use texture instead of procedural noise.");
@@ -344,6 +347,7 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
 
             
             //Outline
+            public static readonly GUIContent OutlineMinWidthOptions = EditorGUIUtility.TrTextContent("OutlineMinWidth", "");   
             public static readonly GUIContent OutlineWidthOptions = EditorGUIUtility.TrTextContent("OutlineWidth", "");   
             public static readonly GUIContent OutlineLightAffectsOptions = EditorGUIUtility.TrTextContent("OutlineLightAffects", "");
             public static readonly GUIContent OutlineSaturationOptions = EditorGUIUtility.TrTextContent("OutlineSaturation", "");
@@ -353,7 +357,8 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             public static readonly GUIContent InnerWidthOptions     = EditorGUIUtility.TrTextContent("Inner Outline Width", "");
             public static readonly GUIContent InnerStrengthOptions  = EditorGUIUtility.TrTextContent("Inner Outline Strength", "");
             public static readonly GUIContent InnerThresholdOptions = EditorGUIUtility.TrTextContent("Inner Outline Threshold", "");
-            public static readonly GUIContent InnerSmoothnessOptions= EditorGUIUtility.TrTextContent("Inner Outline Smoothness", "");
+            public static readonly GUIContent InnerSmoothnessOptions = EditorGUIUtility.TrTextContent("Inner Outline Smoothness", "");
+            public static readonly GUIContent InnerSharpnessOptions = EditorGUIUtility.TrTextContent("Inner Outline Sharpness", "");
 
         }
         
@@ -587,6 +592,7 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             
             EnableOutlineProp = FindProperty("_EnableOutline", properties, false);
             OutlineMaskProp = FindProperty("_OutlineMask", properties, false);
+            OutlineMinWidthProp = FindProperty("_OutlineMinWidth", properties, false);
             OutlineWidthProp = FindProperty("_OutlineWidth", properties, false);
             OutlineLightAffectsProp = FindProperty("_OutlineLightAffects", properties, false);
             OutlineSaturationProp = FindProperty("_OutlineSaturation", properties, false);
@@ -597,6 +603,7 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
             InnerStrengthProp  = FindProperty("_InnerStrength", properties, false);
             InnerThresholdProp = FindProperty("_InnerThreshold", properties, false);
             InnerSmoothnessProp= FindProperty("_InnerSmoothness", properties, false);
+            InnerSharpnessProp = FindProperty("_InnerSharpness", properties, false);
 
             EnableStencilShadowReceiver  = FindProperty("_EnableStencilShadowReceiver", properties, false);
             EnableStencilShadowProjector = FindProperty("_EnableStencilShadowProjector", properties, false);
@@ -1209,6 +1216,11 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
                 {
                     materialEditor.TextureProperty(OutlineMaskProp, "OutlineMask");
                 }
+                
+                if (OutlineMinWidthProp != null)
+                {
+                    DrawFloatSliderValue(CustomStyleLL.OutlineMinWidthOptions, 0, 1, OutlineMinWidthProp);
+                }
 
                 if (OutlineWidthProp != null)
                 {
@@ -1258,6 +1270,11 @@ namespace UnityEditor.Rendering.Universal.ShaderGUI
                 if (InnerSmoothnessProp != null)
                 {
                     DrawFloatSliderValue(CustomStyleLL.InnerSmoothnessOptions, 0, 1, InnerSmoothnessProp);
+                }
+
+                if (InnerSharpnessProp != null)
+                {
+                    DrawFloatSliderValue(CustomStyleLL.InnerSharpnessOptions, 0, 1, InnerSharpnessProp);
                 }
             }
         }
