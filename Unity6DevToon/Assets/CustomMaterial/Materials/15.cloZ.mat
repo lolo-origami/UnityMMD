@@ -166,8 +166,8 @@ Material:
     - _Cull: 2
     - _Cutoff: 0.5
     - _DarkEmissionIntensity: 1
-    - _DarkShadowArea: 0.5
-    - _DarkShadowSmooth: 0.05
+    - _DarkShadowArea: 0.401
+    - _DarkShadowSmooth: 0.053
     - _DarkSideRimPow: 1
     - _DarkSideRimSmooth: 10
     - _DetailAlbedoMapScale: 1
@@ -211,9 +211,9 @@ Material:
     - _GlossyReflections: 1
     - _HairHighlightTilt: 0
     - _IgnoreLightY: 0
-    - _InnerSharpness: 5
-    - _InnerStrength: 0.39
-    - _InnerThreshold: 0.19
+    - _InnerSharpness: 1
+    - _InnerStrength: 0.34
+    - _InnerThreshold: 0.209
     - _InnerWidth: 1
     - _LightMapInfluence: 1
     - _LipPow: 1.5
@@ -226,7 +226,7 @@ Material:
     - _OcclusionStrength: 1
     - _OutlineBrightness: 0.25
     - _OutlineLightAffects: 1
-    - _OutlineMinWidth: 1
+    - _OutlineMinWidth: 0.504
     - _OutlineSaturation: 0.85
     - _OutlineSmoothness: 1
     - _OutlineStrength: 0.569

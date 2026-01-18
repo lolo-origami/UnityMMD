@@ -14,7 +14,12 @@ Material:
   m_ValidKeywords:
   - ENABLE_OUTLINE
   - ENABLE_RIM
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _CASTSHADOWS_ON
+  - _ENABLELAMBERT_ON
+  - _ENABLEOUTLINE_ON
+  - _ENABLERIM_ON
+  - _RECEIVESHADOWS_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -148,8 +153,8 @@ Material:
     - _Cull: 2
     - _Cutoff: 1
     - _DarkEmissionIntensity: 1
-    - _DarkShadowArea: 0.5
-    - _DarkShadowSmooth: 0.05
+    - _DarkShadowArea: 0.401
+    - _DarkShadowSmooth: 0.053
     - _DarkSideRimPow: 1
     - _DarkSideRimSmooth: 10
     - _DetailAlbedoMapScale: 1
@@ -163,6 +168,7 @@ Material:
     - _EnableDarkInverseShadow: 0
     - _EnableDarkShadow: 0
     - _EnableEmission: 0
+    - _EnableEyebrowFloating: 0
     - _EnableFaceCheek: 0
     - _EnableFixedDirShadow: 0
     - _EnableFlatGI: 0
@@ -175,9 +181,14 @@ Material:
     - _EnableRimDS: 0
     - _EnableSSAO: 0
     - _EnableSpecular: 0
+    - _EnableStencilShadowProjector: 0
+    - _EnableStencilShadowReceiver: 0
     - _EnableStylizeGI: 0
     - _EnableTights: 0
     - _EnvironmentReflections: 1
+    - _EyebrowFadePower: 1
+    - _EyebrowOffsetZ: 0.01
+    - _FaceCylinderBlend: 0
     - _FixLightY: 0
     - _FixedDirShadowStrength: 0.35
     - _FlatGIL0Minus: 0
@@ -185,18 +196,24 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
+    - _HairHighlightTilt: 0
     - _IgnoreLightY: 0
-    - _InnerSharpness: 5
-    - _InnerStrength: 0.39
-    - _InnerThreshold: 0.19
+    - _InnerSharpness: 1
+    - _InnerStrength: 0.34
+    - _InnerThreshold: 0.209
     - _InnerWidth: 1
     - _LightMapInfluence: 1
+    - _LipPow: 1.5
+    - _LipSoft: 0.4
     - _MatCapIntensity: 0.5
     - _Metallic: 0
     - _Mode: 0
+    - _NosePow: 1
+    - _NoseSoft: 0.5
     - _OcclusionStrength: 1
     - _OutlineBrightness: 0.25
     - _OutlineLightAffects: 1
+    - _OutlineMinWidth: 0.504
     - _OutlineSaturation: 0.85
     - _OutlineSmoothness: 1
     - _OutlineStrength: 0.569
@@ -219,6 +236,8 @@ Material:
     - _SpecularIntensityShadow: 0.5
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
+    - _StencilBaseRef: 0
+    - _StencilShadowIntencity: 1
     - _Surface: 0
     - _TightsBaseAlpha: 0.2
     - _TightsBlendStrength: 0.7
@@ -239,6 +258,9 @@ Material:
     - _TightsThighEnd: 0
     - _TightsThighStart: 0.8
     - _UVSec: 0
+    - _UseCheek: 0
+    - _UseLip: 0
+    - _UseNose: 0
     - _UseTightsNoiseTex: 0
     - _WorkflowMode: 1
     - _WorldLightInfluence: 1
@@ -251,14 +273,21 @@ Material:
     - _DarkSideRimColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionMapChannelMask: {r: 1, g: 1, b: 1, a: 0}
+    - _FaceCylinderAxisWS: {r: 0, g: 1, b: 0, a: 0}
+    - _FaceCylinderCenterWS: {r: 0, g: 0, b: 0, a: 0}
     - _FixedDirOS: {r: 0, g: 1, b: 0, a: 0}
+    - _HairSkinColor: {r: 1, g: 1, b: 1, a: 1}
     - _LightSpecColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
     - _LightSpecShadowColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+    - _LipColor: {r: 1, g: 0.6, b: 0.7, a: 0.3}
+    - _NoseColor: {r: 1, g: 0.6, b: 0.6, a: 1}
+    - _NoseHLColor: {r: 1, g: 0.6, b: 0.6, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _SceondMaterialDarkShadowColor: {r: 1, g: 1, b: 1, a: 1}
     - _SceondMaterialShadowColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowMultColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _StencilShadowOffset: {r: 0, g: 0, b: 0, a: 0}
     - _TightsColor: {r: 0.09999997, g: 0.09999997, b: 0.09999997, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

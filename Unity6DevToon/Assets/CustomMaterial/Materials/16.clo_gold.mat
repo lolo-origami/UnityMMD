@@ -12,7 +12,6 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - ENABLE_MATCAP_SPECULAR
   - ENABLE_OUTLINE
   - ENABLE_SPECULAR
   m_InvalidKeywords:
@@ -77,11 +76,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: a576ee5d215ecc4438a6b4a00c0d2031, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskMap2:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: d842271e0fde6a946b2d1f99adfe6131, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MatCap:
@@ -138,7 +137,7 @@ Material:
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BlendRimWithBaseColor: 0
-    - _BloomFactor: 0
+    - _BloomFactor: 1
     - _BumpScale: 1
     - _CastShadows: 1
     - _CheekAdd: 0.5
@@ -150,13 +149,13 @@ Material:
     - _Cull: 2
     - _Cutoff: 0.5
     - _DarkEmissionIntensity: 1
-    - _DarkShadowArea: 0.5
-    - _DarkShadowSmooth: 0.05
+    - _DarkShadowArea: 0.401
+    - _DarkShadowSmooth: 0.053
     - _DarkSideRimPow: 1
     - _DarkSideRimSmooth: 10
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DiffuseIntensity: 0.97
+    - _DiffuseIntensity: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _Emission: 1
@@ -172,7 +171,7 @@ Material:
     - _EnableHairSpecular: 0
     - _EnableLambert: 1
     - _EnableLightVectorRim: 1
-    - _EnableMatCapSpecular: 1
+    - _EnableMatCapSpecular: 0
     - _EnableOutline: 1
     - _EnableRim: 0
     - _EnableRimDS: 0
@@ -196,21 +195,21 @@ Material:
     - _HairHighlightTilt: 0
     - _IgnoreLightY: 0
     - _InnerSharpness: 1
-    - _InnerStrength: 0.39
-    - _InnerThreshold: 0.19
+    - _InnerStrength: 0.34
+    - _InnerThreshold: 0.209
     - _InnerWidth: 1
     - _LightMapInfluence: 1
     - _LipPow: 1.5
     - _LipSoft: 0.4
     - _MatCapIntensity: 0
-    - _Metallic: 0.771
+    - _Metallic: 0.935
     - _Mode: 0
     - _NosePow: 1
     - _NoseSoft: 0.5
     - _OcclusionStrength: 1
     - _OutlineBrightness: 0.25
     - _OutlineLightAffects: 1
-    - _OutlineMinWidth: 1
+    - _OutlineMinWidth: 0.504
     - _OutlineSaturation: 0.85
     - _OutlineSmoothness: 1
     - _OutlineStrength: 0.569
@@ -224,12 +223,12 @@ Material:
     - _ShadowArea: 0.5
     - _ShadowSmooth: 0.05
     - _Sharpness: 30
-    - _Smoothness: 0.672
+    - _Smoothness: 0.895
     - _SmoothnessTextureChannel: 0
     - _SpecContrast: 1
     - _SpecularHighlights: 1
-    - _SpecularIntensity: 0.3
-    - _SpecularIntensityHigh: 0.5
+    - _SpecularIntensity: 0.025
+    - _SpecularIntensityHigh: 1
     - _SpecularIntensityShadow: 0.5
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
